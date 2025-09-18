@@ -1,4 +1,5 @@
 package chess;
+import java.util.*;
 
 /**
  * A chessboard that can hold and rearrange chess pieces.
@@ -37,7 +38,24 @@ public class ChessBoard {
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
+        board = new ChessPiece[8][8];
+    }
 
-        throw new RuntimeException("Not implemented");
+    @Override
+    public String toString() {
+        int column = 0;
+        int row = 0;
+        String board_row = null;
+        while (row < 8) {
+            board_row = board_row + String.format("[%d][%d]: color = s%, type = %s", row, column, board[row][column].getTeamColor().toString(),board[row][column].getPieceType().toString());
+            if (column == 7) {
+                board_row = board_row + "%n";
+                column = 0;
+                row++;
+                continue;
+            }
+            column++;
+        }
+        return board_row;
     }
 }

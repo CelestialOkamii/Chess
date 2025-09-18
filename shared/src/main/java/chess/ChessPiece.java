@@ -1,6 +1,6 @@
 package chess;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * Represents a single chess piece
@@ -10,7 +10,13 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
+
+    private final ChessGame.TeamColor pieceColor;
+    private final PieceType type;
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
     }
 
     /**
@@ -29,14 +35,14 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return pieceColor;
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return type;
     }
 
     /**
@@ -47,6 +53,26 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(myPosition);
+        if (piece.getPieceType() == )
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || this.getClass() != obj.getClass()) return false;
+        ChessPiece pos = (ChessPiece) obj;
+        return (pieceColor.equals(pos.pieceColor) && type.equals(pos.type));
+    }
+
+    @Override
+    public int hashCode() {
+        int color_int = startPosition.getRow() * 8 + startPosition.getColumn();
+        int type_int   = endPosition.getRow() * 8 + endPosition.getColumn();
+        int hash = 17;
+        hash = 31 * hash + start_int;
+        hash = 31 * hash + end_int;
+        hash = 31 * hash + promo_int;
+        return hash;
     }
 }
