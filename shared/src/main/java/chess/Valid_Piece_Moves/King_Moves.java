@@ -22,18 +22,19 @@ public class King_Moves {
         int row = current_row - 1;
         int column = current_column - 1;
         while (row <= current_row + 1) {
-            if (column > current_column + 1 && row < current_row + 1) {
-                column = current_column - 1;
-            }
             if (row > 7 || row < 0 || column > 7 || column < 0) {
                 continue;
             }
-            else if ( valid_move(row, column) == true) {
+            else if (valid_move(row, column) == true) {
                 ChessPosition coordinate = new ChessPosition(row,column);
                 ChessMove move = new ChessMove(position, coordinate, null);
                 moves.add(move);
             }
-
+            column++;
+            if (column > current_column + 1 && row < current_row + 1) {
+                column = current_column - 1;
+                row++;
+            }
         }
         return moves;
     }
