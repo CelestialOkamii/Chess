@@ -54,7 +54,7 @@ public class ChessMove {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
         ChessMove pos = (ChessMove) obj;
-        return (startPosition.equals(pos.startPosition) && endPosition.equals(pos.endPosition) && Objects.equals(promotionPiece, pos.promotionPiece));
+        return (Objects.equals(startPosition, pos.startPosition) && Objects.equals(endPosition, pos.endPosition) && Objects.equals(promotionPiece, pos.promotionPiece));
     }
 
     @Override

@@ -26,38 +26,30 @@ public class Queen_Moves {
         int row = 0;
         int column = 0;
         List<ChessPosition> possible_positions = new ArrayList<>();
-        //no_go_column tells the column of where a piece is so the queen knows where it has to stop diagonally or vertically from its position
-        //no_go_row tells me where the queen needs to stop horizontally from its position
-        int no_go_top = 0;
-        int no_go_bottom = 0;
+        List<ChessPosition> no_go_past = new ArrayList<>();
         while (row <= 8) {
-            List<ChessPosition> valid_boundaries = valid_move(row, column);
+            List<ChessPosition> valid_boundaries = valid_move(row, column, no_go_past);
             //if piece is same color as Queen will return position of [1,1]
             //if opposing color will return position of [0,0] for valid_boundaries.get(1)
             //if there si no piece will return position [2,2]
             //if position isn't valid will return [-1,-1] for valid_boundaries.get(0)
             int valid_row = valid_boundaries.get(0).getRow();
             int piece_type = valid_boundaries.get(1).getRow();
-            if (valid_row > 0 && valid_row < 7) {
+            if (valid_row > 0 && valid_row < 7 && piece_type != 1) {
                 possible_positions.add(valid_boundaries.get(0));
             }
             if (piece_type == 1 || piece_type == 0) {
-                if (current_row != row && current_column != column) {
-                    if (column < current_column) {
-
-                        Iterator<ChessPosition> it = possible_positions.iterator();
-                        while (it.hasNext()) {
-                            ChessPosition pos = it.next();
-                            if (pos.getColumn() < column && pos.getRow() != current_row) {
+                if (current_row >= row && current_column != column) {
+                    Iterator<ChessPosition> it = possible_positions.iterator();
+                    while (it.hasNext()) {
+                        ChessPosition pos = it.next();
+                        if (piece_type == 1) {
+                            if (pos.getColumn() < column || pos.getColumn() > column) {
                                 it.remove();
                             }
                         }
-                    }
-                    else {
-                        Iterator<ChessPosition> it = possible_positions.iterator();
-                        while (it.hasNext()) {
-                            ChessPosition pos = it.next();
-                            if (pos.getColumn() > column && pos.getRow() != current_row) {
+                        else {
+                            if (pos.getColumn() <= column || pos.getColumn() >= column) {
                                 it.remove();
                             }
                         }
@@ -68,17 +60,15 @@ public class Queen_Moves {
                         Iterator<ChessPosition> it = possible_positions.iterator();
                         while (it.hasNext()) {
                             ChessPosition pos = it.next();
-                            if (pos.getColumn() < column) {
-                                it.remove();
+                            if (piece_type == 1 && pos.getRow() == current_row) {
+                                if (pos.getColumn() < column) {
+                                    it.remove();
+                                }
                             }
-                        }
-                    }
-                    else {
-                        Iterator<ChessPosition> it = possible_positions.iterator();
-                        while (it.hasNext()) {
-                            ChessPosition pos = it.next();
-                            if (pos.getColumn() > column) {
-                                it.remove();
+                            else {
+                                if (pos.getColumn() <= column) {
+                                    it.remove();
+                                }
                             }
                         }
                     }
@@ -88,33 +78,34 @@ public class Queen_Moves {
                         Iterator<ChessPosition> it = possible_positions.iterator();
                         while (it.hasNext()) {
                             ChessPosition pos = it.next();
-                            if (pos.getRow() < row) {
-                                it.remove();
+                            if (piece_type == 1 && pos.getColumn() == current_column) {
+                                if (pos.getRow() < row) {
+                                    it.remove();
+                                }
                             }
-                        }
-                    }
-                    else {
-                        Iterator<ChessPosition> it = possible_positions.iterator();
-                        while (it.hasNext()) {
-                            ChessPosition pos = it.next();
-                            if (pos.getRow() > row) {
-                                it.remove();
+                            else {
+                                if (pos.getRow() <= row) {
+                                    it.remove();
+                                }
                             }
                         }
                     }
                 }
+                else {
+                    no_go_past.add(valid_boundaries.get(0));
+                }
             }
-            column++;
             if (column > 8 && row < 7) {
                 column = 0;
                 row++;
             }
+            column++;
         }
         return moves;
     }
 
-    public List<ChessPosition> valid_move(int row, int column) {
-
+    public List<ChessPosition> valid_move(int row, int column, List<ChessPosition> no_go_past) {
+        return null;
     }
 
 
