@@ -28,14 +28,8 @@ public class Queen_Moves {
         List<ChessPosition> possible_positions = new ArrayList<>();
         //no_go_column tells the column of where a piece is so the queen knows where it has to stop diagonally or vertically from its position
         //no_go_row tells me where the queen needs to stop horizontally from its position
-        int no_go_up = 0;
-        int no_go_down = 0;
-        int no_go_right = 0;
-        int no_go_left = 0;
-        int ng_upper_left = 0;
-        int ng_bottom_left = 0;
-        int ng_upper_right = 0;
-        int ng_bottom_right = 0;
+        int no_go_top = 0;
+        int no_go_bottom = 0;
         while (row <= 8) {
             List<ChessPosition> valid_boundaries = valid_move(row, column);
             //if piece is same color as Queen will return position of [1,1]
@@ -45,7 +39,7 @@ public class Queen_Moves {
             int valid_row = valid_boundaries.get(0).getRow();
             int piece_type = valid_boundaries.get(1).getRow();
             if (valid_row > 0 && valid_row < 7) {
-                possible_positions.add(valid_boundaries.get(0))
+                possible_positions.add(valid_boundaries.get(0));
             }
             if (piece_type == 1 || piece_type == 0) {
                 if (current_row != row && current_column != column) {
@@ -54,7 +48,7 @@ public class Queen_Moves {
                         Iterator<ChessPosition> it = possible_positions.iterator();
                         while (it.hasNext()) {
                             ChessPosition pos = it.next();
-                            if (pos.getColumn() < column) {
+                            if (pos.getColumn() < column && pos.getRow() != current_row) {
                                 it.remove();
                             }
                         }
@@ -63,7 +57,7 @@ public class Queen_Moves {
                         Iterator<ChessPosition> it = possible_positions.iterator();
                         while (it.hasNext()) {
                             ChessPosition pos = it.next();
-                            if (pos.getColumn() > column) {
+                            if (pos.getColumn() > column && pos.getRow() != current_row) {
                                 it.remove();
                             }
                         }
