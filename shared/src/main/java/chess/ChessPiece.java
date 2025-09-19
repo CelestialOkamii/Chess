@@ -67,12 +67,11 @@ public class ChessPiece {
 
     @Override
     public int hashCode() {
-        int color_int = startPosition.getRow() * 8 + startPosition.getColumn();
-        int type_int   = endPosition.getRow() * 8 + endPosition.getColumn();
+        int color_int = pieceColor.hashCode();
+        int type_int   = type.hashCode();
         int hash = 17;
-        hash = 31 * hash + start_int;
-        hash = 31 * hash + end_int;
-        hash = 31 * hash + promo_int;
+        hash = 31 * hash + color_int;
+        hash = 31 * hash + type_int;
         return hash;
     }
 }
