@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Pawn_Moves {
-    private ChessPosition position;
-    private ChessGame.TeamColor color;
-    private ChessBoard board;
-    private List<Integer> promotion_indexes = new ArrayList<>();
+    private final ChessPosition position;
+    private final ChessGame.TeamColor color;
+    private final ChessBoard board;
+    private final List<Integer> promotion_indexes = new ArrayList<>();
 
     public Pawn_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;
@@ -23,7 +23,7 @@ public class Pawn_Moves {
         List<ChessPosition> valid_moves = valid_positions();
         int position_index = 0;
         for (ChessPosition move : valid_moves) {
-            if (promotion_indexes.size() > 0 && promotion_indexes.size() > position_index) {
+            if (!promotion_indexes.isEmpty() && promotion_indexes.size() > position_index) {
                 if (valid_moves.indexOf(move) == promotion_indexes.get(position_index)) {
                     List<ChessMove> promotion_moves = promotion_pieces(move);
                     moves.addAll(promotion_moves);
