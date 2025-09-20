@@ -19,21 +19,19 @@ public class King_Moves {
         List<ChessMove> moves = new ArrayList<>();
         int current_row = position.getRow();
         int current_column = position.getColumn();
-        int row = current_row - 1;
-        int column = current_column - 1;
-        while (row <= current_row + 1) {
-            if (row > 7 || row < 0 || column > 7 || column < 0) {
-                continue;
-            }
-            else if (valid_move(row, column) == true) {
-                ChessPosition coordinate = new ChessPosition(row,column);
-                ChessMove move = new ChessMove(position, coordinate, null);
-                moves.add(move);
-            }
-            column++;
-            if (column > current_column + 1 && row < current_row + 1) {
-                column = current_column - 1;
-                row++;
+        for (int row = current_row -1; row <= current_row + 1; row++) {
+            for (int column = current_column - 1; column <= current_column + 1; column++) {
+                if (row < 0 || row > 7 || column < 0 || column > 7) {
+                    continue;
+                }
+                if (row == current_row && column == current_column) {
+                    continue;
+                }
+                if (valid_move(row, column) == true) {
+                    ChessPosition coordinate = new ChessPosition(row,column);
+                    ChessMove move = new ChessMove(position, coordinate, null);
+                    moves.add(move);
+                }
             }
         }
         return moves;
@@ -41,12 +39,11 @@ public class King_Moves {
 
     public boolean valid_move(int row, int column) {
         ChessPosition new_position = new ChessPosition(row, column);
-        if (board.getPiece(new_position).getTeamColor() == color) {
-            return false;
-        }
-        else {
+        ChessPiece piece = board.getPiece(new_position);
+        if (piece == null) {
             return true;
         }
+        return board.getPiece(new_position).getTeamColor() != color;
     }
 
     @Override

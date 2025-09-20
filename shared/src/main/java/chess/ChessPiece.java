@@ -54,6 +54,15 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
+        PieceType piece = board.getPiece(myPosition).getPieceType();
+        ChessGame.TeamColor piece_color = board.getPiece(myPosition).getTeamColor();
+        if (piece == PieceType.KING) {
+            List<ChessMove> my_moves = new King_Moves(myPosition, piece_color, board).valid_moves();
+            return my_moves;
+        }
+        else if (piece == PieceType.QUEEN) {
+            List<ChessMove> my_moves = new Queen_Moves(myPosition, piece_color, board).valid_moves();
+        }
         return null;
     }
 
