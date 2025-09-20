@@ -57,28 +57,22 @@ public class ChessPiece {
         PieceType piece = board.getPiece(myPosition).getPieceType();
         ChessGame.TeamColor piece_color = board.getPiece(myPosition).getTeamColor();
         if (piece == PieceType.KING) {
-            List<ChessMove> my_moves = new King_Moves(myPosition, piece_color, board).valid_moves();
-            return my_moves;
+            return new King_Moves(myPosition, piece_color, board).valid_moves();
         }
         else if (piece == PieceType.QUEEN) {
-            List<ChessMove> my_moves = new Queen_Moves(myPosition, piece_color, board).valid_moves();
-            return my_moves;
+            return new Queen_Moves(myPosition, piece_color, board).valid_moves();
         }
         else if (piece == PieceType.BISHOP) {
-            List<ChessMove> my_moves = new Bishop_Moves(myPosition, piece_color, board).valid_moves();
-            return my_moves;
+            return new Bishop_Moves(myPosition, piece_color, board).valid_moves();
         }
         else if (piece == PieceType.ROOK) {
-            List<ChessMove> my_moves = new Rook_Moves(myPosition, piece_color, board).valid_moves();
-            return my_moves;
+            return new Rook_Moves(myPosition, piece_color, board).valid_moves();
         }
         else if (piece == PieceType.KNIGHT) {
-            List<ChessMove> my_moves = new Knight_Moves(myPosition, piece_color, board).valid_moves();
-            return my_moves;
+            return new Knight_Moves(myPosition, piece_color, board).valid_moves();
         }
         else if (piece == PieceType.PAWN) {
-            List<ChessMove> my_moves = new Pawn_Moves(myPosition, piece_color, board).valid_moves();
-            return my_moves;
+            return new Pawn_Moves(myPosition, piece_color, board).valid_moves();
         }
         return null;
     }
