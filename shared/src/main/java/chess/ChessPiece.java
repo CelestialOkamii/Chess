@@ -62,6 +62,23 @@ public class ChessPiece {
         }
         else if (piece == PieceType.QUEEN) {
             List<ChessMove> my_moves = new Queen_Moves(myPosition, piece_color, board).valid_moves();
+            return my_moves;
+        }
+        else if (piece == PieceType.BISHOP) {
+            List<ChessMove> my_moves = new Bishop_Moves(myPosition, piece_color, board).valid_moves();
+            return my_moves;
+        }
+        else if (piece == PieceType.ROOK) {
+            List<ChessMove> my_moves = new Rook_Moves(myPosition, piece_color, board).valid_moves();
+            return my_moves;
+        }
+        else if (piece == PieceType.KNIGHT) {
+            List<ChessMove> my_moves = new Knight_Moves(myPosition, piece_color, board).valid_moves();
+            return my_moves;
+        }
+        else if (piece == PieceType.PAWN) {
+            List<ChessMove> my_moves = new Pawn_Moves(myPosition, piece_color, board).valid_moves();
+            return my_moves;
         }
         return null;
     }
