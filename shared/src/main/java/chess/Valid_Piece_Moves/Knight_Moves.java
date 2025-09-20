@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Knight_Moves {
-    private ChessPosition position;
-    private ChessGame.TeamColor color;
-    private ChessBoard board;
+    private final ChessPosition position;
+    private final ChessGame.TeamColor color;
+    private final ChessBoard board;
 
     public Knight_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;

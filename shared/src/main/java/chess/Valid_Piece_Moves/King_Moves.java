@@ -5,9 +5,9 @@ import chess.*;
 
 public class King_Moves {
 
-    private ChessPosition position;
-    private ChessGame.TeamColor color;
-    private ChessBoard board;
+    private final ChessPosition position;
+    private final ChessGame.TeamColor color;
+    private final ChessBoard board;
 
     public King_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;
@@ -27,7 +27,7 @@ public class King_Moves {
                 if (row == current_row && column == current_column) {
                     continue;
                 }
-                if (valid_move(row, column) == true) {
+                if (valid_move(row, column)) {
                     ChessPosition coordinate = new ChessPosition(row,column);
                     ChessMove move = new ChessMove(position, coordinate, null);
                     moves.add(move);
