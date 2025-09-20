@@ -72,7 +72,7 @@ public class Pawn_Moves {
         else {
             boolean ahead_clear = false;
             for (int i = - 1; i < 2; i++) {
-                if (current_row - 1 >= 1 && current_column - i >= 1 && current_column + i <= 8) {
+                if (current_row - 1 >= 1 && current_column - i >= 1 && current_column + i <= 8 && current_column + i >= 1) {
                     ChessPosition ahead = new ChessPosition(current_row - 1, current_column + i);
                     ChessPiece piece = board.getPiece(ahead);
                     if (piece == null && i == 0) {

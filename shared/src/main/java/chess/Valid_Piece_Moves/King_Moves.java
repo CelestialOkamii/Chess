@@ -21,7 +21,7 @@ public class King_Moves {
         int current_column = position.getColumn();
         for (int row = current_row -1; row <= current_row + 1; row++) {
             for (int column = current_column - 1; column <= current_column + 1; column++) {
-                if (row < 0 || row > 7 || column < 0 || column > 7) {
+                if (row < 1 || row > 8 || column < 1 || column > 8) {
                     continue;
                 }
                 if (row == current_row && column == current_column) {
