@@ -3,12 +3,14 @@ package chess.Valid_Piece_Moves;
 import chess.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Pawn_Moves {
     private ChessPosition position;
     private ChessGame.TeamColor color;
     private ChessBoard board;
+    private List<Integer> promotion_indexes = new ArrayList<>();
 
     public Pawn_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;
@@ -19,7 +21,16 @@ public class Pawn_Moves {
     public List<ChessMove> valid_moves() {
         List<ChessMove> moves = new ArrayList<>();
         List<ChessPosition> valid_moves = valid_positions();
+        int position_index = 0;
         for (ChessPosition move : valid_moves) {
+            if (promotion_indexes.size() > 0 && promotion_indexes.size() > position_index) {
+                if (valid_moves.indexOf(move) == promotion_indexes.get(position_index)) {
+                    List<ChessMove> promotion_moves = promotion_pieces(move);
+                    moves.addAll(promotion_moves);
+                    position_index++;
+                    continue;
+                }
+            }
             ChessMove pos_move = new ChessMove(position, move, null);
             moves.add(pos_move);
         }
@@ -33,15 +44,21 @@ public class Pawn_Moves {
         if (color == ChessGame.TeamColor.WHITE) {
             boolean ahead_clear = false;
             for (int i  = -1; i < 2; i++) {
-                if (current_row + 1 <= 8 && current_column - 1 >= 1 && current_column + 1 <= 8) {
+                if (current_row + 1 <= 8 && current_column + i >= 1 && current_column + i <= 8) {
                     ChessPosition ahead = new ChessPosition(current_row + 1, current_column + i);
                     ChessPiece piece = board.getPiece(ahead);
                     if (piece == null && i == 0) {
                         positions.add(ahead);
                         ahead_clear = true;
+                        if (current_row + 1 == 8) {
+                            promotion_indexes.add(positions.indexOf(ahead));
+                        }
                     }
                     else if (piece != null && i != 0 && piece.getTeamColor() != color) {
                         positions.add(ahead);
+                        if (current_row + 1 == 8) {
+                            promotion_indexes.add(positions.indexOf(ahead));
+                        }
                     }
                 }
             }
@@ -55,15 +72,21 @@ public class Pawn_Moves {
         else {
             boolean ahead_clear = false;
             for (int i = - 1; i < 2; i++) {
-                if (current_row - 1 >= 1 && current_column - 1 >= 1 && current_column + 1 <= 8) {
+                if (current_row - 1 >= 1 && current_column - i >= 1 && current_column + i <= 8) {
                     ChessPosition ahead = new ChessPosition(current_row - 1, current_column + i);
                     ChessPiece piece = board.getPiece(ahead);
                     if (piece == null && i == 0) {
                         positions.add(ahead);
                         ahead_clear = true;
+                        if (current_row - 1 == 1) {
+                            promotion_indexes.add(positions.indexOf(ahead));
+                        }
                     }
                     else if (piece != null && i != 0 && piece.getTeamColor() != color) {
                         positions.add(ahead);
+                        if (current_row - 1 == 1) {
+                            promotion_indexes.add(positions.indexOf(ahead));
+                        }
                     }
                 }
             }
@@ -75,6 +98,16 @@ public class Pawn_Moves {
             }
         }
         return positions;
+    }
+
+    private List<ChessMove> promotion_pieces(ChessPosition pos) {
+        List<ChessMove> promotion_options = new ArrayList<>();
+        List<ChessPiece.PieceType> pieces = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT));
+        for (ChessPiece.PieceType piece : pieces) {
+            ChessMove move = new ChessMove(position, pos, piece);
+            promotion_options.add(move);
+        }
+        return promotion_options;
     }
 
 
