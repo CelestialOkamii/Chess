@@ -1,9 +1,6 @@
 package chess.Valid_Piece_Moves;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessMove;
-import chess.ChessPosition;
+import chess.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,23 +27,50 @@ public class Pawn_Moves {
     }
 
     private List<ChessPosition> valid_positions() {
-        int[][] paths = {{1,1}, {-1,1}, {0,-1}, {-1,0}, {1,0}, {1,-1}, {-1,-1}, {0,1}};
         List<ChessPosition> positions = new ArrayList<>();
-        for (int[] course : paths) {
-            int row = position.getRow();
-            int column = position.getColumn();
-            row = row + course[0];
-            column = column + course[1];
-            if (row < 1 || row > 8 || column < 1 || column > 8) {
-                continue;
+        int current_row = position.getRow();
+        int current_column = position.getColumn();
+        if (color == ChessGame.TeamColor.WHITE) {
+            boolean ahead_clear = false;
+            for (int i  = -1; i < 2; i++) {
+                if (current_row + 1 <= 8 && current_column - 1 >= 1 && current_column + 1 <= 8) {
+                    ChessPosition ahead = new ChessPosition(current_row + 1, current_column + i);
+                    ChessPiece piece = board.getPiece(ahead);
+                    if (piece == null && i == 0) {
+                        positions.add(ahead);
+                        ahead_clear = true;
+                    }
+                    else if (piece != null && i != 0 && piece.getTeamColor() != color) {
+                        positions.add(ahead);
+                    }
+                }
             }
-            ChessPosition pos = new ChessPosition(row, column);
-            if (board.getPiece(pos) == null) {
-                positions.add(pos);
+            if (current_row == 2 && ahead_clear) {
+                ChessPosition two_ahead = new ChessPosition(current_row + 2, current_column);
+                if (board.getPiece(two_ahead) == null) {
+                    positions.add(two_ahead);
+                }
             }
-            else {
-                if (board.getPiece(pos).getTeamColor() != board.getPiece(position).getTeamColor()) {
-                    positions.add(pos);
+        }
+        else {
+            boolean ahead_clear = false;
+            for (int i = - 1; i < 2; i++) {
+                if (current_row - 1 >= 1 && current_column - 1 >= 1 && current_column + 1 <= 8) {
+                    ChessPosition ahead = new ChessPosition(current_row - 1, current_column + i);
+                    ChessPiece piece = board.getPiece(ahead);
+                    if (piece == null && i == 0) {
+                        positions.add(ahead);
+                        ahead_clear = true;
+                    }
+                    else if (piece != null && i != 0 && piece.getTeamColor() != color) {
+                        positions.add(ahead);
+                    }
+                }
+            }
+            if (current_row == 7 && ahead_clear) {
+                ChessPosition two_ahead = new ChessPosition(current_row - 2, current_column);
+                if (board.getPiece(two_ahead) == null) {
+                    positions.add(two_ahead);
                 }
             }
         }
