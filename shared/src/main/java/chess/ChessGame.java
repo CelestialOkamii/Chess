@@ -13,6 +13,7 @@ public class ChessGame {
 
     private ChessBoard current_board = new ChessBoard();
     private TeamColor current_color = TeamColor.WHITE;
+    private ChessRules rules = new ChessRules();
 
     public ChessGame() {
 
@@ -51,7 +52,10 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece_moves = current_board.getPiece(startPosition);
-        return piece_moves.pieceMoves(current_board, startPosition);
+        if (piece_moves == null) {
+            return null;
+        }
+        return rules.checkValidity(current_board, piece_moves.pieceMoves(current_board, startPosition));
     }
 
     /**
@@ -119,11 +123,11 @@ public class ChessGame {
             return false;
         }
         ChessGame chessGame = (ChessGame) o;
-        return Objects.equals(current_board, chessGame.current_board) && current_color == chessGame.current_color;
+        return Objects.equals(current_board, chessGame.current_board) && current_color == chessGame.current_color && Objects.equals(rules, chessGame.rules);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(current_board, current_color);
+        return Objects.hash(current_board, current_color, rules);
     }
 }
