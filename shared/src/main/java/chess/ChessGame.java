@@ -1,7 +1,6 @@
 package chess;
 
-import java.util.Collection;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -11,9 +10,17 @@ import java.util.Objects;
  */
 public class ChessGame {
 
-    private ChessBoard current_board = new ChessBoard();
-    private TeamColor current_color = TeamColor.WHITE;
+    private ChessBoard currentBoard = new ChessBoard();
+    private TeamColor currentColor = TeamColor.WHITE;
+    private Map<ChessPiece.PieceType, ChessPosition> whitePiecePos = currentBoard.getStartPositions(TeamColor.WHITE);
+    private Map<ChessPiece.PieceType, ChessPosition> blackPiecePos = currentBoard.getStartPositions(TeamColor.BLACK);
     private ChessRules rules = new ChessRules();
+    private boolean whiteStale = false;
+    private boolean whiteCheck = false;
+    private boolean whiteCheckmate = false;
+    private boolean blackStale = false;
+    private boolean blackCheck = false;
+    private boolean blackCheckmate = false;
 
     public ChessGame() {
 
@@ -23,7 +30,7 @@ public class ChessGame {
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        return current_color;
+        return currentColor;
     }
 
     /**
@@ -32,7 +39,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        current_color = team;
+        currentColor = team;
     }
 
     /**
@@ -51,11 +58,18 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        ChessPiece piece_moves = current_board.getPiece(startPosition);
+        ChessPiece piece = currentBoard.getPiece(startPosition);
+        ChessPiece.PieceType type = piece.getPieceType();
+        Collection<ChessMove> piece_moves = piece.pieceMoves(currentBoard, startPosition);
         if (piece_moves == null) {
             return null;
         }
-        return rules.checkValidity(current_board, piece_moves.pieceMoves(current_board, startPosition));
+        if (currentColor == TeamColor.WHITE) {
+            return rules.checkValidity(piece_moves, whitePiecePos, blackPiecePos, type);
+        }
+        else {
+            return rules.checkValidity(piece_moves, blackPiecePos, whitePiecePos, type);
+        }
     }
 
     /**
@@ -65,7 +79,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        //throw new InvalidMoveException("Invalid");
+
     }
 
     /**
@@ -75,7 +89,12 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        return true;
+        if (teamColor == TeamColor.WHITE) {
+            return whiteCheck;
+        }
+        else {
+            return blackCheck;
+        }
     }
 
     /**
@@ -85,7 +104,12 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        return true;
+        if (teamColor == TeamColor.WHITE) {
+            return whiteCheckmate;
+        }
+        else {
+            return blackCheckmate;
+        }
     }
 
     /**
@@ -95,7 +119,13 @@ public class ChessGame {
      * @param teamColor which team to check for stalemate
      * @return True if the specified team is in stalemate, otherwise false
      */
-    public boolean isInStalemate(TeamColor teamColor) { return true;
+    public boolean isInStalemate(TeamColor teamColor) {
+        if (teamColor == TeamColor.WHITE) {
+            return whiteStale;
+        }
+        else {
+            return blackStale;
+        }
     }
 
     /**
@@ -104,7 +134,7 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        current_board = board;
+        currentBoard = board;
     }
 
     /**
@@ -113,21 +143,9 @@ public class ChessGame {
      * @return the chessboard
      */
     public ChessBoard getBoard() {
-        return current_board;
+        return currentBoard;
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ChessGame chessGame = (ChessGame) o;
-        return Objects.equals(current_board, chessGame.current_board) && current_color == chessGame.current_color && Objects.equals(rules, chessGame.rules);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(current_board, current_color, rules);
-    }
+    //PUT OVERRIDES IN WHEN DONE WITH REST
 }

@@ -1,13 +1,16 @@
 package chess;
 
-import java.util.Collection;
+import java.util.*;
 
 public class ChessRules {
 
     public ChessRules() {
     }
 
-    public Collection<ChessMove> checkValidity(ChessBoard board, Collection<ChessMove> moves) {
+    public Collection<ChessMove> checkValidity(Collection<ChessMove> moves, Map<ChessPiece.PieceType, ChessPosition> teamPiecePos, Map<ChessPiece.PieceType, ChessPosition> oppPiecePos, ChessPiece.PieceType type) {
 
+        if (type != ChessPiece.PieceType.KING && )
     }
+
+
 }
