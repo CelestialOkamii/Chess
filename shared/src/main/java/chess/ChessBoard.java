@@ -16,6 +16,14 @@ public class ChessBoard {
     }
 
     /**
+     * Returns the current chess board
+     */
+    public ChessBoard getBoard() {
+        return this;
+    }
+
+
+    /**
      * Adds a chess piece to the chessboard
      *
      * @param position where to add the piece to
