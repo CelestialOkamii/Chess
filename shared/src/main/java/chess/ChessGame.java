@@ -14,7 +14,7 @@ public class ChessGame {
     private TeamColor currentColor = TeamColor.WHITE;
     private Map<ChessPiece, ChessPosition> whitePiecePos = currentBoard.getStartPositions(TeamColor.WHITE);
     private Map<ChessPiece, ChessPosition> blackPiecePos = currentBoard.getStartPositions(TeamColor.BLACK);
-    private ChessRules rules = new ChessRules();
+    private final ChessRules rules = new ChessRules();
     private boolean whiteStale = false;
     private boolean whiteCheck = false;
     private boolean whiteCheckmate = false;
@@ -65,10 +65,10 @@ public class ChessGame {
             return null;
         }
         if (currentColor == TeamColor.WHITE) {
-            return rules.checkValidity(piece_moves, whitePiecePos, blackPiecePos, type);
+            return rules.checkValidity(currentBoard, piece_moves, whitePiecePos, blackPiecePos, type);
         }
         else {
-            return rules.checkValidity(piece_moves, blackPiecePos, whitePiecePos, type);
+            return rules.checkValidity(currentBoard, piece_moves, blackPiecePos, whitePiecePos, type);
         }
     }
 
@@ -79,7 +79,7 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-
+        //add call to function in chess rules or here see if move puts opposing team in check, stalemate, or checkmate
     }
 
     /**

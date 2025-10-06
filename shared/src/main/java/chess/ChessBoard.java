@@ -72,7 +72,7 @@ public class ChessBoard {
                     whitePiecePos.put(pieces.get(positions.indexOf(position)), position);
                 }
                 else {
-                    blackPiecePos.put(pieces.get(positions.indexOf(position)), position)
+                    blackPiecePos.put(pieces.get(positions.indexOf(position)), position);
                 }
             }
         }
