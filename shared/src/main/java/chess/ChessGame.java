@@ -59,7 +59,6 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = currentBoard.getPiece(startPosition);
-        ChessPiece.PieceType type = piece.getPieceType();
         Collection<ChessMove> piece_moves = piece.pieceMoves(currentBoard, startPosition);
         if (piece_moves == null) {
             return null;
@@ -72,7 +71,7 @@ public class ChessGame {
                     break;
                 }
             }
-            return rules.checkValidity(currentBoard, piece_moves, whiteKingPos, blackPiecePos, type);
+            return rules.checkValidity(currentBoard, piece_moves, whiteKingPos, blackPiecePos, piece);
         }
         else {
             ChessPosition blackKingPos = null;
@@ -82,7 +81,7 @@ public class ChessGame {
                     break;
                 }
             }
-            return rules.checkValidity(currentBoard, piece_moves, blackKingPos, whitePiecePos, type);
+            return rules.checkValidity(currentBoard, piece_moves, blackKingPos, whitePiecePos, piece);
         }
     }
 
