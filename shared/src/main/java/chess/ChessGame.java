@@ -93,6 +93,72 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         //add call to function in chess rules or here see if move puts opposing team in check, stalemate, or checkmate
+        if (currentColor == TeamColor.WHITE) {
+            if (whiteStale) {
+                throw new InvalidMoveException("Can not move when in Stalemate");
+            }
+            else if (whiteCheckmate) {
+                throw new InvalidMoveException("You have lost and cannot make further moves")
+            }
+            else if (whiteCheck) {
+                ChessPosition whiteKingPos = null;
+                for (ChessPiece whitePiece : whitePiecePos.keySet()) {
+                    if (whitePiece.getPieceType() == ChessPiece.PieceType.KING) {
+                        whiteKingPos = whitePiecePos.get(whitePiece);
+                        break;
+                    }
+                }
+                if (!rules.isValid(currentBoard, move, whiteKingPos, blackPiecePos)) {
+                    throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
+                }
+            }
+            ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+            ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
+            if (possOppPiece != null) {
+                blackPiecePos.remove(possOppPiece);
+            }
+            currentBoard.addPiece(move.getEndPosition(), piece);
+            whitePiecePos.put(piece, move.getEndPosition());
+            setTeamTurn(TeamColor.BLACK);
+
+
+
+
+
+        }
+        else {
+            if (blackStale) {
+                throw new InvalidMoveException("Can not move when in Stalemate");
+            }
+            else if (blackCheckmate) {
+                throw new InvalidMoveException("You have lost and cannot make further moves")
+            }
+            else if (blackCheck) {
+                ChessPosition blackKingPos = null;
+                for (ChessPiece blackPiece : blackPiecePos.keySet()) {
+                    if (blackPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                        blackKingPos = blackPiecePos.get(blackPiece);
+                        break;
+                    }
+                }
+                if (!rules.isValid(currentBoard, move, blackKingPos, whitePiecePos)) {
+                    throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
+                }
+            }
+            ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+            ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
+            if (possOppPiece != null) {
+                whitePiecePos.remove(possOppPiece);
+            }
+            currentBoard.addPiece(move.getEndPosition(), piece);
+            blackPiecePos.put(piece, move.getEndPosition());
+            setTeamTurn(TeamColor.WHITE);
+
+
+
+
+
+        }
     }
 
     /**

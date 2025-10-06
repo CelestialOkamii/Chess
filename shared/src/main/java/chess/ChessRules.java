@@ -45,5 +45,9 @@ public class ChessRules {
         return moves;
     }
 
+    public boolean isValid(ChessBoard board, ChessMove move, ChessPosition kingPos, Map<ChessPiece, ChessPosition> oppPiecePos) {
+
+    }
+
 
 }
