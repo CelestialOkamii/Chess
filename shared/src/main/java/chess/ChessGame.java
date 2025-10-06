@@ -92,13 +92,13 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        //add call to function in chess rules or here see if move puts opposing team in check, stalemate, or checkmate
+        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
         if (currentColor == TeamColor.WHITE) {
             if (whiteStale) {
                 throw new InvalidMoveException("Can not move when in Stalemate");
             }
             else if (whiteCheckmate) {
-                throw new InvalidMoveException("You have lost and cannot make further moves")
+                throw new InvalidMoveException("You have lost and cannot make further moves");
             }
             else if (whiteCheck) {
                 ChessPosition whiteKingPos = null;
@@ -108,11 +108,10 @@ public class ChessGame {
                         break;
                     }
                 }
-                if (!rules.isValid(currentBoard, move, whiteKingPos, blackPiecePos)) {
+                if (!rules.isValid(currentBoard, move, piece, whiteKingPos, blackPiecePos)) {
                     throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
                 }
             }
-            ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
             ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
             if (possOppPiece != null) {
                 blackPiecePos.remove(possOppPiece);
@@ -131,7 +130,7 @@ public class ChessGame {
                 throw new InvalidMoveException("Can not move when in Stalemate");
             }
             else if (blackCheckmate) {
-                throw new InvalidMoveException("You have lost and cannot make further moves")
+                throw new InvalidMoveException("You have lost and cannot make further moves");
             }
             else if (blackCheck) {
                 ChessPosition blackKingPos = null;
@@ -141,11 +140,10 @@ public class ChessGame {
                         break;
                     }
                 }
-                if (!rules.isValid(currentBoard, move, blackKingPos, whitePiecePos)) {
+                if (!rules.isValid(currentBoard, move, piece, blackKingPos, whitePiecePos)) {
                     throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
                 }
             }
-            ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
             ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
             if (possOppPiece != null) {
                 whitePiecePos.remove(possOppPiece);

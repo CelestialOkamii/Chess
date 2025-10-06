@@ -45,8 +45,22 @@ public class ChessRules {
         return moves;
     }
 
-    public boolean isValid(ChessBoard board, ChessMove move, ChessPosition kingPos, Map<ChessPiece, ChessPosition> oppPiecePos) {
-
+    public boolean isValid(ChessBoard board, ChessMove move, ChessPiece piece, ChessPosition kingPos, Map<ChessPiece, ChessPosition> oppPiecePos) {
+        board.addPiece(move.getStartPosition(), null);
+        for (Map.Entry<ChessPiece, ChessPosition> pair : oppPiecePos.entrySet()) {
+            Collection<ChessMove> oppMoves = pair.getKey().pieceMoves(board, pair.getValue());
+            for (ChessMove oppMove : oppMoves) {
+                if (oppMove.getStartPosition() == move.getEndPosition()) {
+                    continue;
+                }
+                if (oppMove.getEndPosition() == kingPos) {
+                    board.addPiece(move.getStartPosition(), piece);
+                    return false;
+                }
+            }
+        }
+        board.addPiece(move.getStartPosition(), piece);
+        return true;
     }
 
 
