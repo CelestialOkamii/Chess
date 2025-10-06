@@ -65,10 +65,24 @@ public class ChessGame {
             return null;
         }
         if (currentColor == TeamColor.WHITE) {
-            return rules.checkValidity(currentBoard, piece_moves, whitePiecePos, blackPiecePos, type);
+            ChessPosition whiteKingPos = null;
+            for (ChessPiece whitePiece : whitePiecePos.keySet()) {
+                if (whitePiece.getPieceType() == ChessPiece.PieceType.KING) {
+                    whiteKingPos = whitePiecePos.get(whitePiece);
+                    break;
+                }
+            }
+            return rules.checkValidity(currentBoard, piece_moves, whiteKingPos, blackPiecePos, type);
         }
         else {
-            return rules.checkValidity(currentBoard, piece_moves, blackPiecePos, whitePiecePos, type);
+            ChessPosition blackKingPos = null;
+            for (ChessPiece blackPiece : blackPiecePos.keySet()) {
+                if (blackPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                    blackKingPos = whitePiecePos.get(blackPiece);
+                    break;
+                }
+            }
+            return rules.checkValidity(currentBoard, piece_moves, blackKingPos, whitePiecePos, type);
         }
     }
 
