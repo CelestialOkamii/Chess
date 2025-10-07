@@ -19,7 +19,7 @@ public class ChessRules {
                 for (Map.Entry<ChessPiece, ChessPosition> pair : oppPiecePos.entrySet()) {
                     Collection<ChessMove> oppMoves = pair.getKey().pieceMoves(board, pair.getValue());
                     for (ChessMove oppMove : oppMoves) {
-                        if (oppMove.getEndPosition() == kingEndPos || (pair.getKey().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition() == pair.getValue())) {
+                        if (oppMove.getEndPosition().equals(kingEndPos) || (pair.getKey().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition().equals(pair.getValue()))) {
                             badMove.add(move);
                         }
                     }
@@ -29,6 +29,8 @@ public class ChessRules {
         else {
             for (ChessMove move : moves) {
                 board.addPiece(move.getStartPosition(), null);
+                ChessPiece oppPiece = board.getPiece(move.getEndPosition());
+                board.addPiece(move.getEndPosition(), piece);
                 for (Map.Entry<ChessPiece, ChessPosition> pair : oppPiecePos.entrySet()) {
                     Collection<ChessMove> oppMoves = pair.getKey().pieceMoves(board, pair.getValue());
                     for (ChessMove oppMove : oppMoves) {
@@ -40,6 +42,7 @@ public class ChessRules {
                         }
                     }
                 }
+                board.addPiece(move.getEndPosition(), oppPiece);
                 board.addPiece(move.getStartPosition(), piece);
             }
         }
