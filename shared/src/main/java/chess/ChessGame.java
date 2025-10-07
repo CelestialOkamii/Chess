@@ -272,5 +272,19 @@ public class ChessGame {
     }
 
 
-    //PUT OVERRIDES IN WHEN DONE WITH REST
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return whiteStale == chessGame.whiteStale && whiteCheck == chessGame.whiteCheck && whiteCheckmate == chessGame.whiteCheckmate && blackStale == chessGame.blackStale &&
+                blackCheck == chessGame.blackCheck && blackCheckmate == chessGame.blackCheckmate && Objects.equals(currentBoard, chessGame.currentBoard) && currentColor == chessGame.currentColor &&
+                Objects.equals(whitePiecePos, chessGame.whitePiecePos) && Objects.equals(blackPiecePos, chessGame.blackPiecePos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentBoard, currentColor, whitePiecePos, blackPiecePos, whiteStale, whiteCheck, whiteCheckmate, blackStale, blackCheck, blackCheckmate);
+    }
 }

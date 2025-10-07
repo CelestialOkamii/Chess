@@ -14,7 +14,7 @@ public class ChessBoard {
     private Map<ChessPiece, ChessPosition> blackPiecePos = new HashMap<>();
 
     public ChessBoard() {
-        
+        resetBoard();
     }
 
     /**

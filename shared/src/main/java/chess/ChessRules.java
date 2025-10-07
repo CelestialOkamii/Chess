@@ -76,9 +76,7 @@ public class ChessRules {
      * Determines if this move will put the opposing team in check
      */
     public boolean createsCheck(ChessBoard board, ChessMove move, ChessPosition oppKingPos) {
-        ChessPiece currPiece = board.getPiece(move.getStartPosition());
-        board.addPiece(move.getStartPosition(), null);
-        board.addPiece(move.getEndPosition(), currPiece);
+        ChessPiece currPiece = board.getPiece(move.getEndPosition());
         Collection<ChessMove> newMoves = currPiece.pieceMoves(board, move.getEndPosition());
         for (ChessMove possMove : newMoves) {
             if (possMove.getEndPosition() == oppKingPos) {
@@ -102,6 +100,4 @@ public class ChessRules {
         }
         return true;
     }
-
-
 }
