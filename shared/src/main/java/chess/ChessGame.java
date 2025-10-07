@@ -159,6 +159,20 @@ public class ChessGame {
         }
     }
 
+
+    /**
+     * Changes if white or black is in check after a move is made
+     */
+    public void changeCheck(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteCheck = tOf;
+        }
+        else {
+            blackCheck = tOf;
+        }
+    }
+
+
     /**
      * Determines if the given team is in check
      *
@@ -174,6 +188,20 @@ public class ChessGame {
         }
     }
 
+
+    /**
+     * Changes if white or black is in checkmate after a move is made
+     */
+    public void changeCheckmate(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteCheckmate = tOf;
+        }
+        else {
+            blackCheckmate = tOf;
+        }
+    }
+
+
     /**
      * Determines if the given team is in checkmate
      *
@@ -188,6 +216,20 @@ public class ChessGame {
             return blackCheckmate;
         }
     }
+
+
+    /**
+     * Changes if white or black is in stalemate after a move is made
+     */
+    public void changeStalemate(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteStale = tOf;
+        }
+        else {
+            blackStale = tOf;
+        }
+    }
+
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
