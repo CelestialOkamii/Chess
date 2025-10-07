@@ -35,7 +35,7 @@ public class ChessRules {
                         if (oppMove.getStartPosition() == move.getEndPosition()) {
                             continue;
                         }
-                        if (oppMove.getEndPosition() == kingPos || (pair.getKey().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition() == pair.getValue())) {
+                        if (oppMove.getEndPosition().equals(kingPos) || (pair.getKey().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition().equals(pair.getValue()))) {
                             badMove.add(move);
                         }
                     }

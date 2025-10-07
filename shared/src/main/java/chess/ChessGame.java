@@ -63,7 +63,7 @@ public class ChessGame {
         if (piece_moves == null) {
             return null;
         }
-        if (currentColor == TeamColor.WHITE) {
+        if (piece.getTeamColor() == TeamColor.WHITE) {
             ChessPosition whiteKingPos = null;
             for (ChessPiece whitePiece : whitePiecePos.keySet()) {
                 if (whitePiece.getPieceType() == ChessPiece.PieceType.KING) {
@@ -77,7 +77,7 @@ public class ChessGame {
             ChessPosition blackKingPos = null;
             for (ChessPiece blackPiece : blackPiecePos.keySet()) {
                 if (blackPiece.getPieceType() == ChessPiece.PieceType.KING) {
-                    blackKingPos = whitePiecePos.get(blackPiece);
+                    blackKingPos = blackPiecePos.get(blackPiece);
                     break;
                 }
             }
@@ -289,8 +289,8 @@ public class ChessGame {
                     blackPiecePos.put(piece, pos);
                 }
             }
-            if (column == 8 && row < 8) {
-                column = 0;
+            if (column == 8) {
+                column = 1;
                 row++;
             }
             else {
