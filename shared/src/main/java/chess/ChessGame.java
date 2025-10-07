@@ -93,6 +93,8 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+        ChessPosition whiteKingPos = null;
+        ChessPosition blackKingPos = null;
         if (currentColor == TeamColor.WHITE) {
             if (whiteStale) {
                 throw new InvalidMoveException("Can not move when in Stalemate");
@@ -101,7 +103,6 @@ public class ChessGame {
                 throw new InvalidMoveException("You have lost and cannot make further moves");
             }
             else if (whiteCheck) {
-                ChessPosition whiteKingPos = null;
                 for (ChessPiece whitePiece : whitePiecePos.keySet()) {
                     if (whitePiece.getPieceType() == ChessPiece.PieceType.KING) {
                         whiteKingPos = whitePiecePos.get(whitePiece);
@@ -119,11 +120,14 @@ public class ChessGame {
             currentBoard.addPiece(move.getEndPosition(), piece);
             whitePiecePos.put(piece, move.getEndPosition());
             setTeamTurn(TeamColor.BLACK);
-
-
-
-
-
+            boolean check = rules.createsCheck(currentBoard, move, blackKingPos);
+            changeCheck(TeamColor.BLACK, check);
+            if (isInCheck(TeamColor.BLACK)) {
+                changeCheckmate(TeamColor.BLACK, rules.createsEnding(currentBoard, whitePiecePos, blackPiecePos, blackKingPos));
+            }
+            else {
+                changeStalemate(TeamColor.BLACK, rules.createsEnding(currentBoard, whitePiecePos, blackPiecePos, blackKingPos));
+            }
         }
         else {
             if (blackStale) {
@@ -133,7 +137,6 @@ public class ChessGame {
                 throw new InvalidMoveException("You have lost and cannot make further moves");
             }
             else if (blackCheck) {
-                ChessPosition blackKingPos = null;
                 for (ChessPiece blackPiece : blackPiecePos.keySet()) {
                     if (blackPiece.getPieceType() == ChessPiece.PieceType.KING) {
                         blackKingPos = blackPiecePos.get(blackPiece);
@@ -151,11 +154,14 @@ public class ChessGame {
             currentBoard.addPiece(move.getEndPosition(), piece);
             blackPiecePos.put(piece, move.getEndPosition());
             setTeamTurn(TeamColor.WHITE);
-
-
-
-
-
+            boolean check = rules.createsCheck(currentBoard, move, whiteKingPos);
+            changeCheck(TeamColor.WHITE, check);
+            if (isInCheck(TeamColor.WHITE)) {
+                changeCheckmate(TeamColor.WHITE, rules.createsEnding(currentBoard, blackPiecePos, whitePiecePos, whiteKingPos));
+            }
+            else {
+                changeStalemate(TeamColor.WHITE, rules.createsEnding(currentBoard, blackPiecePos, whitePiecePos, whiteKingPos));
+            }
         }
     }
 

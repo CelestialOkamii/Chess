@@ -7,6 +7,10 @@ public class ChessRules {
     public ChessRules() {
     }
 
+    /**
+     * Takes a Collection(ArrayList) of moves and removes any moves that would put the king in check or that
+     * wouldn't get the king out of check if it's currently in check
+     */
     public Collection<ChessMove> checkValidity(ChessBoard board, Collection<ChessMove> moves, ChessPosition kingPos, Map<ChessPiece, ChessPosition> oppPiecePos, ChessPiece piece) {
         List<ChessMove> badMove = new ArrayList<>();
         if (piece.getPieceType() == ChessPiece.PieceType.KING) {
@@ -45,6 +49,10 @@ public class ChessRules {
         return moves;
     }
 
+
+    /**
+     * Determines if a move will put the teams king in check or fail to get it out of check and if either condition is true returns false
+     */
     public boolean isValid(ChessBoard board, ChessMove move, ChessPiece piece, ChessPosition kingPos, Map<ChessPiece, ChessPosition> oppPiecePos) {
         board.addPiece(move.getStartPosition(), null);
         for (Map.Entry<ChessPiece, ChessPosition> pair : oppPiecePos.entrySet()) {
@@ -60,6 +68,38 @@ public class ChessRules {
             }
         }
         board.addPiece(move.getStartPosition(), piece);
+        return true;
+    }
+
+
+    /**
+     * Determines if this move will put the opposing team in check
+     */
+    public boolean createsCheck(ChessBoard board, ChessMove move, ChessPosition oppKingPos) {
+        ChessPiece currPiece = board.getPiece(move.getStartPosition());
+        board.addPiece(move.getStartPosition(), null);
+        board.addPiece(move.getEndPosition(), currPiece);
+        Collection<ChessMove> newMoves = currPiece.pieceMoves(board, move.getEndPosition());
+        for (ChessMove possMove : newMoves) {
+            if (possMove.getEndPosition() == oppKingPos) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Determines if this move will cause the other team to be in checkmate or stalemate
+     */
+    public boolean createsEnding(ChessBoard board, Map<ChessPiece, ChessPosition> ourTeam, Map<ChessPiece, ChessPosition> oppTeam, ChessPosition oppKingPos) {
+        for (Map.Entry<ChessPiece, ChessPosition> pair : oppTeam.entrySet()) {
+            Collection<ChessMove> posMoves = pair.getKey().pieceMoves(board, pair.getValue());
+            Collection<ChessMove> movesLeft = checkValidity(board, posMoves, oppKingPos, ourTeam, pair.getKey());
+            if (!movesLeft.isEmpty()) {
+                return false;
+            }
+        }
         return true;
     }
 
