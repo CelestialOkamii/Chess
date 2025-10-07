@@ -117,8 +117,15 @@ public class ChessGame {
             if (possOppPiece != null) {
                 blackPiecePos.remove(possOppPiece);
             }
-            currentBoard.addPiece(move.getEndPosition(), piece);
-            whitePiecePos.put(piece, move.getEndPosition());
+            if (move.getPromotionPiece() == null) {
+                currentBoard.addPiece(move.getEndPosition(), piece);
+                blackPiecePos.put(piece, move.getEndPosition());
+            }
+            else {
+                ChessPiece newPiece = new ChessPiece(TeamColor.WHITE, move.getPromotionPiece());
+                currentBoard.addPiece(move.getEndPosition(), newPiece);
+                blackPiecePos.put(newPiece, move.getEndPosition());
+            }
             setTeamTurn(TeamColor.BLACK);
             boolean check = rules.createsCheck(currentBoard, move, blackKingPos);
             changeCheck(TeamColor.BLACK, check);
@@ -151,8 +158,15 @@ public class ChessGame {
             if (possOppPiece != null) {
                 whitePiecePos.remove(possOppPiece);
             }
-            currentBoard.addPiece(move.getEndPosition(), piece);
-            blackPiecePos.put(piece, move.getEndPosition());
+            if (move.getPromotionPiece() == null) {
+                currentBoard.addPiece(move.getEndPosition(), piece);
+                blackPiecePos.put(piece, move.getEndPosition());
+            }
+            else {
+                ChessPiece newPiece = new ChessPiece(TeamColor.BLACK, move.getPromotionPiece());
+                currentBoard.addPiece(move.getEndPosition(), newPiece);
+                blackPiecePos.put(newPiece, move.getEndPosition());
+            }
             setTeamTurn(TeamColor.WHITE);
             boolean check = rules.createsCheck(currentBoard, move, whiteKingPos);
             changeCheck(TeamColor.WHITE, check);
@@ -260,6 +274,29 @@ public class ChessGame {
      */
     public void setBoard(ChessBoard board) {
         currentBoard = board;
+        whitePiecePos = new HashMap<>();
+        blackPiecePos = new HashMap<>();
+        int row = 1;
+        int column = 1;
+        while (row < 9) {
+            ChessPosition pos = new ChessPosition(row, column);
+            ChessPiece piece = board.getPiece(pos);
+            if (piece != null) {
+                if (piece.getTeamColor() == TeamColor.WHITE) {
+                    whitePiecePos.put(piece, pos);
+                }
+                else {
+                    blackPiecePos.put(piece, pos);
+                }
+            }
+            if (column == 8 && row < 8) {
+                column = 0;
+                row++;
+            }
+            else {
+                column++;
+            }
+        }
     }
 
     /**
