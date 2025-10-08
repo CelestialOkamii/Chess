@@ -92,12 +92,9 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
         ChessPosition whiteKingPos = null;
         ChessPosition blackKingPos = null;
-        if (piece == null) {
-            throw new InvalidMoveException("There is no piece to move in that spot");
-        }
+        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
         for (ChessPiece whitePiece : whitePiecePos.keySet()) {
             if (whitePiece.getPieceType() == ChessPiece.PieceType.KING) {
                 whiteKingPos = whitePiecePos.get(whitePiece);
@@ -110,83 +107,63 @@ public class ChessGame {
                 break;
             }
         }
-        if (currentColor == TeamColor.WHITE) {
-            if (whiteStale) {
-                throw new InvalidMoveException("Can not move when in Stalemate");
-            }
-            else if (whiteCheckmate) {
-                throw new InvalidMoveException("You have lost and cannot make further moves");
-            }
-            else if (whiteCheck) {
-                if (!rules.isValid(currentBoard, move, piece, whiteKingPos, blackPiecePos)) {
-                    throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
-                }
-            }
-            if (!rules.isValid(currentBoard, move, piece, whiteKingPos, blackPiecePos)) {
-                throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
-            }
-            ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
-            if (possOppPiece != null) {
-                blackPiecePos.remove(possOppPiece);
-            }
-            if (move.getPromotionPiece() == null) {
-                currentBoard.addPiece(move.getEndPosition(), piece);
-                blackPiecePos.put(piece, move.getEndPosition());
-            }
-            else {
-                ChessPiece newPiece = new ChessPiece(TeamColor.WHITE, move.getPromotionPiece());
-                currentBoard.addPiece(move.getEndPosition(), newPiece);
-                blackPiecePos.put(newPiece, move.getEndPosition());
-            }
-            boolean check = rules.createsCheck(currentBoard, move.getEndPosition(), blackKingPos);
-            changeCheck(TeamColor.BLACK, check);
-            setTeamTurn(TeamColor.BLACK);
-            if (isInCheck(TeamColor.BLACK)) {
-                changeCheckmate(TeamColor.BLACK, rules.createsEnding(currentBoard, whitePiecePos, blackPiecePos, blackKingPos));
-            }
-            else {
-                changeStalemate(TeamColor.BLACK, rules.createsEnding(currentBoard, whitePiecePos, blackPiecePos, blackKingPos));
+        if (piece.getTeamColor() == TeamColor.WHITE) {
+            if (goodMove(TeamColor.WHITE, TeamColor.BLACK, move, whiteKingPos, blackKingPos, whitePiecePos, blackPiecePos)) {
+                setTeamTurn(TeamColor.BLACK);
             }
         }
         else {
-            if (blackStale) {
-                throw new InvalidMoveException("Can not move when in Stalemate");
-            }
-            else if (blackCheckmate) {
-                throw new InvalidMoveException("You have lost and cannot make further moves");
-            }
-            else if (blackCheck) {
-                if (!rules.isValid(currentBoard, move, piece, blackKingPos, whitePiecePos)) {
-                    throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
-                }
-            }
-            if (!rules.isValid(currentBoard, move, piece, blackKingPos, whitePiecePos)) {
-                throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
-            }
-            ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
-            if (possOppPiece != null) {
-                whitePiecePos.remove(possOppPiece);
-            }
-            if (move.getPromotionPiece() == null) {
-                currentBoard.addPiece(move.getEndPosition(), piece);
-                blackPiecePos.put(piece, move.getEndPosition());
-            }
-            else {
-                ChessPiece newPiece = new ChessPiece(TeamColor.BLACK, move.getPromotionPiece());
-                currentBoard.addPiece(move.getEndPosition(), newPiece);
-                blackPiecePos.put(newPiece, move.getEndPosition());
-            }
-            boolean check = rules.createsCheck(currentBoard, move.getEndPosition(), whiteKingPos);
-            changeCheck(TeamColor.WHITE, check);
-            setTeamTurn(TeamColor.WHITE);
-            if (isInCheck(TeamColor.WHITE)) {
-                changeCheckmate(TeamColor.WHITE, rules.createsEnding(currentBoard, blackPiecePos, whitePiecePos, whiteKingPos));
-            }
-            else {
-                changeStalemate(TeamColor.WHITE, rules.createsEnding(currentBoard, blackPiecePos, whitePiecePos, whiteKingPos));
+            if (goodMove(TeamColor.BLACK, TeamColor.WHITE, move, blackKingPos, whiteKingPos, blackPiecePos, whitePiecePos)) {
+                setTeamTurn(TeamColor.WHITE);
             }
         }
-        currentBoard.addPiece(move.getStartPosition(), null);
+    }
+
+    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move, ChessPosition myKingPos, ChessPosition oppKingPos, Map<ChessPiece, ChessPosition> sameTeam, Map<ChessPiece, ChessPosition> oppTeam) throws InvalidMoveException {
+        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+        if (piece == null) {
+            throw new InvalidMoveException("There is no piece to move in that spot");
+        }
+        if (currentColor != teamColor) {
+            throw new InvalidMoveException("It is not your turn yet, be patient");
+        }
+        if (isInStalemate(teamColor)) {
+            throw new InvalidMoveException("Can not move when in Stalemate");
+        }
+        else if (isInCheckmate(teamColor)) {
+            throw new InvalidMoveException("You have lost and cannot make further moves");
+        }
+        else if (isInCheck(teamColor)) {
+            if (!rules.isValid(currentBoard, move, piece, myKingPos, oppTeam)) {
+                throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
+            }
+        }
+        if (!rules.isValid(currentBoard, move, piece, myKingPos, oppTeam)) {
+            throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
+        }
+        ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
+        if (possOppPiece != null) {
+            oppTeam.remove(possOppPiece);
+        }
+        if (move.getPromotionPiece() == null) {
+            currentBoard.addPiece(move.getEndPosition(), piece);
+            sameTeam.put(piece, move.getEndPosition());
+        }
+        else {
+            ChessPiece newPiece = new ChessPiece(teamColor, move.getPromotionPiece());
+            currentBoard.addPiece(move.getEndPosition(), newPiece);
+            sameTeam.remove(piece);
+            sameTeam.put(newPiece, move.getEndPosition());
+        }
+        boolean check = rules.createsCheck(currentBoard, move.getEndPosition(), oppKingPos);
+        changeCheck(oppColor, check);
+        if (isInCheck(oppColor)) {
+            changeCheckmate(oppColor, rules.createsEnding(currentBoard, sameTeam, oppTeam, oppKingPos));
+        }
+        else {
+            changeStalemate(oppColor, rules.createsEnding(currentBoard, sameTeam, oppTeam, oppKingPos));
+        }
+        return true;
     }
 
 
