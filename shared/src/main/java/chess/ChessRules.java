@@ -2,6 +2,8 @@ package chess;
 
 import java.util.*;
 
+import static java.util.Arrays.asList;
+
 public class ChessRules {
 
     public ChessRules() {
@@ -13,21 +15,29 @@ public class ChessRules {
      */
     public Collection<ChessMove> checkValidity(ChessBoard board, Collection<ChessMove> moves, ChessPosition kingPos, Map<ChessPiece, ChessPosition> oppPiecePos, ChessPiece piece) {
         List<ChessMove> badMove = new ArrayList<>();
+        boolean bad = false;
         if (piece.getPieceType() == ChessPiece.PieceType.KING) {
             for (ChessMove move : moves) {
+                bad = false;
                 ChessPosition kingEndPos = move.getEndPosition();
                 for (Map.Entry<ChessPiece, ChessPosition> pair : oppPiecePos.entrySet()) {
                     Collection<ChessMove> oppMoves = pair.getKey().pieceMoves(board, pair.getValue());
                     for (ChessMove oppMove : oppMoves) {
                         if (oppMove.getEndPosition().equals(kingEndPos) || (pair.getKey().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition().equals(pair.getValue()))) {
                             badMove.add(move);
+                            bad = true;
+                            break;
                         }
+                    }
+                    if (bad) {
+                        break;
                     }
                 }
             }
         }
         else {
             for (ChessMove move : moves) {
+                bad = false;
                 board.addPiece(move.getStartPosition(), null);
                 ChessPiece oppPiece = board.getPiece(move.getEndPosition());
                 board.addPiece(move.getEndPosition(), piece);
@@ -39,7 +49,12 @@ public class ChessRules {
                         }
                         if (oppMove.getEndPosition().equals(kingPos) || (pair.getKey().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition().equals(pair.getValue()))) {
                             badMove.add(move);
+                            bad = true;
+                            break;
                         }
+                    }
+                    if (bad) {
+                        break;
                     }
                 }
                 board.addPiece(move.getEndPosition(), oppPiece);
@@ -78,11 +93,11 @@ public class ChessRules {
     /**
      * Determines if this move will put the opposing team in check
      */
-    public boolean createsCheck(ChessBoard board, ChessMove move, ChessPosition oppKingPos) {
-        ChessPiece currPiece = board.getPiece(move.getEndPosition());
-        Collection<ChessMove> newMoves = currPiece.pieceMoves(board, move.getEndPosition());
+    public boolean createsCheck(ChessBoard board, ChessPosition pos, ChessPosition oppKingPos) {
+        ChessPiece currPiece = board.getPiece(pos);
+        Collection<ChessMove> newMoves = currPiece.pieceMoves(board, pos);
         for (ChessMove possMove : newMoves) {
-            if (possMove.getEndPosition() == oppKingPos) {
+            if (possMove.getEndPosition().equals(oppKingPos)) {
                 return true;
             }
         }

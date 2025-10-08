@@ -138,7 +138,7 @@ public class ChessBoard {
                 board_row = board_row + String.format("[%d][%d]: color = %s, type = %s", row, column, piece.getTeamColor().toString(), piece.getPieceType().toString());
             }
             if (column == 7) {
-                board_row = board_row + "/n";
+                board_row = board_row + "\n";
                 column = 0;
                 row++;
                 continue;
