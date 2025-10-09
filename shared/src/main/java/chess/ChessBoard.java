@@ -10,8 +10,8 @@ import java.util.*;
  */
 public class ChessBoard {
     ChessPiece[][] board = new ChessPiece[8][8];
-    private Map<ChessPiece, ChessPosition> whitePiecePos = new HashMap<>();
-    private Map<ChessPiece, ChessPosition> blackPiecePos = new HashMap<>();
+    private Map<ChessPosition, ChessPiece> whitePiecePos = new HashMap<>();
+    private Map<ChessPosition, ChessPiece> blackPiecePos = new HashMap<>();
 
     public ChessBoard() {
     }
@@ -27,7 +27,7 @@ public class ChessBoard {
     /**
      * Returns the starting positions for either white or black pieces
      */
-    public Map<ChessPiece, ChessPosition> getStartPositions(ChessGame.TeamColor color) {
+    public Map<ChessPosition, ChessPiece> getStartPositions(ChessGame.TeamColor color) {
         if (color == ChessGame.TeamColor.WHITE) {
             return whitePiecePos;
         }
@@ -68,10 +68,10 @@ public class ChessBoard {
             for (ChessPosition position : positions) {
                 addPiece(position, pieces.get(positions.indexOf(position)));
                 if (row == 1 || row == 2) {
-                    whitePiecePos.put(pieces.get(positions.indexOf(position)), position);
+                    whitePiecePos.put(position, pieces.get(positions.indexOf(position)));
                 }
                 else {
-                    blackPiecePos.put(pieces.get(positions.indexOf(position)), position);
+                    blackPiecePos.put(position, pieces.get(positions.indexOf(position)));
                 }
             }
         }
@@ -150,19 +150,17 @@ public class ChessBoard {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || this.getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        ChessBoard other = (ChessBoard) obj;
-        return Arrays.deepEquals(this.board, other.board) && Objects.equals(blackPiecePos, other.blackPiecePos) && Objects.equals(whitePiecePos, other.whitePiecePos);
+        ChessBoard that = (ChessBoard) obj;
+        return Arrays.deepEquals(board, that.board);
     }
+
 
     @Override
     public int hashCode() {
-        int board_hash = Objects.hash(Arrays.deepHashCode(board), whitePiecePos, blackPiecePos);
+        int board_hash = Arrays.deepHashCode(board);
         int hash = 17;
         hash = 31 * hash + board_hash;
         return hash;

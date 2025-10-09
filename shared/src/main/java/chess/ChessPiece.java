@@ -16,13 +16,10 @@ public class ChessPiece {
 
     private final ChessGame.TeamColor pieceColor;
     private final PieceType type;
-    private static final AtomicInteger nextId = new AtomicInteger(1);
-    private final int id;
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
-        this.id = nextId.getAndIncrement();
     }
 
     /**
@@ -87,18 +84,16 @@ public class ChessPiece {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
         ChessPiece pos = (ChessPiece) obj;
-        return (pieceColor.equals(pos.pieceColor) && type.equals(pos.type) && id == pos.id);
+        return (pieceColor.equals(pos.pieceColor) && type.equals(pos.type));
     }
 
     @Override
     public int hashCode() {
         int color_int = pieceColor.hashCode();
         int type_int  = type.hashCode();
-        int id_int = Integer.hashCode(id);
         int hash = 17;
         hash = 31 * hash + color_int;
         hash = 31 * hash + type_int;
-        hash = 31 * hash + id_int;
         return hash;
     }
 }
