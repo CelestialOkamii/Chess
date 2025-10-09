@@ -23,7 +23,7 @@ public class ChessGame {
     private boolean blackCheckmate = false;
 
     public ChessGame() {
-
+        currentBoard.resetBoard();
     }
 
     /**
@@ -117,6 +117,7 @@ public class ChessGame {
         for (ChessMove posMove : validMoves) {
             if (move.equals(posMove))  {
                 valid = true;
+                break;
             }
         }
         if (!valid) {
@@ -153,7 +154,8 @@ public class ChessGame {
         }
         currentBoard.addPiece(move.getStartPosition(), null);
         checkChange(oppColor, move.getEndPosition());
-        endingChange(oppColor, myKingPos, sameTeam, oppTeam);
+        endingChange(teamColor, getKingPos(teamColor), sameTeam, oppTeam);
+        endingChange(oppColor, getKingPos(oppColor), oppTeam, sameTeam);
         return true;
     }
 
@@ -278,13 +280,19 @@ public class ChessGame {
             }
         }
         for (Map.Entry<ChessPosition, ChessPiece> pair : whitePiecePos.entrySet()) {
+            if (isInCheck(TeamColor.BLACK)){
+                break;
+            }
             checkChange(TeamColor.BLACK, pair.getKey());
         }
         for (Map.Entry<ChessPosition, ChessPiece> pair : blackPiecePos.entrySet()) {
+            if (isInCheck(TeamColor.WHITE)){
+                break;
+            }
             checkChange(TeamColor.WHITE, pair.getKey());
         }
-        endingChange(TeamColor.BLACK, getKingPos(TeamColor.WHITE), whitePiecePos, blackPiecePos);
-        endingChange(TeamColor.WHITE, getKingPos(TeamColor.BLACK), blackPiecePos, whitePiecePos);
+        endingChange(TeamColor.WHITE, getKingPos(TeamColor.WHITE), whitePiecePos, blackPiecePos);
+        endingChange(TeamColor.BLACK, getKingPos(TeamColor.BLACK), blackPiecePos, whitePiecePos);
     }
 
     /**
@@ -321,12 +329,12 @@ public class ChessGame {
     }
 
 
-    private void endingChange(TeamColor oppColor, ChessPosition KingPos, Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
-        if (isInCheck(oppColor)) {
-            changeCheckmate(oppColor, rules.createsEnding(currentBoard, sameTeam, oppTeam, KingPos));
+    private void endingChange(TeamColor color, ChessPosition KingPos, Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
+        if (isInCheck(color)) {
+            changeCheckmate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, KingPos));
         }
         else {
-            changeStalemate(oppColor, rules.createsEnding(currentBoard, sameTeam, oppTeam, KingPos));
+            changeStalemate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, KingPos));
         }
     }
 

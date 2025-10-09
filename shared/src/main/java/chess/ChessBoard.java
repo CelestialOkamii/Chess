@@ -132,13 +132,12 @@ public class ChessBoard {
         while (row < 8) {
             ChessPiece piece = board[row][column];
             if (piece == null) {
-                board_row = String.format("[%d][%d]: empty ", row, column);
+                board_row = String.format("[%d][%d]: empty\n", row, column);
             }
             else {
-                board_row = board_row + String.format("[%d][%d]: color = %s, type = %s", row, column, piece.getTeamColor().toString(), piece.getPieceType().toString());
+                board_row = board_row + String.format("[%d][%d]: color = %s, type = %s\n", row, column, piece.getTeamColor().toString(), piece.getPieceType().toString());
             }
             if (column == 7) {
-                board_row = board_row + "\n";
                 column = 0;
                 row++;
                 continue;
