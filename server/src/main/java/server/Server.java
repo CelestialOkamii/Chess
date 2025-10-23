@@ -2,6 +2,7 @@ package server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dataaccess.DataAccess;
 import io.javalin.*;
 import services.Get;
 
@@ -13,6 +14,7 @@ import static io.javalin.apibuilder.ApiBuilder.before;
 public class Server {
 
     private final Javalin javalin;
+    private final DataAccess dataAccess = new DataAccess();
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
@@ -22,9 +24,7 @@ public class Server {
             boolean authorized;
             String path = context.contextPath();
             if (!context.header("authToken").isEmpty() && !path.equals("/user") && !path.equals("/db")) {
-                try {
-                    
-                }
+
             }
         });
 
