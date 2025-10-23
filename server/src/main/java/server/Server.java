@@ -2,19 +2,21 @@ package server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import dataaccess.DataAccess;
+import dataaccess.*;
 import io.javalin.*;
 import services.Get;
 
 import java.lang.reflect.Type;
-import java.util.Map;
+import java.util.*;
 
 import static io.javalin.apibuilder.ApiBuilder.before;
 
 public class Server {
 
     private final Javalin javalin;
-    private final DataAccess dataAccess = new DataAccess();
+    final UserAccess userData = new DataAccess();
+    final AuthAccess  authData = new DataAccess();
+    final GameAccess gameData = new DataAccess();
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
@@ -32,9 +34,9 @@ public class Server {
         javalin.get("/session", ctx -> {
             Get signIn = new Get();
             Gson gson = new Gson();
-            Type type = new TypeToken<Map<String, String>>(){}.getType();
-            Map<String, String> loginInfo = gson.fromJson(ctx.body(), type);
-            signIn.login(loginInfo);
+            Type type = new TypeToken<List<String>>(){}.getType();
+            List<String> loginInfo = gson.fromJson(ctx.body(), type);
+            signIn.login(userData, authData, loginInfo);
         });
 
     }
