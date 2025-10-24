@@ -10,8 +10,19 @@ public class UserService {
     public UserService() {
     }
 
-    public Map<String, String> registerUser(UserAccess userData, AuthAccess authData, List<String> userInfo) {
-
+    public Map<String, String> registerUser(UserAccess userData, AuthAccess authData, List<String> registerInfo) throws DataAccessException {
+        Map<String, String> result = new HashMap<>();
+        try {
+            List<String> userInfo = userData.getUserData(registerInfo.getFirst());
+        } catch (DataAccessException e) {
+            boolean addUser = userData.addUser(registerInfo.get(0), registerInfo.get(1), registerInfo.get(2));
+            String authToken = UUID.randomUUID().toString();
+            boolean addResult = authData.addAuthToken(registerInfo.getFirst(), authToken);
+            result.put("status", "200");
+            result.put("message", "Success");
+            result.put("authToken", authToken);
+        }
+        return result;
     }
 
 

@@ -9,7 +9,7 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
 
 
     @Override
-    public boolean registerUser(String username, String password, String email) throws DataAccessException {
+    public boolean addUser(String username, String password, String email) throws DataAccessException {
         if (!userData.containsKey(username)) {
             List<String> userInfo = new ArrayList<>(Arrays.asList(password, email));
             userData.put(username, userInfo);

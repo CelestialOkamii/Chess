@@ -22,13 +22,13 @@ public class Server {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         // Register your endpoints and exception handlers here.
-        javalin.post("/session", ctx -> {
-            userHandlers.loginRequest(ctx);
+        javalin.post("/user", ctx -> {
+            userHandlers.registerRequest(ctx);
         });
 
 
-        javalin.post("/user", ctx -> {
-
+        javalin.post("/session", ctx -> {
+            userHandlers.loginRequest(ctx);
         });
     }
 
