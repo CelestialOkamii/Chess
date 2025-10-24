@@ -21,17 +21,8 @@ public class Server {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         // Register your endpoints and exception handlers here.
-        javalin.before (context -> {
-            boolean authorized;
-            String path = context.path();
-            if (!context.header("authToken").isEmpty() && !path.equals("/user") && !path.equals("/db")) {
-                String authToken = authData.getAuthToken();
-            }
-        });
-
-
         javalin.get("/session", ctx -> {
-            new UserHandlers().loginRequest(ctx, userData, authData);
+            new UserHandlers(ctx, userData, authData).loginRequest();
         });
 
 

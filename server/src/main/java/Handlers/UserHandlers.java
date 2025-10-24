@@ -1,23 +1,31 @@
 package Handlers;
 
-import com.google.gson.Gson;
-import dataaccess.AuthAccess;
-import dataaccess.UserAccess;
+import dataaccess.*;
 import io.javalin.*;
 import io.javalin.http.Context;
 import services.UserService;
 
-import java.util.List;
+import java.util.*;
 
 public class UserHandlers {
-    Gson gson = new Gson();
+    Context ctx;
+    UserAccess userData;
+    AuthAccess authData;
+    InAndOut inAndOut = new InAndOut(ctx, authData);
 
-    public UserHandlers() {
+
+    public UserHandlers(Context ctx, UserAccess userData, AuthAccess authData) {
+        this.ctx = ctx;
+        this.userData = userData;
+        this.authData = authData;
     }
 
 
-    public Context loginRequest(Context ctx, UserAccess userData, AuthAccess authData) {
+    public void loginRequest() throws DataAccessException {
+        Map<String, String> request = inAndOut.requestToJava();
+        List<String> loginInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password")));
         UserService signIn = new UserService();
-        List<String> result = signIn.login(userData, authData, loginInfo);
+        Map<String, String> result = signIn.login(userData, authData, loginInfo);
+        inAndOut.responseToHTTP(result);
     }
 }
