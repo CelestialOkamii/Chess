@@ -10,41 +10,53 @@ import java.util.*;
 
 public class InAndOut {
 
-    Context ctx;
     AuthAccess authData;
+    Gson gson = new Gson();
 
-    public InAndOut(Context ctx, AuthAccess authData) {
-        this.ctx = ctx;
+    public InAndOut(AuthAccess authData) {
         this.authData = authData;
     }
 
 
-    public Map<String, String> requestToJava() {
-        Gson gson = new Gson();
+    public Map<String, String> requestToJava(Context ctx) {
         Type type = new TypeToken<Map<String, String>>(){}.getType();
         String path = ctx.path();
         Map<String, String> request = gson.fromJson(ctx.body(), type);
         String authToken = ctx.header("authorization");
         if (!path.equals("/db") && !path.equals("/user")) {
-            authenticate(request.get("username"), authToken);
+            authenticate(request.get("username"), authToken, ctx);
         }
         return request;
     }
 
 
-    public Context responseToHTTP(Map<String, String> response) {
-
+    public void responseToHTTP(Map<String, String> response, Context ctx) {
+        if(response.containsKey("error")) {
+            int errorCode = Integer.parseInt(response.get("error"));
+            ctx.status(errorCode).json(Map.of("error", response.get("message")));
+        }
+        else {
+            ctx.status(200);
+            if (response.size() == 2) {
+                ctx.json(Map.of("status", response.get("message")));
+            }
+            else {
+                String json = gson.toJson(response);
+                ctx.result(json);
+            }
+        }
     }
 
 
-    private void authenticate(String username, String authToken) {
+    private void authenticate(String username, String authToken, Context ctx) {
         Map<String, String> error = new HashMap<>();
         try {
             String userToken = authData.getAuthToken(username);
-            if(!authToken.equals(userToken)) {
+            if(authToken == null || !authToken.equals(userToken)) {
                 error.put("error", "401");
                 error.put("message", "Unauthorized user");
-                responseToHTTP(error);
+                responseToHTTP(error, ctx);
+                return;
             }
         } catch (DataAccessException e) {
             throw new RuntimeException(e);

@@ -10,13 +10,13 @@ public class UserService {
     public UserService() {
     }
 
+    public Map<String, String> registerUser(UserAccess userData, AuthAccess authData, List<String> userInfo) {
+
+    }
+
+
     public Map<String, String> login(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws DataAccessException {
         Map<String, String> result = new HashMap<>();
-        if (loginInfo.size() != 2) {
-            result.put("error", "400");
-            result.put("message", "One or more fields left empty");
-            return result;
-        }
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
         if(!userInfo.getFirst().equals(loginInfo.get(1))) {
             result.put("error", "401");
@@ -30,7 +30,4 @@ public class UserService {
         result.put("authToken", authToken);
         return result;
     }
-
-
-
 }

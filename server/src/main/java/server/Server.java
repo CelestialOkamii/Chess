@@ -16,17 +16,20 @@ public class Server {
     final UserAccess userData = new DataAccess();
     final AuthAccess  authData = new DataAccess();
     final GameAccess gameData = new DataAccess();
+    UserHandlers userHandlers = new UserHandlers(userData, authData);
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         // Register your endpoints and exception handlers here.
-        javalin.get("/session", ctx -> {
-            new UserHandlers(ctx, userData, authData).loginRequest();
+        javalin.post("/session", ctx -> {
+            userHandlers.loginRequest(ctx);
         });
 
 
+        javalin.post("/user", ctx -> {
 
+        });
     }
 
     public int run(int desiredPort) {
