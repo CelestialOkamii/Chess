@@ -1,6 +1,6 @@
 package server;
 
-import Handlers.UserHandlers;
+import Handlers.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dataaccess.*;
@@ -16,7 +16,9 @@ public class Server {
     final UserAccess userData = new DataAccess();
     final AuthAccess  authData = new DataAccess();
     final GameAccess gameData = new DataAccess();
-    UserHandlers userHandlers = new UserHandlers(userData, authData);
+    InAndOut inAndOut = new InAndOut(authData);
+    UserHandlers userHandlers = new UserHandlers(userData, authData, inAndOut);
+    GameHandlers gameHandlers = new GameHandlers(authData, gameData, inAndOut);
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
@@ -37,7 +39,9 @@ public class Server {
         });
 
 
-
+        javalin.get("/game", ctx -> {
+            gameHandlers.gameList(ctx);
+        });
     }
 
     public int run(int desiredPort) {

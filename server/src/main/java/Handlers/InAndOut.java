@@ -24,13 +24,13 @@ public class InAndOut {
         Map<String, String> request = gson.fromJson(ctx.body(), type);
         String authToken = ctx.header("authorization");
         if (!path.equals("/db") && !path.equals("/user")) {
-            authenticate(request.get("username"), authToken, ctx);
+            authenticate(authToken, ctx);
         }
         return request;
     }
 
 
-    public void responseToHTTP(Map<String, String> response, Context ctx) {
+    public Context responseToHTTP(Map<String, String> response, Context ctx) {
         if(response.containsKey("error")) {
             int errorCode = Integer.parseInt(response.get("error"));
             ctx.status(errorCode).json(Map.of("error", response.get("message")));
@@ -45,14 +45,23 @@ public class InAndOut {
                 ctx.result(json);
             }
         }
+        return ctx;
     }
 
 
-    private void authenticate(String username, String authToken, Context ctx) {
+    public Context getToHTTP(Map<Integer, List<String>> result, Context ctx) {
+        ctx.status(200).json(Map.of("status", "Success"));
+        String json = gson.toJson(result);
+        ctx.result(json);
+        return ctx;
+    }
+
+
+    private void authenticate(String authToken, Context ctx) {
         Map<String, String> error = new HashMap<>();
         try {
             String userToken = authData.getAuthToken(authToken);
-            if(authToken == null || !username.equals(userToken)) {
+            if(authToken == null) {
                 error.put("error", "401");
                 error.put("message", "Unauthorized user");
                 responseToHTTP(error, ctx);

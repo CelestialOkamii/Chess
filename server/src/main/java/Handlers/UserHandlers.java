@@ -14,14 +14,14 @@ public class UserHandlers {
     UserService userService = new UserService();
 
 
-    public UserHandlers(UserAccess userData, AuthAccess authData) {
+    public UserHandlers(UserAccess userData, AuthAccess authData, InAndOut inAndOut) {
         this.userData = userData;
         this.authData = authData;
-        this.inAndOut = new InAndOut(authData);
+        this.inAndOut = inAndOut;
     }
 
 
-    public void register(Context ctx) throws DataAccessException {
+    public Context register(Context ctx) throws DataAccessException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         if (request.size() != 3) {
@@ -32,11 +32,11 @@ public class UserHandlers {
             List<String> userInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password"), request.get("email")));
             result = userService.registerUser(userData, authData, userInfo);
         }
-        inAndOut.responseToHTTP(result, ctx);
+        return inAndOut.responseToHTTP(result, ctx);
     }
 
 
-    public void login(Context ctx) throws DataAccessException {
+    public Context login(Context ctx) throws DataAccessException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         if (request.size() != 2) {
@@ -47,12 +47,12 @@ public class UserHandlers {
             List<String> loginInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password")));
             result = userService.loginUser(userData, authData, loginInfo);
         }
-        inAndOut.responseToHTTP(result, ctx);
+        return inAndOut.responseToHTTP(result, ctx);
     }
 
 
-    public void logout(Context ctx) throws DataAccessException {
+    public Context logout(Context ctx) throws DataAccessException {
         Map<String, String> result = userService.logoutUser(authData, ctx.header("authorization"));
-        inAndOut.responseToHTTP(result, ctx);
+        return inAndOut.responseToHTTP(result, ctx);
     }
 }

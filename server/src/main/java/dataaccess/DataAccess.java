@@ -5,7 +5,7 @@ import java.util.*;
 public class DataAccess implements UserAccess, GameAccess, AuthAccess{
     Map<String, List<String>> userData = new HashMap<>();
     Map<String, String> authData = new HashMap<>();
-    Map<String, List<String>> gameData = new HashMap<>();
+    Map<Integer, List<String>> gameData = new HashMap<>();
 
 
     @Override
@@ -69,5 +69,20 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
             throw new DataAccessException("Unauthorized User");
             // Code 401
         }
+    }
+
+    @Override
+    public Map<Integer, List<String>> getGameList() {
+        return gameData;
+    }
+
+    @Override
+    public boolean addGame(String gameName) {
+        return false;
+    }
+
+    @Override
+    public boolean joinGame(String username, String color, int gameID) {
+        return false;
     }
 }
