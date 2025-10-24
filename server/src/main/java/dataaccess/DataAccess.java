@@ -36,8 +36,8 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
 
     @Override
     public boolean addAuthToken(String username, String authToken) throws DataAccessException {
-        if (!authData.containsKey(username)) {
-            authData.put(username, authToken);
+        if (!authData.containsKey(authToken)) {
+            authData.put(authToken, username);
             return true;
         }
         else {
@@ -46,10 +46,24 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
         // code 403
     }
 
+
+    // Returns username
     @Override
-    public String getAuthToken(String username) throws DataAccessException {
-        if (authData.containsKey(username)) {
-            return authData.get(username);
+    public String getAuthToken(String authToken) throws DataAccessException {
+        if (authData.containsKey(authToken)) {
+            return authData.get(authToken);
+        }
+        else {
+            throw new DataAccessException("Unauthorized User");
+            // Code 401
+        }
+    }
+
+    @Override
+    public boolean removeAuthToken(String authToken) throws DataAccessException {
+        if (authData.containsKey(authToken)) {
+            authData.remove(authToken);
+            return true;
         }
         else {
             throw new DataAccessException("Unauthorized User");

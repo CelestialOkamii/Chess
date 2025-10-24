@@ -51,8 +51,8 @@ public class InAndOut {
     private void authenticate(String username, String authToken, Context ctx) {
         Map<String, String> error = new HashMap<>();
         try {
-            String userToken = authData.getAuthToken(username);
-            if(authToken == null || !authToken.equals(userToken)) {
+            String userToken = authData.getAuthToken(authToken);
+            if(authToken == null || !username.equals(userToken)) {
                 error.put("error", "401");
                 error.put("message", "Unauthorized user");
                 responseToHTTP(error, ctx);

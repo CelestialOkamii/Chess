@@ -26,7 +26,7 @@ public class UserService {
     }
 
 
-    public Map<String, String> login(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws DataAccessException {
+    public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws DataAccessException {
         Map<String, String> result = new HashMap<>();
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
         if(!userInfo.getFirst().equals(loginInfo.get(1))) {
@@ -39,6 +39,16 @@ public class UserService {
         result.put("status", "200");
         result.put("message", "Success");
         result.put("authToken", authToken);
+        return result;
+    }
+
+    public Map<String, String> logoutUser(AuthAccess authData, String authToken) throws DataAccessException {
+        Map<String, String> result = new HashMap<>();
+        boolean removed = authData.removeAuthToken(authToken);
+        if (removed) {
+            result.put("status", "200");
+            result.put("message", "Success");
+        }
         return result;
     }
 }
