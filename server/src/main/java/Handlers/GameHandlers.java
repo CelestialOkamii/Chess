@@ -24,7 +24,20 @@ public class GameHandlers {
 
     public Context gameList(Context ctx) {
         inAndOut.requestToJava(ctx);
-        Map<Integer, List<String>> result = gameService.getGameList(gameData);
+        List<Map<String, Object>> result = gameService.getGameList(gameData);
         return inAndOut.getToHTTP(result, ctx);
+    }
+
+    public Context addGame(Context ctx) {
+        Map<String, String> result = new HashMap<>();
+        Map<String, String> request = inAndOut.requestToJava(ctx);
+        if (!request.containsKey("gameName")) {
+            result.put("error", "400");
+            result.put("message", "One or more fields left empty");
+        }
+        else {
+            result = gameService.addGame(gameData, request.get("gameName"));
+        }
+        return inAndOut.responseToHTTP(result, ctx);
     }
 }

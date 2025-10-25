@@ -42,6 +42,14 @@ public class Server {
         javalin.get("/game", ctx -> {
             gameHandlers.gameList(ctx);
         });
+
+
+        javalin.post("/game", ctx -> {
+           gameHandlers.addGame(ctx);
+        });
+
+
+        javalin.put()
     }
 
     public int run(int desiredPort) {

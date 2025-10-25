@@ -49,9 +49,10 @@ public class InAndOut {
     }
 
 
-    public Context getToHTTP(Map<Integer, List<String>> result, Context ctx) {
+    public Context getToHTTP(List<Map<String, Object>> result, Context ctx) {
+        Map<String, List<Map<String, Object>>> games = new HashMap<>(Map.of("games", result));
         ctx.status(200).json(Map.of("status", "Success"));
-        String json = gson.toJson(result);
+        String json = gson.toJson(games);
         ctx.result(json);
         return ctx;
     }

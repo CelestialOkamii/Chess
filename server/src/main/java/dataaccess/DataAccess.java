@@ -5,7 +5,7 @@ import java.util.*;
 public class DataAccess implements UserAccess, GameAccess, AuthAccess{
     Map<String, List<String>> userData = new HashMap<>();
     Map<String, String> authData = new HashMap<>();
-    Map<Integer, List<String>> gameData = new HashMap<>();
+    List<Map<String, Object>> gameData = new ArrayList<>();
 
 
     @Override
@@ -72,13 +72,14 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
     }
 
     @Override
-    public Map<Integer, List<String>> getGameList() {
+    public List<Map<String, Object>> getGameList() {
         return gameData;
     }
 
     @Override
-    public boolean addGame(String gameName) {
-        return false;
+    public boolean addGame(Map<String, Object> game) {
+        gameData.add(game);
+        return true;
     }
 
     @Override
