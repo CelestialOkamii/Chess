@@ -17,6 +17,7 @@ public class Server {
     final AuthAccess  authData = new DataAccess();
     final GameAccess gameData = new DataAccess();
     InAndOut inAndOut = new InAndOut(authData);
+    ClearHandler clearHandler = new ClearHandler(inAndOut, authData, userData, gameData);
     UserHandlers userHandlers = new UserHandlers(userData, authData, inAndOut);
     GameHandlers gameHandlers = new GameHandlers(authData, gameData, inAndOut);
 
@@ -24,6 +25,11 @@ public class Server {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         // Register your endpoints and exception handlers here.
+        javalin.delete("/db", ctx -> {
+            clearHandler.clearDB(ctx);
+        });
+
+
         javalin.post("/user", ctx -> {
             userHandlers.register(ctx);
         });

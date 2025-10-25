@@ -2,10 +2,34 @@ package dataaccess;
 
 import java.util.*;
 
-public class DataAccess implements UserAccess, GameAccess, AuthAccess{
+public class DataAccess implements ClearAccess, UserAccess, GameAccess, AuthAccess{
     Map<String, List<String>> userData = new HashMap<>();
     Map<String, String> authData = new HashMap<>();
     List<Map<String, Object>> gameData = new ArrayList<>();
+
+
+    @Override
+    public void clearAuths() {
+        userData = new HashMap<>();
+        authData = new HashMap<>();
+        gameData = new ArrayList<>();
+    }
+
+
+    @Override
+    public void clearUsers() {
+        userData = new HashMap<>();
+        authData = new HashMap<>();
+        gameData = new ArrayList<>();
+    }
+
+
+    @Override
+    public void clearGames() {
+        userData = new HashMap<>();
+        authData = new HashMap<>();
+        gameData = new ArrayList<>();
+    }
 
 
     @Override
