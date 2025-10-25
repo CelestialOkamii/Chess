@@ -29,7 +29,7 @@ public class GameService {
     }
 
 
-    public Map<String, String> joinGame(GameAccess gameData, AuthAccess authData, String authToken, String color, int gameId) throws DataAccessException {
+    public Map<String, String> joinGame(GameAccess gameData, AuthAccess authData, String authToken, String color, int gameId) throws InputException {
         Map<String, String> result = new HashMap<>();
         String username = authData.getUsername(authToken);
         Map<String, Object> game = gameData.getGame(gameId);

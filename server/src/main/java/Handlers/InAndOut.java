@@ -51,18 +51,20 @@ public class InAndOut {
     }
 
 
-    public void authenticate(String authToken, Context ctx) {
-        Map<String, String> error = new HashMap<>();
+    public Context authenticate(String authToken, Context ctx) {
         try {
             if(authToken == null) {
-                error.put("error", "401");
-                error.put("message", "Unauthorized user");
-                responseToHTTP(error, ctx);
-                return;
+                responseToHTTP(makeErrorMessage("401", "unauthorized"), ctx);
             }
             authData.getUsername(authToken);
-        } catch (DataAccessException e) {
-            throw new RuntimeException(e);
+        } catch (InputException e) {
+            return responseToHTTP(makeErrorMessage(e.getErrorCode(), e.getMessage()), ctx);
         }
+        return ctx;
+    }
+
+
+    public Map<String, String> makeErrorMessage(String errorCode, String message) {
+        return new HashMap<>(Map.of("error", errorCode, "message", message));
     }
 }

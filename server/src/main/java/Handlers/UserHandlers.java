@@ -21,39 +21,49 @@ public class UserHandlers {
     }
 
 
-    public Context register(Context ctx) throws DataAccessException {
+    public Context register(Context ctx) throws InputException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         if (request.size() != 3) {
-            result.put("error", "400");
-            result.put("message", "One or more fields left empty");
+            result = inAndOut.makeErrorMessage("400", "bad request");
         }
         else {
             List<String> userInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password"), request.get("email")));
-            result = userService.registerUser(userData, authData, userInfo);
+            try {
+                result = userService.registerUser(userData, authData, userInfo);
+            } catch (InputException error) {
+                result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
+            }
         }
         return inAndOut.responseToHTTP(result, ctx);
     }
 
 
-    public Context login(Context ctx) throws DataAccessException {
+    public Context login(Context ctx) throws InputException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         if (!request.containsKey("username") || !request.containsKey("password")) {
-            result.put("error", "400");
-            result.put("message", "One or more fields left empty");
+            result = inAndOut.makeErrorMessage("400", "bad request");
         }
         else {
             List<String> loginInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password")));
-            result = userService.loginUser(userData, authData, loginInfo);
+            try {
+                result = userService.loginUser(userData, authData, loginInfo);
+            } catch (InputException error) {
+                result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
+            }
         }
         return inAndOut.responseToHTTP(result, ctx);
     }
 
 
-    public Context logout(Context ctx) throws DataAccessException {
-        inAndOut.authenticate(ctx.header("authorization"), ctx);
-        Map<String, String> result = userService.logoutUser(authData, ctx.header("authorization"));
+    public Context logout(Context ctx) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        try {
+            result = userService.logoutUser(authData, ctx.header("authorization"));
+        } catch (InputException error) {
+            result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getErrorCode());
+        }
         return inAndOut.responseToHTTP(result, ctx);
     }
 }

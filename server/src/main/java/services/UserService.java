@@ -10,11 +10,11 @@ public class UserService {
     public UserService() {
     }
 
-    public Map<String, String> registerUser(UserAccess userData, AuthAccess authData, List<String> registerInfo) throws DataAccessException {
+    public Map<String, String> registerUser(UserAccess userData, AuthAccess authData, List<String> registerInfo) throws InputException {
         Map<String, String> result = new HashMap<>();
         try {
             List<String> userInfo = userData.getUserData(registerInfo.getFirst());
-        } catch (DataAccessException e) {
+        } catch (InputException e) {
             boolean addUser = userData.addUser(registerInfo.get(0), registerInfo.get(1), registerInfo.get(2));
             String authToken = UUID.randomUUID().toString();
             boolean addResult = authData.addAuthToken(registerInfo.getFirst(), authToken);
@@ -25,7 +25,7 @@ public class UserService {
     }
 
 
-    public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws DataAccessException {
+    public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws InputException {
         Map<String, String> result = new HashMap<>();
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
         if(!userInfo.get(0).equals(loginInfo.get(1))) {
@@ -40,7 +40,7 @@ public class UserService {
         return result;
     }
 
-    public Map<String, String> logoutUser(AuthAccess authData, String authToken) throws DataAccessException {
+    public Map<String, String> logoutUser(AuthAccess authData, String authToken) throws InputException {
         Map<String, String> result = new HashMap<>();
         boolean removed = authData.removeAuthToken(authToken);
         if (removed) {

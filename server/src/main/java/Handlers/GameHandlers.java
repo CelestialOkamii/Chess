@@ -24,7 +24,10 @@ public class GameHandlers {
 
     public Context gameList(Context ctx) {
         inAndOut.requestToJava(ctx);
-        inAndOut.authenticate(ctx.header("authorization"), ctx);
+        Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
+        if (!ctx.equals(newCtx)) {
+            return newCtx;
+        }
         List<Map<String, Object>> result = gameService.getGameList(gameData);
         return inAndOut.getToHTTP(result, ctx);
     }
@@ -32,10 +35,12 @@ public class GameHandlers {
     public Context addGame(Context ctx) {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
-        inAndOut.authenticate(ctx.header("authorization"), ctx);
+        Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
+        if (!ctx.equals(newCtx)) {
+            return newCtx;
+        }
         if (!request.containsKey("gameName")) {
-            result.put("error", "400");
-            result.put("message", "One or more fields left empty");
+            result = inAndOut.makeErrorMessage("400", "bad request");
         }
         else {
             result = gameService.addGame(gameData, request.get("gameName"));
@@ -44,16 +49,22 @@ public class GameHandlers {
     }
 
 
-    public Context joinGame(Context ctx) throws DataAccessException {
+    public Context joinGame(Context ctx) throws InputException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
-        inAndOut.authenticate(ctx.header("authorization"), ctx);
+        Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
+        if (!ctx.equals(newCtx)) {
+            return newCtx;
+        }
         if (!request.containsKey("playerColor") || !request.containsKey("gameID")) {
-            result.put("error", "400");
-            result.put("message", "One or more fields left empty");
+            result = inAndOut.makeErrorMessage("400", "bad request");
         }
         else {
-            result = gameService.joinGame(gameData, authData, ctx.header("authorization"), request.get("playerColor"), Integer.parseInt(request.get("gameID")));
+            try {
+                result = gameService.joinGame(gameData, authData, ctx.header("authorization"), request.get("playerColor"), Integer.parseInt(request.get("gameID")));
+            } catch (InputException error) {
+                result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
+            }
         }
         return inAndOut.responseToHTTP(result, ctx);
     }
