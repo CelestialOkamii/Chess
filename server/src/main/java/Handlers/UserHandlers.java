@@ -39,7 +39,7 @@ public class UserHandlers {
     public Context login(Context ctx) throws DataAccessException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
-        if (request.size() != 2) {
+        if (!request.containsKey("username") || !request.containsKey("password")) {
             result.put("error", "400");
             result.put("message", "One or more fields left empty");
         }
@@ -52,6 +52,7 @@ public class UserHandlers {
 
 
     public Context logout(Context ctx) throws DataAccessException {
+        inAndOut.authenticate(ctx.header("authorization"), ctx);
         Map<String, String> result = userService.logoutUser(authData, ctx.header("authorization"));
         return inAndOut.responseToHTTP(result, ctx);
     }

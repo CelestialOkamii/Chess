@@ -21,12 +21,7 @@ public class InAndOut {
     public Map<String, String> requestToJava(Context ctx) {
         Type type = new TypeToken<Map<String, String>>(){}.getType();
         String path = ctx.path();
-        Map<String, String> request = gson.fromJson(ctx.body(), type);
-        String authToken = ctx.header("authorization");
-        if (!path.equals("/db") && !path.equals("/user") && !(path.equals("/session") && ctx.method().equals("POST"))) {
-            authenticate(authToken, ctx);
-        }
-        return request;
+        return gson.fromJson(ctx.body(), type);
     }
 
 
@@ -56,16 +51,16 @@ public class InAndOut {
     }
 
 
-    private void authenticate(String authToken, Context ctx) {
+    public void authenticate(String authToken, Context ctx) {
         Map<String, String> error = new HashMap<>();
         try {
-            String userToken = authData.getUsername(authToken);
             if(authToken == null) {
                 error.put("error", "401");
                 error.put("message", "Unauthorized user");
                 responseToHTTP(error, ctx);
                 return;
             }
+            authData.getUsername(authToken);
         } catch (DataAccessException e) {
             throw new RuntimeException(e);
         }

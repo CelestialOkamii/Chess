@@ -28,7 +28,7 @@ public class UserService {
     public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws DataAccessException {
         Map<String, String> result = new HashMap<>();
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
-        if(!userInfo.getFirst().equals(loginInfo.get(1))) {
+        if(!userInfo.get(0).equals(loginInfo.get(1))) {
             result.put("error", "401");
             result.put("message", "Incorrect password provided");
             return result;
