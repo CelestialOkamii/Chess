@@ -49,7 +49,9 @@ public class Server {
         });
 
 
-        javalin.put()
+        javalin.put("/game", ctx -> {
+           gameHandlers.joinGame(ctx);
+        });
     }
 
     public int run(int desiredPort) {

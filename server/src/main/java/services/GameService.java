@@ -28,4 +28,27 @@ public class GameService {
         result.put("message", "Success");
         return result;
     }
+
+
+    public Map<String, String> joinGame(GameAccess gameData, AuthAccess authData, String authToken, String color, int gameId) throws DataAccessException {
+        Map<String, String> result = new HashMap<>();
+        String username = authData.getUsername(authToken);
+        Map<String, Object> game = gameData.getGame(gameId);
+        if (color.equals("WHITE")) {
+            color = "whiteUsername";
+        }
+        else {
+            color = "blackUsername";
+        }
+        if (!game.get(color).equals("")) {
+            result.put("error", "403");
+            result.put("message", "Color is already taken");
+        }
+        else {
+            gameData.joinGame(username, color, gameId);
+            result.put("status", "200");
+            result.put("message", "Success");
+        }
+        return result;
+    }
 }

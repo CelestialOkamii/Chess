@@ -40,4 +40,18 @@ public class GameHandlers {
         }
         return inAndOut.responseToHTTP(result, ctx);
     }
+
+
+    public Context joinGame(Context ctx) throws DataAccessException {
+        Map<String, String> result = new HashMap<>();
+        Map<String, String> request = inAndOut.requestToJava(ctx);
+        if (!request.containsKey("playerColor") || !request.containsKey("gameID")) {
+            result.put("error", "400");
+            result.put("message", "One or more fields left empty");
+        }
+        else {
+            result = gameService.joinGame(gameData, authData, ctx.header("authorization"), request.get("playerColor"), Integer.parseInt(request.get("gameID")));
+        }
+        return inAndOut.responseToHTTP(result, ctx);
+    }
 }

@@ -49,7 +49,7 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
 
     // Returns username
     @Override
-    public String getAuthToken(String authToken) throws DataAccessException {
+    public String getUsername(String authToken) throws DataAccessException {
         if (authData.containsKey(authToken)) {
             return authData.get(authToken);
         }
@@ -83,7 +83,24 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
     }
 
     @Override
-    public boolean joinGame(String username, String color, int gameID) {
+    public boolean joinGame(String username, String color, int gameId) {
+        for (Map<String, Object> game : gameData) {
+            if ((int) game.get("gameID") == gameId) {
+                game.put(color, username);
+                return true;
+            }
+        }
         return false;
+    }
+
+    @Override
+    public Map<String, Object> getGame(int gameId) throws DataAccessException {
+        for (Map<String, Object> game : gameData) {
+            if ((int) game.get("gameID") == gameId) {
+                return game;
+            }
+        }
+        throw new DataAccessException("Game does not exist");
+        // Code 400
     }
 }
