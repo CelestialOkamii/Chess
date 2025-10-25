@@ -19,7 +19,6 @@ public class UserService {
             String authToken = UUID.randomUUID().toString();
             boolean addResult = authData.addAuthToken(registerInfo.getFirst(), authToken);
             result.put("status", "200");
-            result.put("message", "Success");
             result.put("authToken", authToken);
         }
         return result;
@@ -37,7 +36,6 @@ public class UserService {
         String authToken = UUID.randomUUID().toString();
         boolean addResult = authData.addAuthToken(loginInfo.getFirst(), authToken);
         result.put("status", "200");
-        result.put("message", "Success");
         result.put("authToken", authToken);
         return result;
     }
@@ -47,7 +45,6 @@ public class UserService {
         boolean removed = authData.removeAuthToken(authToken);
         if (removed) {
             result.put("status", "200");
-            result.put("message", "Success");
         }
         return result;
     }

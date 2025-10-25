@@ -15,7 +15,6 @@ public class ClearService {
         userData.clearUsers();
         gameData.clearGames();
         result.put("status", "200");
-        result.put("message", "Success");
         return result;
     }
 }

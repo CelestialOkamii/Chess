@@ -25,7 +25,6 @@ public class GameService {
         Map<String, Object> game = new HashMap<>(Map.of("gameID", id, "whiteUsername", "", "blackUsername", "", "gameName", gameName));
         gameData.addGame(game);
         result.put("status", "200");
-        result.put("message", "Success");
         return result;
     }
 
@@ -47,7 +46,6 @@ public class GameService {
         else {
             gameData.joinGame(username, color, gameId);
             result.put("status", "200");
-            result.put("message", "Success");
         }
         return result;
     }

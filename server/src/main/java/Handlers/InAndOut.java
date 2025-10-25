@@ -23,7 +23,7 @@ public class InAndOut {
         String path = ctx.path();
         Map<String, String> request = gson.fromJson(ctx.body(), type);
         String authToken = ctx.header("authorization");
-        if (!path.equals("/db") && !path.equals("/user")) {
+        if (!path.equals("/db") && !path.equals("/user") && !(path.equals("/session") && ctx.method().equals("POST"))) {
             authenticate(authToken, ctx);
         }
         return request;
@@ -37,10 +37,8 @@ public class InAndOut {
         }
         else {
             ctx.status(200);
-            if (response.size() == 2) {
-                ctx.json(Map.of("status", response.get("message")));
-            }
-            else {
+            response.remove("status");
+            if (!response.isEmpty()) {
                 String json = gson.toJson(response);
                 ctx.result(json);
             }
@@ -51,7 +49,7 @@ public class InAndOut {
 
     public Context getToHTTP(List<Map<String, Object>> result, Context ctx) {
         Map<String, List<Map<String, Object>>> games = new HashMap<>(Map.of("games", result));
-        ctx.status(200).json(Map.of("status", "Success"));
+        ctx.status(200);
         String json = gson.toJson(games);
         ctx.result(json);
         return ctx;
