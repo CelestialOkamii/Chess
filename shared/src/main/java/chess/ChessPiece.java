@@ -2,8 +2,6 @@ package chess;
 
 import java.util.*;
 
-import chess.moves.*;
-
 /**
  * Represents a single chess piece
  * <p>
@@ -57,25 +55,7 @@ public class ChessPiece {
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         PieceType piece = board.getPiece(myPosition).getPieceType();
         ChessGame.TeamColor piecesColor = board.getPiece(myPosition).getTeamColor();
-        if (piece == PieceType.KING) {
-            return new KingMoves(myPosition, piecesColor, board).validMoves();
-        }
-        else if (piece == PieceType.QUEEN) {
-            return new QueenMoves(myPosition, piecesColor, board).validMoves();
-        }
-        else if (piece == PieceType.BISHOP) {
-            return new BishopMoves(myPosition, piecesColor, board).validMoves();
-        }
-        else if (piece == PieceType.ROOK) {
-            return new RookMoves(myPosition, piecesColor, board).validMoves();
-        }
-        else if (piece == PieceType.KNIGHT) {
-            return new KnightMoves(myPosition, piecesColor, board).validMoves();
-        }
-        else if (piece == PieceType.PAWN) {
-            return new PawnMoves(myPosition, piecesColor, board).validMoves();
-        }
-        return null;
+        return new PieceMoves(myPosition, piecesColor, board, piece).validMoves();
     }
 
     @Override
