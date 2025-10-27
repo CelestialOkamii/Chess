@@ -21,10 +21,20 @@ public class GameService {
 
     public Map<String, String> addGame(GameAccess gameData, String gameName) {
         Map<String, String> result = new HashMap<>();
-        int id = nextId.getAndIncrement();
-        Map<String, Object> game = new HashMap<>(Map.of("gameID", id, "whiteUsername", "", "blackUsername", "", "gameName", gameName));
-        gameData.addGame(game);
-        result.put("status", "200");
+        if (gameName == null) {
+            result.put("error", "400");
+            result.put("message", "Error: Bad Request");
+        }
+        else {
+            int id = nextId.getAndIncrement();
+            Map<String, Object> game = new HashMap<>(Map.of("gameID", id));
+            game.put("whiteUsername", null);
+            game.put("blackUsername", null);
+            game.put("gameName", gameName);
+            gameData.addGame(game);
+            result.put("status", "200");
+            result.put("gameID", String.valueOf(id));
+        }
         return result;
     }
 
@@ -33,15 +43,20 @@ public class GameService {
         Map<String, String> result = new HashMap<>();
         String username = authData.getUsername(authToken);
         Map<String, Object> game = gameData.getGame(gameId);
-        if (color.equals("WHITE")) {
+        if (!color.equals("WHITE") && !color.equals("BLACK")) {
+            result.put("error", "400");
+            result.put("message", "Error: Bad request");
+            return result;
+        }
+        else if (color.equals("WHITE")) {
             color = "whiteUsername";
         }
         else {
             color = "blackUsername";
         }
-        if (!game.get(color).equals("")) {
+        if (game.get(color) != null) {
             result.put("error", "403");
-            result.put("message", "Color is already taken");
+            result.put("message", "Error: Already taken");
         }
         else {
             gameData.joinGame(username, color, gameId);

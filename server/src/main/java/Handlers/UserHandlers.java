@@ -25,7 +25,7 @@ public class UserHandlers {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         if (request.size() != 3) {
-            result = inAndOut.makeErrorMessage("400", "bad request");
+            result = inAndOut.makeErrorMessage("400", "Error: Bad request");
         }
         else {
             List<String> userInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password"), request.get("email")));
@@ -43,7 +43,7 @@ public class UserHandlers {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         if (!request.containsKey("username") || !request.containsKey("password")) {
-            result = inAndOut.makeErrorMessage("400", "bad request");
+            result = inAndOut.makeErrorMessage("400", "Error: Bad request");
         }
         else {
             List<String> loginInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password")));
@@ -62,7 +62,7 @@ public class UserHandlers {
         try {
             result = userService.logoutUser(authData, ctx.header("authorization"));
         } catch (InputException error) {
-            result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getErrorCode());
+            result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
         }
         return inAndOut.responseToHTTP(result, ctx);
     }

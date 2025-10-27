@@ -25,7 +25,7 @@ public class GameHandlers {
     public Context gameList(Context ctx) {
         inAndOut.requestToJava(ctx);
         Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
-        if (!ctx.equals(newCtx)) {
+        if (newCtx.statusCode() != 200) {
             return newCtx;
         }
         List<Map<String, Object>> result = gameService.getGameList(gameData);
@@ -36,11 +36,11 @@ public class GameHandlers {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
-        if (!ctx.equals(newCtx)) {
+        if (newCtx.statusCode() != 200) {
             return newCtx;
         }
         if (!request.containsKey("gameName")) {
-            result = inAndOut.makeErrorMessage("400", "bad request");
+            result = inAndOut.makeErrorMessage("400", "Error: Bad request");
         }
         else {
             result = gameService.addGame(gameData, request.get("gameName"));
@@ -53,11 +53,11 @@ public class GameHandlers {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
-        if (!ctx.equals(newCtx)) {
+        if (newCtx.statusCode() != 200) {
             return newCtx;
         }
         if (!request.containsKey("playerColor") || !request.containsKey("gameID")) {
-            result = inAndOut.makeErrorMessage("400", "bad request");
+            result = inAndOut.makeErrorMessage("400", "Error: Bad request");
         }
         else {
             try {

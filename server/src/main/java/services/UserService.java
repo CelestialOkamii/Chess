@@ -13,12 +13,15 @@ public class UserService {
     public Map<String, String> registerUser(UserAccess userData, AuthAccess authData, List<String> registerInfo) throws InputException {
         Map<String, String> result = new HashMap<>();
         try {
-            List<String> userInfo = userData.getUserData(registerInfo.getFirst());
+            userData.getUserData(registerInfo.getFirst());
+            result.put("error", "403");
+            result.put("message", "Error: Already taken");
         } catch (InputException e) {
-            boolean addUser = userData.addUser(registerInfo.get(0), registerInfo.get(1), registerInfo.get(2));
+            userData.addUser(registerInfo.get(0), registerInfo.get(1), registerInfo.get(2));
             String authToken = UUID.randomUUID().toString();
-            boolean addResult = authData.addAuthToken(registerInfo.getFirst(), authToken);
+            authData.addAuthToken(registerInfo.getFirst(), authToken);
             result.put("status", "200");
+            result.put("username", registerInfo.getFirst());
             result.put("authToken", authToken);
         }
         return result;
@@ -30,12 +33,13 @@ public class UserService {
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
         if(!userInfo.get(0).equals(loginInfo.get(1))) {
             result.put("error", "401");
-            result.put("message", "Incorrect password provided");
+            result.put("message", "Error: Unauthorized");
             return result;
         }
         String authToken = UUID.randomUUID().toString();
-        boolean addResult = authData.addAuthToken(loginInfo.getFirst(), authToken);
+        authData.addAuthToken(loginInfo.getFirst(), authToken);
         result.put("status", "200");
+        result.put("username", loginInfo.getFirst());
         result.put("authToken", authToken);
         return result;
     }

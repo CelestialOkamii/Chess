@@ -1,21 +1,18 @@
 package server;
 
 import Handlers.*;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import dataaccess.*;
 import io.javalin.*;
-
-import java.lang.reflect.Type;
 import java.util.*;
 
 
 public class Server {
 
     private final Javalin javalin;
-    final UserAccess userData = new DataAccess();
-    final AuthAccess  authData = new DataAccess();
-    final GameAccess gameData = new DataAccess();
+    final DataAccess dataAccess = new DataAccess();
+    final UserAccess userData = dataAccess;
+    final AuthAccess  authData = dataAccess;
+    final GameAccess gameData = dataAccess;
     InAndOut inAndOut = new InAndOut(authData);
     ClearHandler clearHandler = new ClearHandler(inAndOut, authData, userData, gameData);
     UserHandlers userHandlers = new UserHandlers(userData, authData, inAndOut);

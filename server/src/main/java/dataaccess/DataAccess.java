@@ -10,25 +10,31 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
 
     @Override
     public void clearAuths() {
-        userData = new HashMap<>();
         authData = new HashMap<>();
-        gameData = new ArrayList<>();
     }
 
 
     @Override
     public void clearUsers() {
         userData = new HashMap<>();
-        authData = new HashMap<>();
-        gameData = new ArrayList<>();
     }
 
 
     @Override
     public void clearGames() {
-        userData = new HashMap<>();
-        authData = new HashMap<>();
         gameData = new ArrayList<>();
+    }
+
+
+    @Override
+    public Map<String, List<String>> getUserMap() {
+        return userData;
+    }
+
+
+    @Override
+    public Map<String, String> getAuthMap() {
+        return authData;
     }
 
 
@@ -36,11 +42,14 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
     public boolean addUser(String username, String password, String email) throws InputException {
         if (!userData.containsKey(username)) {
             List<String> userInfo = new ArrayList<>(Arrays.asList(password, email));
+            if (username == null) {
+                username = "null";
+            }
             userData.put(username, userInfo);
             return true;
         }
         else {
-            throw new InputException("403", "already taken");
+            throw new InputException("403", "Error: Already taken");
         }
     }
 
@@ -51,7 +60,7 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
             return userData.get(username);
         }
         else {
-            throw new InputException("500", "User not found");
+            throw new InputException("401", "Error: Unauthorized");
         }
     }
 
@@ -63,7 +72,7 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
             return true;
         }
         else {
-            throw new InputException("403", "already taken");
+            throw new InputException("403", "Error: Already taken");
         }
     }
 
@@ -75,7 +84,7 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
             return authData.get(authToken);
         }
         else {
-            throw new InputException("401", "unauthorized");
+            throw new InputException("401", "Error: Unauthorized");
         }
     }
 
@@ -86,7 +95,7 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
             return true;
         }
         else {
-            throw new InputException("401", "unauthorized");
+            throw new InputException("401", "Error: Unauthorized");
         }
     }
 
@@ -119,6 +128,6 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
                 return game;
             }
         }
-        throw new InputException("400", "bad request");
+        throw new InputException("400", "Error: Bad request");
     }
 }

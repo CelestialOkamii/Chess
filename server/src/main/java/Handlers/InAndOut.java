@@ -28,7 +28,8 @@ public class InAndOut {
     public Context responseToHTTP(Map<String, String> response, Context ctx) {
         if(response.containsKey("error")) {
             int errorCode = Integer.parseInt(response.get("error"));
-            ctx.status(errorCode).json(Map.of("error", response.get("message")));
+            String json = gson.toJson(Map.of("message", response.get("message")));
+            ctx.status(errorCode).result(json);
         }
         else {
             ctx.status(200);
@@ -54,7 +55,7 @@ public class InAndOut {
     public Context authenticate(String authToken, Context ctx) {
         try {
             if(authToken == null) {
-                responseToHTTP(makeErrorMessage("401", "unauthorized"), ctx);
+                responseToHTTP(makeErrorMessage("401", "Error: Unauthorized"), ctx);
             }
             authData.getUsername(authToken);
         } catch (InputException e) {
