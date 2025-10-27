@@ -9,10 +9,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTests {
 
-    static UserAccess userData = new DataAccess();
-    static AuthAccess authData = new DataAccess();
-    static GameAccess gameData = new DataAccess();
-    ClearService clear = new ClearService();
+    static DataAccess dataAccess = new DataAccess();
+    static UserAccess userData = dataAccess;
+    static AuthAccess authData = dataAccess;
+    static GameAccess gameData = dataAccess;
+    static ClearService clear = new ClearService();
     static UserService user = new UserService();
     static GameService game = new GameService();
     static String authToken;
@@ -20,8 +21,9 @@ public class ServiceTests {
 
 
     // Registers a user, saves their authToken, creates a game, and saves the games gameId
-    @BeforeAll
-    static void addStartValues() throws InputException {
+    @BeforeEach
+    void addStartValues() throws InputException {
+        clear.clearDB(authData, userData, gameData);
         List<String> registerInfo = new ArrayList<>(Arrays.asList("BeeMovieBabe", "#KenWasGaslit", "BarryBBenson@honeyhive.edu"));
         Map<String, String> result = user.registerUser(userData, authData, registerInfo);
         authToken = result.get("authToken");
