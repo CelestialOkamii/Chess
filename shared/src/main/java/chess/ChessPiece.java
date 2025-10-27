@@ -1,9 +1,8 @@
 package chess;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import chess.Valid_Piece_Moves.*;
+import chess.moves.*;
 
 /**
  * Represents a single chess piece
@@ -57,24 +56,24 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         PieceType piece = board.getPiece(myPosition).getPieceType();
-        ChessGame.TeamColor piece_color = board.getPiece(myPosition).getTeamColor();
+        ChessGame.TeamColor piecesColor = board.getPiece(myPosition).getTeamColor();
         if (piece == PieceType.KING) {
-            return new King_Moves(myPosition, piece_color, board).valid_moves();
+            return new KingMoves(myPosition, piecesColor, board).validMoves();
         }
         else if (piece == PieceType.QUEEN) {
-            return new Queen_Moves(myPosition, piece_color, board).valid_moves();
+            return new QueenMoves(myPosition, piecesColor, board).validMoves();
         }
         else if (piece == PieceType.BISHOP) {
-            return new Bishop_Moves(myPosition, piece_color, board).valid_moves();
+            return new BishopMoves(myPosition, piecesColor, board).validMoves();
         }
         else if (piece == PieceType.ROOK) {
-            return new Rook_Moves(myPosition, piece_color, board).valid_moves();
+            return new RookMoves(myPosition, piecesColor, board).validMoves();
         }
         else if (piece == PieceType.KNIGHT) {
-            return new Knight_Moves(myPosition, piece_color, board).valid_moves();
+            return new KnightMoves(myPosition, piecesColor, board).validMoves();
         }
         else if (piece == PieceType.PAWN) {
-            return new Pawn_Moves(myPosition, piece_color, board).valid_moves();
+            return new PawnMoves(myPosition, piecesColor, board).validMoves();
         }
         return null;
     }
@@ -89,11 +88,11 @@ public class ChessPiece {
 
     @Override
     public int hashCode() {
-        int color_int = pieceColor.hashCode();
-        int type_int  = type.hashCode();
+        int colorInt = pieceColor.hashCode();
+        int typeInt  = type.hashCode();
         int hash = 17;
-        hash = 31 * hash + color_int;
-        hash = 31 * hash + type_int;
+        hash = 31 * hash + colorInt;
+        hash = 31 * hash + typeInt;
         return hash;
     }
 }

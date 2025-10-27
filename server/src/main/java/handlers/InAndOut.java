@@ -1,8 +1,7 @@
-package Handlers;
+package handlers;
 
 import com.google.gson.reflect.TypeToken;
 import dataaccess.*;
-import io.javalin.*;
 import com.google.gson.*;
 import io.javalin.http.Context;
 import java.lang.reflect.Type;

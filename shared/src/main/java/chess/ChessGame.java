@@ -59,8 +59,8 @@ public class ChessGame {
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = currentBoard.getPiece(startPosition);
-        Collection<ChessMove> piece_moves = piece.pieceMoves(currentBoard, startPosition);
-        if (piece_moves == null) {
+        Collection<ChessMove> pieceMoves = piece.pieceMoves(currentBoard, startPosition);
+        if (pieceMoves == null) {
             return null;
         }
         if (piece.getTeamColor() == TeamColor.WHITE) {
@@ -71,7 +71,7 @@ public class ChessGame {
                     break;
                 }
             }
-            return rules.checkValidity(currentBoard, piece_moves, whiteKingPos, blackPiecePos, piece);
+            return rules.checkValidity(currentBoard, pieceMoves, whiteKingPos, blackPiecePos, piece);
         }
         else {
             ChessPosition blackKingPos = null;
@@ -81,7 +81,7 @@ public class ChessGame {
                     break;
                 }
             }
-            return rules.checkValidity(currentBoard, piece_moves, blackKingPos, whitePiecePos, piece);
+            return rules.checkValidity(currentBoard, pieceMoves, blackKingPos, whitePiecePos, piece);
         }
     }
 
@@ -329,12 +329,12 @@ public class ChessGame {
     }
 
 
-    private void endingChange(TeamColor color, ChessPosition KingPos, Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
+    private void endingChange(TeamColor color, ChessPosition kingPos, Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
         if (isInCheck(color)) {
-            changeCheckmate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, KingPos));
+            changeCheckmate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, kingPos));
         }
         else {
-            changeStalemate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, KingPos));
+            changeStalemate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, kingPos));
         }
     }
 

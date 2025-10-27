@@ -1,9 +1,8 @@
 package server;
 
-import Handlers.*;
+import handlers.*;
 import dataaccess.*;
 import io.javalin.*;
-import java.util.*;
 
 
 public class Server {
@@ -14,46 +13,46 @@ public class Server {
     final AuthAccess  authData = dataAccess;
     final GameAccess gameData = dataAccess;
     InAndOut inAndOut = new InAndOut(authData);
-    ClearHandler clearHandler = new ClearHandler(inAndOut, authData, userData, gameData);
-    UserHandlers userHandlers = new UserHandlers(userData, authData, inAndOut);
-    GameHandlers gameHandlers = new GameHandlers(authData, gameData, inAndOut);
+    Clear clear = new Clear(inAndOut, authData, userData, gameData);
+    User user = new User(userData, authData, inAndOut);
+    Game game = new Game(authData, gameData, inAndOut);
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
 
         // Register your endpoints and exception handlers here.
         javalin.delete("/db", ctx -> {
-            clearHandler.clearDB(ctx);
+            clear.clearDB(ctx);
         });
 
 
         javalin.post("/user", ctx -> {
-            userHandlers.register(ctx);
+            user.register(ctx);
         });
 
 
         javalin.post("/session", ctx -> {
-            userHandlers.login(ctx);
+            user.login(ctx);
         });
 
 
         javalin.delete("/session", ctx -> {
-            userHandlers.logout(ctx);
+            user.logout(ctx);
         });
 
 
         javalin.get("/game", ctx -> {
-            gameHandlers.gameList(ctx);
+            game.gameList(ctx);
         });
 
 
         javalin.post("/game", ctx -> {
-           gameHandlers.addGame(ctx);
+           game.addGame(ctx);
         });
 
 
         javalin.put("/game", ctx -> {
-           gameHandlers.joinGame(ctx);
+           game.joinGame(ctx);
         });
     }
 

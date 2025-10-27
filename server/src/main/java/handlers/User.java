@@ -1,20 +1,19 @@
-package Handlers;
+package handlers;
 
 import dataaccess.*;
-import io.javalin.*;
 import io.javalin.http.Context;
 import services.UserService;
 
 import java.util.*;
 
-public class UserHandlers {
+public class User {
     UserAccess userData;
     AuthAccess authData;
     InAndOut inAndOut;
     UserService userService = new UserService();
 
 
-    public UserHandlers(UserAccess userData, AuthAccess authData, InAndOut inAndOut) {
+    public User(UserAccess userData, AuthAccess authData, InAndOut inAndOut) {
         this.userData = userData;
         this.authData = authData;
         this.inAndOut = inAndOut;

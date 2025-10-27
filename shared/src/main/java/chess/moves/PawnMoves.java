@@ -1,23 +1,23 @@
-package chess.Valid_Piece_Moves;
+package chess.moves;
 
 import chess.*;
 
 import java.util.*;
 import static java.util.Arrays.asList;
 
-public class Pawn_Moves {
+public class PawnMoves {
     private final ChessPosition position;
     private final ChessGame.TeamColor color;
     private final ChessBoard board;
     private final ArrayList<ChessPosition> promotionPositions = new ArrayList<>();
 
-    public Pawn_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
+    public PawnMoves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;
         this.color = color;
         this.board = board;
     }
 
-    public Collection<ChessMove> valid_moves() {
+    public Collection<ChessMove> validMoves() {
         Collection<ChessMove> mainMoves = getMainMoves();
         if (!promotionPositions.isEmpty()) {
             for (ChessPosition position : promotionPositions) {
@@ -109,7 +109,7 @@ public class Pawn_Moves {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Pawn_Moves pawnMoves = (Pawn_Moves) o;
+        PawnMoves pawnMoves = (PawnMoves) o;
         return Objects.equals(board, pawnMoves.board) && color == pawnMoves.color && Objects.equals(position, pawnMoves.position) && Objects.equals(promotionPositions, pawnMoves.promotionPositions);
     }
 

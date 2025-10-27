@@ -1,20 +1,19 @@
-package Handlers;
+package handlers;
 
 import dataaccess.*;
-import io.javalin.*;
 import io.javalin.http.Context;
 import services.GameService;
 
 import java.util.*;
 
-public class GameHandlers {
+public class Game {
 
     AuthAccess authData;
     GameAccess gameData;
     InAndOut inAndOut;
     GameService gameService;
 
-    public GameHandlers(AuthAccess authData, GameAccess gameData, InAndOut inAndOut) {
+    public Game(AuthAccess authData, GameAccess gameData, InAndOut inAndOut) {
         this.authData = authData;
         this.gameData = gameData;
         this.inAndOut = inAndOut;

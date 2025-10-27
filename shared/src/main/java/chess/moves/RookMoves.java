@@ -1,24 +1,27 @@
-package chess.Valid_Piece_Moves;
+package chess.moves;
 
-import chess.*;
+import chess.ChessBoard;
+import chess.ChessGame;
+import chess.ChessMove;
+import chess.ChessPosition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Queen_Moves {
-
+public class RookMoves {
     private final ChessPosition position;
     private final ChessGame.TeamColor color;
     private final ChessBoard board;
 
-    public Queen_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
+    public RookMoves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;
         this.color = color;
         this.board = board;
     }
 
-    public List<ChessMove> valid_moves() {
+    public List<ChessMove> validMoves() {
         List<ChessMove> moves = new ArrayList<>();
-        List<ChessPosition> valid_moves = valid_positions();
+        List<ChessPosition> valid_moves = validPositions();
         for (ChessPosition move : valid_moves) {
             ChessMove pos_move = new ChessMove(position, move, null);
             moves.add(pos_move);
@@ -26,8 +29,8 @@ public class Queen_Moves {
         return moves;
     }
 
-    private List<ChessPosition> valid_positions() {
-        int[][] paths = {{1,1}, {-1,1}, {0,-1}, {-1,0}, {1,0}, {1,-1}, {-1,-1}, {0,1}};
+    private List<ChessPosition> validPositions() {
+        int[][] paths = {{0,-1}, {-1,0}, {1,0}, {0,1}};
         List<ChessPosition> positions = new ArrayList<>();
         for (int[] course : paths) {
             int row = position.getRow();
@@ -59,7 +62,7 @@ public class Queen_Moves {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
-        Queen_Moves pos = (Queen_Moves) obj;
+        RookMoves pos = (RookMoves) obj;
         return (position.equals(pos.position) && color.equals(pos.color) && board.equals(pos.board));
     }
 

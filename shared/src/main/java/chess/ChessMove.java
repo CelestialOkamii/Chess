@@ -59,13 +59,13 @@ public class ChessMove {
 
     @Override
     public int hashCode() {
-        int start_int = startPosition.getRow() * 8 + startPosition.getColumn();
-        int end_int   = endPosition.getRow() * 8 + endPosition.getColumn();
-        int promo_int = (promotionPiece != null) ? promotionPiece.ordinal() : -1;
+        int startInt = startPosition.getRow() * 8 + startPosition.getColumn();
+        int endInt   = endPosition.getRow() * 8 + endPosition.getColumn();
+        int promoInt = (promotionPiece != null) ? promotionPiece.ordinal() : -1;
         int hash = 17;
-        hash = 31 * hash + start_int;
-        hash = 31 * hash + end_int;
-        hash = 31 * hash + promo_int;
+        hash = 31 * hash + startInt;
+        hash = 31 * hash + endInt;
+        hash = 31 * hash + promoInt;
         return hash;
     }
 }

@@ -1,27 +1,24 @@
-package chess.Valid_Piece_Moves;
+package chess.moves;
 
-import chess.ChessBoard;
-import chess.ChessGame;
-import chess.ChessMove;
-import chess.ChessPosition;
+import chess.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-public class Bishop_Moves {
+public class QueenMoves {
+
     private final ChessPosition position;
     private final ChessGame.TeamColor color;
     private final ChessBoard board;
 
-    public Bishop_Moves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
+    public QueenMoves(ChessPosition position, ChessGame.TeamColor color, ChessBoard board) {
         this.position = position;
         this.color = color;
         this.board = board;
     }
 
-    public List<ChessMove> valid_moves() {
+    public List<ChessMove> validMoves() {
         List<ChessMove> moves = new ArrayList<>();
-        List<ChessPosition> valid_moves = valid_positions();
+        List<ChessPosition> valid_moves = validPositions();
         for (ChessPosition move : valid_moves) {
             ChessMove pos_move = new ChessMove(position, move, null);
             moves.add(pos_move);
@@ -29,8 +26,8 @@ public class Bishop_Moves {
         return moves;
     }
 
-    private List<ChessPosition> valid_positions() {
-        int[][] paths = {{1,1}, {-1,1}, {1,-1}, {-1,-1}};
+    private List<ChessPosition> validPositions() {
+        int[][] paths = {{1,1}, {-1,1}, {0,-1}, {-1,0}, {1,0}, {1,-1}, {-1,-1}, {0,1}};
         List<ChessPosition> positions = new ArrayList<>();
         for (int[] course : paths) {
             int row = position.getRow();
@@ -62,7 +59,7 @@ public class Bishop_Moves {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
-        Bishop_Moves pos = (Bishop_Moves) obj;
+        QueenMoves pos = (QueenMoves) obj;
         return (position.equals(pos.position) && color.equals(pos.color) && board.equals(pos.board));
     }
 
