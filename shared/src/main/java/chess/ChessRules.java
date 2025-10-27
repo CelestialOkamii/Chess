@@ -13,7 +13,8 @@ public class ChessRules {
      * Takes a Collection(ArrayList) of moves and removes any moves that would put the king in check or that
      * wouldn't get the king out of check if it's currently in check
      */
-    public Collection<ChessMove> checkValidity(ChessBoard board, Collection<ChessMove> moves, ChessPosition kingPos, Map<ChessPosition, ChessPiece> oppPiecePos, ChessPiece piece) {
+    public Collection<ChessMove> checkValidity(ChessBoard board, Collection<ChessMove> moves,
+                                               ChessPosition kingPos, Map<ChessPosition, ChessPiece> oppPiecePos, ChessPiece piece) {
         List<ChessMove> badMove = new ArrayList<>();
         boolean bad = false;
         if (piece.getPieceType() == ChessPiece.PieceType.KING) {
@@ -55,7 +56,8 @@ public class ChessRules {
                         if (oppMove.getStartPosition().equals(move.getEndPosition())) {
                             continue;
                         }
-                        if (oppMove.getEndPosition().equals(kingPos) || (pair.getValue().getPieceType() == ChessPiece.PieceType.KING && move.getEndPosition().equals(pair.getKey()))) {
+                        if (oppMove.getEndPosition().equals(kingPos) || (pair.getValue().getPieceType() == ChessPiece.PieceType.KING &&
+                                move.getEndPosition().equals(pair.getKey()))) {
                             badMove.add(move);
                             bad = true;
                             break;
@@ -116,10 +118,11 @@ public class ChessRules {
     /**
      * Determines if this move will cause the other team to be in checkmate or stalemate
      */
-    public boolean createsEnding(ChessBoard board, Map<ChessPosition, ChessPiece> ourTeam, Map<ChessPosition, ChessPiece> oppTeam, ChessPosition KingPos) {
+    public boolean createsEnding(ChessBoard board, Map<ChessPosition, ChessPiece> ourTeam,
+                                 Map<ChessPosition, ChessPiece> oppTeam, ChessPosition kingPos) {
         for (Map.Entry<ChessPosition, ChessPiece> pair : ourTeam.entrySet()) {
             Collection<ChessMove> posMoves = pair.getValue().pieceMoves(board, pair.getKey());
-            Collection<ChessMove> movesLeft = checkValidity(board, posMoves, KingPos, oppTeam, pair.getValue());
+            Collection<ChessMove> movesLeft = checkValidity(board, posMoves, kingPos, oppTeam, pair.getValue());
             if (!movesLeft.isEmpty()) {
                 return false;
             }

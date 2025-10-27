@@ -216,7 +216,8 @@ public class PieceMoves {
 
     private Collection<ChessMove> getPromoMoves(ChessPosition pos) {
         Collection<ChessMove> moves = new ArrayList<>();
-        ArrayList<ChessPiece.PieceType> pieces = new ArrayList<>(asList(ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN));
+        ArrayList<ChessPiece.PieceType> pieces = new ArrayList<>(asList(ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT,
+                ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN));
         for (ChessPiece.PieceType piece : pieces) {
             ChessMove move = new ChessMove(position, pos, piece);
             moves.add(move);
@@ -232,7 +233,8 @@ public class PieceMoves {
             return false;
         }
         PieceMoves pieceMoves = (PieceMoves) o;
-        return Objects.equals(board, pieceMoves.board) && color == pieceMoves.color && Objects.equals(position, pieceMoves.position) && Objects.equals(promotionPositions, pieceMoves.promotionPositions);
+        return Objects.equals(board, pieceMoves.board) && color == pieceMoves.color &&
+                Objects.equals(position, pieceMoves.position) && Objects.equals(promotionPositions, pieceMoves.promotionPositions);
     }
 
     @Override

@@ -55,7 +55,8 @@ public class ServiceTests {
     }
 
 
-    // Register: Checks that registerUser() will throw a Input Exception when someone tries to register with a username that has already been registered
+    // Register: Checks that registerUser() will throw a Input Exception when someone
+    // tries to register with a username that has already been registered
     @Test
     void failsUsedUsername() throws InputException {
         List<String> registerInfo = new ArrayList<>(Arrays.asList("BeeMovieBabe", "#KenWasGaslit", "BarryBBenson@honeyhive.edu"));

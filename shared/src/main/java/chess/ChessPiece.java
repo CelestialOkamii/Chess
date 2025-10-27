@@ -60,8 +60,12 @@ public class ChessPiece {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || this.getClass() != obj.getClass()) return false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
         ChessPiece pos = (ChessPiece) obj;
         return (pieceColor.equals(pos.pieceColor) && type.equals(pos.type));
     }

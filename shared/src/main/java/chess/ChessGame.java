@@ -110,8 +110,9 @@ public class ChessGame {
         }
     }
 
-    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move, ChessPosition myKingPos,
-                             Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) throws InvalidMoveException {
+    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move,
+                             ChessPosition myKingPos, Map<ChessPosition, ChessPiece> sameTeam,
+                             Map<ChessPosition, ChessPiece> oppTeam) throws InvalidMoveException {
         ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
         Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
         boolean valid = false;
@@ -330,8 +331,8 @@ public class ChessGame {
     }
 
 
-    private void endingChange(TeamColor color, ChessPosition kingPos, Map<ChessPosition, ChessPiece> sameTeam,
-                              Map<ChessPosition, ChessPiece> oppTeam) {
+    private void endingChange(TeamColor color, ChessPosition kingPos, Map<ChessPosition,
+                                ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
         if (isInCheck(color)) {
             changeCheckmate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, kingPos));
         }
@@ -347,8 +348,10 @@ public class ChessGame {
             return false;
         }
         ChessGame chessGame = (ChessGame) o;
-        return whiteStale == chessGame.whiteStale && whiteCheck == chessGame.whiteCheck && whiteCheckmate == chessGame.whiteCheckmate && blackStale == chessGame.blackStale &&
-                blackCheck == chessGame.blackCheck && blackCheckmate == chessGame.blackCheckmate && Objects.equals(currentBoard, chessGame.currentBoard) && currentColor == chessGame.currentColor &&
+        return whiteStale == chessGame.whiteStale && whiteCheck == chessGame.whiteCheck &&
+                whiteCheckmate == chessGame.whiteCheckmate && blackStale == chessGame.blackStale &&
+                blackCheck == chessGame.blackCheck && blackCheckmate == chessGame.blackCheckmate &&
+                Objects.equals(currentBoard, chessGame.currentBoard) && currentColor == chessGame.currentColor &&
                 Objects.equals(whitePiecePos, chessGame.whitePiecePos) && Objects.equals(blackPiecePos, chessGame.blackPiecePos);
     }
 

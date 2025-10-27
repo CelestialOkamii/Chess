@@ -60,7 +60,8 @@ public class Game {
         }
         else {
             try {
-                result = gameService.joinGame(gameData, authData, ctx.header("authorization"), request.get("playerColor"), Integer.parseInt(request.get("gameID")));
+                result = gameService.joinGame(gameData, authData, ctx.header("authorization"),
+                        request.get("playerColor"), Integer.parseInt(request.get("gameID")));
             } catch (InputException error) {
                 result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
             }

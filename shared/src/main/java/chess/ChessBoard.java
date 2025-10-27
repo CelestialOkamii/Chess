@@ -89,8 +89,12 @@ public class ChessBoard {
 
     private List<ChessPiece> rowPieces(int row) {
         List<ChessPiece> pieces = new ArrayList<>();
-        List<ChessPiece.PieceType> backRows = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK));
-        List<ChessPiece.PieceType> frontRows = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN));
+        List<ChessPiece.PieceType> backRows = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.ROOK,
+                ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN,
+                ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK));
+        List<ChessPiece.PieceType> frontRows = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.PAWN,
+                ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN,
+                ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN));
         if (row == 1 || row == 2) {
             ChessGame.TeamColor color = ChessGame.TeamColor.WHITE;
             if (row == 1) {
@@ -135,7 +139,8 @@ public class ChessBoard {
                 boardRow = String.format("[%d][%d]: empty\n", row, column);
             }
             else {
-                boardRow = boardRow + String.format("[%d][%d]: color = %s, type = %s\n", row, column, piece.getTeamColor().toString(), piece.getPieceType().toString());
+                boardRow = boardRow + String.format("[%d][%d]: color = %s, type = %s\n", row, column,
+                        piece.getTeamColor().toString(), piece.getPieceType().toString());
             }
             if (column == 7) {
                 column = 0;
