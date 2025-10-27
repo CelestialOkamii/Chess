@@ -357,6 +357,7 @@ public class ChessGame {
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentBoard, currentColor, whitePiecePos, blackPiecePos, whiteStale, whiteCheck, whiteCheckmate, blackStale, blackCheck, blackCheckmate);
+        return Objects.hash(currentBoard, currentColor, whitePiecePos,
+                blackPiecePos, whiteStale, whiteCheck, whiteCheckmate, blackStale, blackCheck, blackCheckmate);
     }
 }
