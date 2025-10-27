@@ -19,62 +19,80 @@ public class ChessRules {
         boolean bad = false;
         if (piece.getPieceType() == ChessPiece.PieceType.KING) {
             board.addPiece(kingPos, null);
-            for (ChessMove move : moves) {
-                bad = false;
-                ChessPiece oppPiece = board.getPiece(move.getEndPosition());
-                board.addPiece(move.getEndPosition(), piece);
-                ChessPosition kingEndPos = move.getEndPosition();
-                for (Map.Entry<ChessPosition, ChessPiece> pair : oppPiecePos.entrySet()) {
-                    Collection<ChessMove> oppMoves = pair.getValue().pieceMoves(board, pair.getKey());
-                    if (pair.getKey().equals(move.getEndPosition())) {
-                        continue;
-                    }
-                    for (ChessMove oppMove : oppMoves) {
-                        if (oppMove.getEndPosition().equals(kingEndPos)) {
-                            badMove.add(move);
-                            bad = true;
-                            break;
-                        }
-                    }
-                    if (bad) {
-                        break;
-                    }
-                }
-                board.addPiece(move.getEndPosition(), oppPiece);
-            }
+            badMove.addAll(kingBadMove(board, moves, oppPiecePos, piece));
             board.addPiece(kingPos, piece);
         }
         else {
-            for (ChessMove move : moves) {
-                bad = false;
-                board.addPiece(move.getStartPosition(), null);
-                ChessPiece oppPiece = board.getPiece(move.getEndPosition());
-                board.addPiece(move.getEndPosition(), piece);
-                for (Map.Entry<ChessPosition, ChessPiece> pair : oppPiecePos.entrySet()) {
-                    Collection<ChessMove> oppMoves = pair.getValue().pieceMoves(board, pair.getKey());
-                    for (ChessMove oppMove : oppMoves) {
-                        if (oppMove.getStartPosition().equals(move.getEndPosition())) {
-                            continue;
-                        }
-                        if (oppMove.getEndPosition().equals(kingPos) || (pair.getValue().getPieceType() == ChessPiece.PieceType.KING &&
-                                move.getEndPosition().equals(pair.getKey()))) {
-                            badMove.add(move);
-                            bad = true;
-                            break;
-                        }
-                    }
-                    if (bad) {
-                        break;
-                    }
-                }
-                board.addPiece(move.getEndPosition(), oppPiece);
-                board.addPiece(move.getStartPosition(), piece);
-            }
+            badMove.addAll(pieceBadMove(board, moves, kingPos, oppPiecePos, piece));
         }
         for (ChessMove move : badMove) {
             moves.remove(move);
         }
         return moves;
+    }
+
+
+    List<ChessMove> kingBadMove(ChessBoard board, Collection<ChessMove> moves,
+                                Map<ChessPosition, ChessPiece> oppPiecePos, ChessPiece piece) {
+        List<ChessMove> badMove = new ArrayList<>();
+        boolean bad = false;
+        for (ChessMove move : moves) {
+            bad = false;
+            ChessPiece oppPiece = board.getPiece(move.getEndPosition());
+            board.addPiece(move.getEndPosition(), piece);
+            ChessPosition kingEndPos = move.getEndPosition();
+            for (Map.Entry<ChessPosition, ChessPiece> pair : oppPiecePos.entrySet()) {
+                Collection<ChessMove> oppMoves = pair.getValue().pieceMoves(board, pair.getKey());
+                if (pair.getKey().equals(move.getEndPosition())) {
+                    continue;
+                }
+                for (ChessMove oppMove : oppMoves) {
+                    if (oppMove.getEndPosition().equals(kingEndPos)) {
+                        badMove.add(move);
+                        bad = true;
+                        break;
+                    }
+                }
+                if (bad) {
+                    break;
+                }
+            }
+            board.addPiece(move.getEndPosition(), oppPiece);
+        }
+        return badMove;
+    }
+
+
+    List<ChessMove> pieceBadMove(ChessBoard board, Collection<ChessMove> moves,
+                                 ChessPosition kingPos, Map<ChessPosition, ChessPiece> oppPiecePos, ChessPiece piece) {
+        List<ChessMove> badMove = new ArrayList<>();
+        boolean bad = false;
+        for (ChessMove move : moves) {
+            bad = false;
+            board.addPiece(move.getStartPosition(), null);
+            ChessPiece oppPiece = board.getPiece(move.getEndPosition());
+            board.addPiece(move.getEndPosition(), piece);
+            for (Map.Entry<ChessPosition, ChessPiece> pair : oppPiecePos.entrySet()) {
+                Collection<ChessMove> oppMoves = pair.getValue().pieceMoves(board, pair.getKey());
+                for (ChessMove oppMove : oppMoves) {
+                    if (oppMove.getStartPosition().equals(move.getEndPosition())) {
+                        continue;
+                    }
+                    if (oppMove.getEndPosition().equals(kingPos) || (pair.getValue().getPieceType() == ChessPiece.PieceType.KING &&
+                            move.getEndPosition().equals(pair.getKey()))) {
+                        badMove.add(move);
+                        bad = true;
+                        break;
+                    }
+                }
+                if (bad) {
+                    break;
+                }
+            }
+            board.addPiece(move.getEndPosition(), oppPiece);
+            board.addPiece(move.getStartPosition(), piece);
+        }
+        return badMove;
     }
 
 
