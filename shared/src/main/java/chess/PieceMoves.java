@@ -149,7 +149,6 @@ public class PieceMoves {
 
     private Collection<ChessMove> getMainMoves() {
         Collection<ChessMove> moves = new ArrayList<>();
-        boolean oneAhead = false;
         int row = position.getRow();
         int column = position.getColumn();
         if (color == ChessGame.TeamColor.WHITE) {
