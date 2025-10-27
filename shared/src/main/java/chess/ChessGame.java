@@ -99,18 +99,19 @@ public class ChessGame {
             throw new InvalidMoveException("There is no piece to move in that spot");
         }
         if (piece.getTeamColor() == TeamColor.WHITE) {
-            if (goodMove(TeamColor.WHITE, TeamColor.BLACK, move, whiteKingPos, blackKingPos, whitePiecePos, blackPiecePos)) {
+            if (goodMove(TeamColor.WHITE, TeamColor.BLACK, move, whiteKingPos, whitePiecePos, blackPiecePos)) {
                 setTeamTurn(TeamColor.BLACK);
             }
         }
         else {
-            if (goodMove(TeamColor.BLACK, TeamColor.WHITE, move, blackKingPos, whiteKingPos, blackPiecePos, whitePiecePos)) {
+            if (goodMove(TeamColor.BLACK, TeamColor.WHITE, move, blackKingPos, blackPiecePos, whitePiecePos)) {
                 setTeamTurn(TeamColor.WHITE);
             }
         }
     }
 
-    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move, ChessPosition myKingPos, ChessPosition oppKingPos, Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) throws InvalidMoveException {
+    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move, ChessPosition myKingPos,
+                             Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) throws InvalidMoveException {
         ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
         Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
         boolean valid = false;
@@ -329,7 +330,8 @@ public class ChessGame {
     }
 
 
-    private void endingChange(TeamColor color, ChessPosition kingPos, Map<ChessPosition, ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
+    private void endingChange(TeamColor color, ChessPosition kingPos, Map<ChessPosition, ChessPiece> sameTeam,
+                              Map<ChessPosition, ChessPiece> oppTeam) {
         if (isInCheck(color)) {
             changeCheckmate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, kingPos));
         }
