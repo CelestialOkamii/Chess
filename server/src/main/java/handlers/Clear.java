@@ -24,7 +24,12 @@ public class Clear {
     }
 
     public Context clearDB(Context ctx) {
-        Map<String, String> result = clearService.clearDB(authData, userData, gameData);
+        Map<String, String> result = new HashMap<>();
+        try {
+            result = clearService.clearDB(authData, userData, gameData);
+        } catch (InputException error) {
+            result.put(error.getErrorCode(), error.getMessage());
+        }
         return inAndOut.responseToHTTP(result, ctx);
     }
 }

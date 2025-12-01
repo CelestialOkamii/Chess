@@ -8,17 +8,29 @@ import io.javalin.*;
 public class Server {
 
     private final Javalin javalin;
-    final DataAccess dataAccess = new DataAccess();
-    final UserAccess userData = dataAccess;
-    final AuthAccess  authData = dataAccess;
-    final GameAccess gameData = dataAccess;
-    InAndOut inAndOut = new InAndOut(authData);
-    Clear clear = new Clear(inAndOut, authData, userData, gameData);
-    User user = new User(userData, authData, inAndOut);
-    Game game = new Game(authData, gameData, inAndOut);
+    final DatabaseManager dataAccess;
+    final UserAccess userData;
+    final AuthAccess  authData;
+    final GameAccess gameData;
+    InAndOut inAndOut;
+    Clear clear;
+    User user;
+    Game game;
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
+        try {
+            this.dataAccess = new DatabaseManager();
+        } catch (DataAccessException ex) {
+            throw new RuntimeException("Failed to initialize database: " + ex.getMessage());
+        }
+        this.userData = dataAccess.getUserData();
+        this.authData = dataAccess.getAuthData();
+        this.gameData = dataAccess.getGameData();
+        this.inAndOut = new InAndOut(authData);
+        this.clear = new Clear(inAndOut, authData, userData, gameData);
+        this.user = new User(userData, authData, inAndOut);
+        this.game = new Game(authData, gameData, inAndOut);
 
         // Register your endpoints and exception handlers here.
         javalin.delete("/db", ctx -> {

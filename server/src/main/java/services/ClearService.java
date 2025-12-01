@@ -9,7 +9,7 @@ public class ClearService {
     public ClearService() {
     }
 
-    public Map<String, String> clearDB(AuthAccess authData, UserAccess  userData, GameAccess gameData) {
+    public Map<String, String> clearDB(AuthAccess authData, UserAccess  userData, GameAccess gameData) throws InputException {
         Map<String, String> result = new HashMap<>();
         authData.clearAuths();
         userData.clearUsers();
