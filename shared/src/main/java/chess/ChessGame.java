@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -10,15 +11,27 @@ import java.util.Collection;
  */
 public class ChessGame {
 
-    public ChessGame() {
+    private ChessBoard currentBoard = new ChessBoard();
+    private TeamColor currentColor = TeamColor.WHITE;
+    private Map<ChessPosition, ChessPiece> whitePiecePos = currentBoard.getStartPositions(TeamColor.WHITE);
+    private Map<ChessPosition, ChessPiece> blackPiecePos = currentBoard.getStartPositions(TeamColor.BLACK);
+    private final ChessRules rules = new ChessRules();
+    private boolean whiteStale = false;
+    private boolean whiteCheck = false;
+    private boolean whiteCheckmate = false;
+    private boolean blackStale = false;
+    private boolean blackCheck = false;
+    private boolean blackCheckmate = false;
 
+    public ChessGame() {
+        currentBoard.resetBoard();
     }
 
     /**
      * @return Which team's turn it is
      */
     public TeamColor getTeamTurn() {
-        throw new RuntimeException("Not implemented");
+        return currentColor;
     }
 
     /**
@@ -27,7 +40,7 @@ public class ChessGame {
      * @param team the team whose turn it is
      */
     public void setTeamTurn(TeamColor team) {
-        throw new RuntimeException("Not implemented");
+        currentColor = team;
     }
 
     /**
@@ -46,7 +59,31 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = currentBoard.getPiece(startPosition);
+        Collection<ChessMove> pieceMoves = piece.pieceMoves(currentBoard, startPosition);
+        if (pieceMoves == null) {
+            return null;
+        }
+        if (piece.getTeamColor() == TeamColor.WHITE) {
+            ChessPosition whiteKingPos = null;
+            for (Map.Entry<ChessPosition, ChessPiece> pair : whitePiecePos.entrySet()) {
+                if (pair.getValue().getPieceType() == ChessPiece.PieceType.KING) {
+                    whiteKingPos = pair.getKey();
+                    break;
+                }
+            }
+            return rules.checkValidity(currentBoard, pieceMoves, whiteKingPos, blackPiecePos, piece);
+        }
+        else {
+            ChessPosition blackKingPos = null;
+            for (Map.Entry<ChessPosition, ChessPiece> pair : blackPiecePos.entrySet()) {
+                if (pair.getValue().getPieceType() == ChessPiece.PieceType.KING) {
+                    blackKingPos = pair.getKey();
+                    break;
+                }
+            }
+            return rules.checkValidity(currentBoard, pieceMoves, blackKingPos, whitePiecePos, piece);
+        }
     }
 
     /**
