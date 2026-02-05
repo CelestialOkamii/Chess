@@ -1,9 +1,6 @@
 package chess;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * For a class that can manage a chess game, making moves on a board
@@ -354,6 +351,4 @@ public class ChessGame {
         return Objects.hash(currentBoard, currentColor, whitePiecePos,
                 blackPiecePos, whiteStale, whiteCheck, whiteCheckmate, blackStale, blackCheck, blackCheckmate);
     }
-}
-
 }
