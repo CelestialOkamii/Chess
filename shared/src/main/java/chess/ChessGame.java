@@ -93,7 +93,85 @@ public class ChessGame {
      * @throws InvalidMoveException if move is invalid
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
-        throw new RuntimeException("Not implemented");
+        ChessPosition whiteKingPos = getKingPos(TeamColor.WHITE);
+        ChessPosition blackKingPos = getKingPos(TeamColor.BLACK);
+        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+        if (piece == null) {
+            throw new InvalidMoveException("There is no piece to move in that spot");
+        }
+        if (piece.getTeamColor() == TeamColor.WHITE) {
+            if (goodMove(TeamColor.WHITE, TeamColor.BLACK, move, whiteKingPos, whitePiecePos, blackPiecePos)) {
+                setTeamTurn(TeamColor.BLACK);
+            }
+        }
+        else {
+            if (goodMove(TeamColor.BLACK, TeamColor.WHITE, move, blackKingPos, blackPiecePos, whitePiecePos)) {
+                setTeamTurn(TeamColor.WHITE);
+            }
+        }
+    }
+
+    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move,
+                             ChessPosition myKingPos, Map<ChessPosition, ChessPiece> sameTeam,
+                             Map<ChessPosition, ChessPiece> oppTeam) throws InvalidMoveException {
+        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+        Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
+        boolean valid = false;
+        for (ChessMove posMove : validMoves) {
+            if (move.equals(posMove))  {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) {
+            throw new InvalidMoveException("This is not a valid move");
+        }
+        if (currentColor != teamColor) {
+            throw new InvalidMoveException("It is not your turn yet, be patient");
+        }
+        if (isInStalemate(teamColor)) {
+            throw new InvalidMoveException("Can not move when in Stalemate");
+        }
+        else if (isInCheckmate(teamColor)) {
+            throw new InvalidMoveException("You have lost and cannot make further moves");
+        }
+        else if (isInCheck(teamColor)) {
+            if (!rules.isValid(currentBoard, move, piece, myKingPos, oppTeam)) {
+                throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
+            }
+        }
+        ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
+        if (possOppPiece != null) {
+            oppTeam.remove(move.getEndPosition());
+        }
+        if (move.getPromotionPiece() == null) {
+            currentBoard.addPiece(move.getEndPosition(), piece);
+            sameTeam.put(move.getEndPosition(), piece);
+            sameTeam.remove(move.getStartPosition());
+        }
+        else {
+            ChessPiece newPiece = new ChessPiece(teamColor, move.getPromotionPiece());
+            currentBoard.addPiece(move.getEndPosition(), newPiece);
+            sameTeam.put(move.getEndPosition(), newPiece);
+            sameTeam.remove(move.getStartPosition());
+        }
+        currentBoard.addPiece(move.getStartPosition(), null);
+        checkChange(oppColor, move.getEndPosition());
+        endingChange(teamColor, getKingPos(teamColor), sameTeam, oppTeam);
+        endingChange(oppColor, getKingPos(oppColor), oppTeam, sameTeam);
+        return true;
+    }
+
+    /**
+     * Changes if white or black is in check after a move is made
+     */
+    public void changeCheck(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteCheck = tOf;
+        }
+        else {
+            blackCheck = tOf;
+        }
     }
 
     /**
@@ -103,7 +181,24 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (teamColor == TeamColor.WHITE) {
+            return whiteCheck;
+        }
+        else {
+            return blackCheck;
+        }
+    }
+
+    /**
+     * Changes if white or black is in checkmate after a move is made
+     */
+    public void changeCheckmate(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteCheckmate = tOf;
+        }
+        else {
+            blackCheckmate = tOf;
+        }
     }
 
     /**
@@ -113,7 +208,12 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        throw new RuntimeException("Not implemented");
+        if (teamColor == TeamColor.WHITE) {
+            return whiteCheckmate;
+        }
+        else {
+            return blackCheckmate;
+        }
     }
 
     /**
