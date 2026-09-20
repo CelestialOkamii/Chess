@@ -23,23 +23,28 @@ public class PossibleMoves {
 
     public Collection<ChessMove> getMoves() {
         Collection<ChessMove> moves = new ArrayList<>();
+        List<ChessPosition> positions = new ArrayList<>();
         if (type == ChessPiece.PieceType.KING) {
             moves = kingMoves();
         }
         else if (type == ChessPiece.PieceType.QUEEN) {
-            moves = continuousMoves(rulerPath);
+            positions = continuousMoves(rulerPath);
         }
         else if (type == ChessPiece.PieceType.BISHOP) {
-            moves = continuousMoves(bishopPath);
+            positions = continuousMoves(bishopPath);
         }
         else if (type == ChessPiece.PieceType.ROOK) {
-            moves = continuousMoves(rookPath);
+            positions = continuousMoves(rookPath);
         }
         else if (type == ChessPiece.PieceType.KNIGHT) {
-            moves = knightMoves(knightPath);
+            positions = knightMoves(knightPath);
         }
         else {
             moves = pawnMoves();
+        }
+        for (ChessPosition move : positions) {
+            ChessMove posMove = new ChessMove(pos, move, null);
+            moves.add(posMove);
         }
         return moves;
     }
@@ -68,7 +73,7 @@ public class PossibleMoves {
     }
 
 
-    private List<ChessMove> continuousMoves(int[][] paths) {
+    private List<ChessPosition> continuousMoves(int[][] paths) {
         ArrayList<ChessMove> moves = new ArrayList<>();
         ArrayList<ChessPosition> positions = new ArrayList<>();
         for (int[] direction : paths) {
@@ -92,16 +97,31 @@ public class PossibleMoves {
                 }
             }
         }
-        for (ChessPosition move : positions) {
-            ChessMove posMove = new ChessMove(pos, move, null);
-            moves.add(posMove);
-        }
-        return moves;
+        return positions;
     }
 
 
-    private List<ChessMove> knightMoves(int[][] paths) {
-        return new ArrayList<>();
+    private List<ChessPosition> knightMoves(int[][] paths) {
+        List<ChessPosition> positions = new ArrayList<>();
+        for (int[] direction : paths) {
+            int row = pos.getRow();
+            int column = pos.getColumn();
+            row = row + direction[0];
+            column = column + direction[1];
+            if (row < 1 || row > 8 || column < 1 || column > 8) {
+                continue;
+            }
+            ChessPosition position = new ChessPosition(row, column);
+            if (board.getPiece(position) == null) {
+                positions.add(position);
+            }
+            else {
+                if (board.getPiece(pos).getTeamColor() != board.getPiece(position).getTeamColor()) {
+                    positions.add(position);
+                }
+            }
+        }
+        return positions;
     }
 
 
