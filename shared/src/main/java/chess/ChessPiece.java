@@ -53,6 +53,9 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = board.getPiece(myPosition);
+        PieceType pieceType = piece.getPieceType();
+        ChessGame.TeamColor color = piece.getTeamColor();
+        return new PossibleMoves(board, myPosition, pieceType, color).getMoves();
     }
 }
