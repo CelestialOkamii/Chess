@@ -149,6 +149,11 @@ public class PossibleMoves {
                 moves = whitePawnMoves(moves, row, column);
             }
         }
+        else {
+            if (row > 0) {
+                moves = blackPawnMoves(moves, row, column);
+            }
+        }
         return moves;
     }
 
@@ -173,6 +178,35 @@ public class PossibleMoves {
                     }
                 }
                 if (row == 2 && oneAhead && i == 0 && piece == null) {
+                    ChessMove move = new ChessMove(pos, possPosition, null);
+                    moves.add(move);
+                }
+            }
+        }
+        return moves;
+    }
+
+
+    Collection<ChessMove> blackPawnMoves(Collection<ChessMove> moves, int row, int col) {
+        boolean oneAhead = false;
+        for (int i = -1; i < 2; i++) {
+            if (col + i > 0 && col + i < 9 && row - 1 > 0) {
+                ChessPosition possPosition = new ChessPosition(row - 1, col + i);
+                ChessPiece piece = board.getPiece(possPosition);
+                if ((piece == null && i == 0) || (piece != null && i != 0 && color != piece.getTeamColor())) {
+                    ChessMove move = new ChessMove(pos, possPosition, null);
+                    moves.add(move);
+                    if (row - 1 == 1) {
+                        promotionPositions.add(possPosition);
+                        moves.remove(move);
+                    }
+                    if (i == 0 && row - 2 > 0) {
+                        oneAhead = true;
+                        possPosition = new ChessPosition(row - 2, col + i);
+                        piece = board.getPiece(possPosition);
+                    }
+                }
+                if (row == 7 && oneAhead && i == 0 && piece == null) {
                     ChessMove move = new ChessMove(pos, possPosition, null);
                     moves.add(move);
                 }
@@ -210,11 +244,11 @@ public class PossibleMoves {
             return false;
         }
         PossibleMoves that = (PossibleMoves) o;
-        return Objects.equals(board, that.board) && Objects.equals(pos, that.pos) && type == that.type && color == that.color && Objects.deepEquals(rulerPath, that.rulerPath) && Objects.deepEquals(bishopPath, that.bishopPath) && Objects.deepEquals(rookPath, that.rookPath) && Objects.deepEquals(knightPath, that.knightPath);
+        return Objects.equals(board, that.board) && Objects.equals(pos, that.pos) && type == that.type && color == that.color && Objects.equals(promotionPositions, that.promotionPositions) && Objects.deepEquals(rulerPath, that.rulerPath) && Objects.deepEquals(bishopPath, that.bishopPath) && Objects.deepEquals(rookPath, that.rookPath) && Objects.deepEquals(knightPath, that.knightPath);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(board, pos, type, color, Arrays.deepHashCode(rulerPath), Arrays.deepHashCode(bishopPath), Arrays.deepHashCode(rookPath), Arrays.deepHashCode(knightPath));
+        return Objects.hash(board, pos, type, color, promotionPositions, Arrays.deepHashCode(rulerPath), Arrays.deepHashCode(bishopPath), Arrays.deepHashCode(rookPath), Arrays.deepHashCode(knightPath));
     }
 }
