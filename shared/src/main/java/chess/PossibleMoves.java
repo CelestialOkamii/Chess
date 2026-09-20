@@ -24,7 +24,7 @@ public class PossibleMoves {
     public Collection<ChessMove> getMoves() {
         Collection<ChessMove> moves = new ArrayList<>();
         if (type == ChessPiece.PieceType.KING) {
-            moves = kingMoves(rulerPath);
+            moves = kingMoves();
         }
         else if (type == ChessPiece.PieceType.QUEEN) {
             moves = continuousMoves(rulerPath);
@@ -45,7 +45,7 @@ public class PossibleMoves {
     }
 
 
-    private List<ChessMove> kingMoves(int[][] path) {
+    private List<ChessMove> kingMoves() {
         List<ChessMove> moves = new ArrayList<>();
         int currRow = pos.getRow();
         int currCol = pos.getColumn();
@@ -68,12 +68,39 @@ public class PossibleMoves {
     }
 
 
-    private List<ChessMove> continuousMoves(int[][] path) {
-        return new ArrayList<>();
+    private List<ChessMove> continuousMoves(int[][] paths) {
+        ArrayList<ChessMove> moves = new ArrayList<>();
+        ArrayList<ChessPosition> positions = new ArrayList<>();
+        for (int[] direction : paths) {
+            int row = pos.getRow();
+            int col = pos.getColumn();
+            while (true) {
+                row = row + direction[0];
+                col = col + direction[1];
+                if (row < 1 || row > 8 || col < 1 || col > 8) {
+                    break;
+                }
+                ChessPosition position = new ChessPosition(row, col);
+                if (board.getPiece(position) == null) {
+                    positions.add(position);
+                }
+                else {
+                    if (board.getPiece(pos).getTeamColor() != board.getPiece(position).getTeamColor()) {
+                        positions.add(position);
+                    }
+                    break;
+                }
+            }
+        }
+        for (ChessPosition move : positions) {
+            ChessMove posMove = new ChessMove(pos, move, null);
+            moves.add(posMove);
+        }
+        return moves;
     }
 
 
-    private List<ChessMove> knightMoves(int[][] path) {
+    private List<ChessMove> knightMoves(int[][] paths) {
         return new ArrayList<>();
     }
 
