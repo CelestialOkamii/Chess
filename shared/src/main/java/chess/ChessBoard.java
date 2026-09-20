@@ -110,6 +110,29 @@ public class ChessBoard {
         }
         return endRow;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessBoard that = (ChessBoard) o;
+        return Objects.deepEquals(board, that.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.deepHashCode(board));
+    }
+
+
+    @Override
+    public String toString() {
+        return "ChessBoard{" +
+                "board=" + Arrays.toString(board) +
+                ", whitePiecePos=" + whitePiecePos +
+                ", blackPiecePos=" + blackPiecePos +
+                '}';
+    }
 }
-
-
