@@ -1,12 +1,15 @@
 package chess;
 import java.util.*;
 
+import static java.util.Arrays.asList;
+
 public class PossibleMoves {
 
     private final ChessBoard board;
     private final ChessPosition pos;
     private final ChessPiece.PieceType type;
     private final ChessGame.TeamColor color;
+    private final ArrayList<ChessPosition> promotionPositions = new ArrayList<>();
     private final int[][] rulerPath = {{1,1}, {-1,1}, {0,-1}, {-1,0}, {1,0}, {1,-1}, {-1,-1}, {0,1}};
     private final int[][] bishopPath = {{1,1}, {-1,1}, {1,-1}, {-1,-1}};
     private final int[][] rookPath = {{0,-1}, {-1,0}, {1,0}, {0,1}};
@@ -125,8 +128,69 @@ public class PossibleMoves {
     }
 
 
-    private List<ChessMove> pawnMoves() {
-        return new ArrayList<>();
+    public Collection<ChessMove> pawnMoves() {
+        Collection<ChessMove> mainMoves = getMainMoves();
+        if (!promotionPositions.isEmpty()) {
+            for (ChessPosition position : promotionPositions) {
+                Collection<ChessMove> promoMoves = getPromoMoves(position);
+                mainMoves.addAll(promoMoves);
+            }
+        }
+        return mainMoves;
+    }
+
+
+    private Collection<ChessMove> getMainMoves() {
+        Collection<ChessMove> moves = new ArrayList<>();
+        int row = pos.getRow();
+        int column = pos.getColumn();
+        if (color == ChessGame.TeamColor.WHITE) {
+            if (row < 9) {
+                moves = whitePawnMoves(moves, row, column);
+            }
+        }
+        return moves;
+    }
+
+
+    Collection<ChessMove> whitePawnMoves(Collection<ChessMove> moves, int row, int column) {
+        boolean oneAhead = false;
+        for (int i = -1; i < 2; i++) {
+            if (column + i > 0 && column + i < 9 && row + 1 < 9) {
+                ChessPosition possPosition = new ChessPosition(row + 1, column + i);
+                ChessPiece piece = board.getPiece(possPosition);
+                if ((piece == null && i == 0) || (piece != null && i != 0 && color != piece.getTeamColor())) {
+                    ChessMove move = new ChessMove(pos, possPosition, null);
+                    moves.add(move);
+                    if (row + 1 == 8) {
+                        promotionPositions.add(possPosition);
+                        moves.remove(move);
+                    }
+                    if (i == 0 && row + 2 < 8) {
+                        oneAhead = true;
+                        possPosition = new ChessPosition(row + 2, column + i);
+                        piece = board.getPiece(possPosition);
+                    }
+                }
+                if (row == 2 && oneAhead && i == 0 && piece == null) {
+                    ChessMove move = new ChessMove(pos, possPosition, null);
+                    moves.add(move);
+                }
+            }
+        }
+        return moves;
+    }
+
+
+    private Collection<ChessMove> getPromoMoves(ChessPosition position) {
+        Collection<ChessMove> moves = new ArrayList<>();
+        ArrayList<ChessPiece.PieceType> pieces = new ArrayList<>(asList(ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT,
+                ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN));
+        for (ChessPiece.PieceType piece : pieces) {
+            ChessMove move = new ChessMove(pos, position, piece);
+            moves.add(move);
+        }
+        return moves;
     }
 
 
