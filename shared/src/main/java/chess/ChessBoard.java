@@ -44,13 +44,26 @@ public class ChessBoard {
 
 
     /**
+     * Returns the starting positions for either white or black pieces
+     */
+    public Map<ChessPosition, ChessPiece> getStartPositions(ChessGame.TeamColor color) {
+        if (color == ChessGame.TeamColor.WHITE) {
+            return whitePiecePos;
+        }
+        else {
+            return blackPiecePos;
+        }
+    }
+
+
+    /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
      */
     public void resetBoard() {
         List<Integer> startRows = new ArrayList<>(Arrays.asList(1, 2, 7, 8));
         for (int row : startRows) {
-            List<ChessPosition> positions = startRows(row);
+            List<ChessPosition> positions = startPositions(row);
             List<ChessPiece> pieces = rowPieces(row);
             for (ChessPosition position : positions) {
                 addPiece(position, pieces.get(positions.indexOf(position)));
@@ -66,7 +79,7 @@ public class ChessBoard {
     }
 
 
-    private List<ChessPosition> startRows(int row) {
+    private List<ChessPosition> startPositions(int row) {
         List<ChessPosition> positions = new ArrayList<>();
         for (int col = 1 ; col < 9; col++) {
             ChessPosition newPos = new ChessPosition(row, col);

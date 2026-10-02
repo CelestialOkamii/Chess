@@ -77,7 +77,6 @@ public class PossibleMoves {
 
 
     private List<ChessPosition> continuousMoves(int[][] paths) {
-        ArrayList<ChessMove> moves = new ArrayList<>();
         ArrayList<ChessPosition> positions = new ArrayList<>();
         for (int[] direction : paths) {
             int row = pos.getRow();
