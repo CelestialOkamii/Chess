@@ -109,6 +109,59 @@ public class ChessGame {
         }
     }
 
+
+    private boolean goodMove(TeamColor teamColor, TeamColor oppColor, ChessMove move,
+                             ChessPosition myKingPos, Map<ChessPosition, ChessPiece> sameTeam,
+                             Map<ChessPosition, ChessPiece> oppTeam) throws InvalidMoveException {
+        ChessPiece piece = currentBoard.getPiece(move.getStartPosition());
+        Collection<ChessMove> validMoves = validMoves(move.getStartPosition());
+        boolean valid = false;
+        for (ChessMove posMove : validMoves) {
+            if (move.equals(posMove))  {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) {
+            throw new InvalidMoveException("This is not a valid move");
+        }
+        if (currentColor != teamColor) {
+            throw new InvalidMoveException("It is not your turn yet, be patient");
+        }
+        if (isInStalemate(teamColor)) {
+            throw new InvalidMoveException("Can not move when in Stalemate");
+        }
+        else if (isInCheckmate(teamColor)) {
+            throw new InvalidMoveException("You have lost and cannot make further moves");
+        }
+        else if (isInCheck(teamColor)) {
+            if (!rules.isValid(currentBoard, move, piece, myKingPos, oppTeam)) {
+                throw new InvalidMoveException("You are in check. This move will not get you out of check and in therefore invalid");
+            }
+        }
+        ChessPiece possOppPiece = currentBoard.getPiece(move.getEndPosition());
+        if (possOppPiece != null) {
+            oppTeam.remove(move.getEndPosition());
+        }
+        if (move.getPromotionPiece() == null) {
+            currentBoard.addPiece(move.getEndPosition(), piece);
+            sameTeam.put(move.getEndPosition(), piece);
+            sameTeam.remove(move.getStartPosition());
+        }
+        else {
+            ChessPiece newPiece = new ChessPiece(teamColor, move.getPromotionPiece());
+            currentBoard.addPiece(move.getEndPosition(), newPiece);
+            sameTeam.put(move.getEndPosition(), newPiece);
+            sameTeam.remove(move.getStartPosition());
+        }
+        currentBoard.addPiece(move.getStartPosition(), null);
+        checkChange(oppColor, move.getEndPosition());
+        endingChange(teamColor, getKingPos(teamColor), sameTeam, oppTeam);
+        endingChange(oppColor, getKingPos(oppColor), oppTeam, sameTeam);
+        return true;
+    }
+
+
     /**
      * Determines if the given team is in check
      *
