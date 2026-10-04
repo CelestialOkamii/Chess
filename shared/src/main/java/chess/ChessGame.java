@@ -2,6 +2,7 @@ package chess;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A class that can manage a chess game, making moves on a board
@@ -163,6 +164,19 @@ public class ChessGame {
 
 
     /**
+     * Changes if white or black is in check after a move is made
+     */
+    public void changeCheck(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteCheck = tOf;
+        }
+        else {
+            blackCheck = tOf;
+        }
+    }
+
+
+    /**
      * Determines if the given team is in check
      *
      * @param teamColor which team to check for check
@@ -176,6 +190,20 @@ public class ChessGame {
             return blackCheck;
         }
     }
+
+
+    /**
+     * Changes if white or black is in checkmate after a move is made
+     */
+    public void changeCheckmate(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteCheckmate = tOf;
+        }
+        else {
+            blackCheckmate = tOf;
+        }
+    }
+
 
     /**
      * Determines if the given team is in checkmate
@@ -191,6 +219,20 @@ public class ChessGame {
             return blackCheckmate;
         }
     }
+
+
+    /**
+     * Changes if white or black is in stalemate after a move is made
+     */
+    public void changeStalemate(TeamColor color, boolean tOf) {
+        if (color == TeamColor.WHITE) {
+            whiteStale = tOf;
+        }
+        else {
+            blackStale = tOf;
+        }
+    }
+
 
     /**
      * Determines if the given team is in stalemate, which here is defined as having
@@ -243,5 +285,42 @@ public class ChessGame {
             }
         }
         return null;
+    }
+
+
+    private void checkChange(TeamColor oppColor, ChessPosition piecePos) {
+        boolean check = rules.createsCheck(currentBoard, piecePos, getKingPos(oppColor));
+        changeCheck(oppColor, check);
+    }
+
+
+    private void endingChange(TeamColor color, ChessPosition kingPos, Map<ChessPosition,
+            ChessPiece> sameTeam, Map<ChessPosition, ChessPiece> oppTeam) {
+        if (isInCheck(color)) {
+            changeCheckmate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, kingPos));
+        }
+        else {
+            changeStalemate(color, rules.createsEnding(currentBoard, sameTeam, oppTeam, kingPos));
+        }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ChessGame chessGame = (ChessGame) o;
+        return whiteStale == chessGame.whiteStale && whiteCheck == chessGame.whiteCheck &&
+                whiteCheckmate == chessGame.whiteCheckmate && blackStale == chessGame.blackStale &&
+                blackCheck == chessGame.blackCheck && blackCheckmate == chessGame.blackCheckmate &&
+                Objects.equals(currentBoard, chessGame.currentBoard) && currentColor == chessGame.currentColor &&
+                Objects.equals(whitePiecePos, chessGame.whitePiecePos) && Objects.equals(blackPiecePos, chessGame.blackPiecePos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentBoard, currentColor, whitePiecePos,
+                blackPiecePos, whiteStale, whiteCheck, whiteCheckmate, blackStale, blackCheck, blackCheckmate);
     }
 }
