@@ -64,6 +64,9 @@ public class ChessGame {
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = currentBoard.getPiece(startPosition);
         Collection<ChessMove> pieceMoves = piece.pieceMoves(currentBoard, startPosition);
+        if (pieceMoves == null) {
+            return null;
+        }
         if (piece.getTeamColor() == TeamColor.WHITE) {
             ChessPosition whiteKingPos = null;
             for (Map.Entry<ChessPosition, ChessPiece> pair : whitePiecePos.entrySet()) {
@@ -262,8 +265,8 @@ public class ChessGame {
         blackPiecePos = new HashMap<>();
         ChessPosition whiteKingPos = getKingPos(TeamColor.WHITE);
         ChessPosition blackKingPos = getKingPos(TeamColor.BLACK);
-        int row = 0;
-        int column = 0;
+        int row = 1;
+        int column = 1;
         while (row < 9) {
             ChessPosition pos = new ChessPosition(row, column);
             ChessPiece piece = board.getPiece(pos);
