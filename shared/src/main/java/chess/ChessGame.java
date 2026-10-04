@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -256,7 +257,46 @@ public class ChessGame {
      * @param board the new board to use
      */
     public void setBoard(ChessBoard board) {
-        throw new RuntimeException("Not implemented");
+        this.currentBoard = board;
+        whitePiecePos = new HashMap<>();
+        blackPiecePos = new HashMap<>();
+        ChessPosition whiteKingPos = getKingPos(TeamColor.WHITE);
+        ChessPosition blackKingPos = getKingPos(TeamColor.BLACK);
+        int row = 0;
+        int column = 0;
+        while (row < 9) {
+            ChessPosition pos = new ChessPosition(row, column);
+            ChessPiece piece = board.getPiece(pos);
+            if (piece != null) {
+                if (piece.getTeamColor() == TeamColor.WHITE) {
+                    whitePiecePos.put(pos, piece);
+                }
+                else {
+                    blackPiecePos.put(pos, piece);
+                }
+            }
+            if (column == 8) {
+                column = 1;
+                row++;
+            }
+            else {
+                column++;
+            }
+        }
+        for (Map.Entry<ChessPosition, ChessPiece> pair : whitePiecePos.entrySet()) {
+            if (isInCheck(TeamColor.BLACK)){
+                break;
+            }
+            checkChange(TeamColor.BLACK, pair.getKey());
+        }
+        for (Map.Entry<ChessPosition, ChessPiece> pair : blackPiecePos.entrySet()) {
+            if (isInCheck(TeamColor.WHITE)){
+                break;
+            }
+            checkChange(TeamColor.WHITE, pair.getKey());
+        }
+        endingChange(TeamColor.WHITE, getKingPos(TeamColor.WHITE), whitePiecePos, blackPiecePos);
+        endingChange(TeamColor.BLACK, getKingPos(TeamColor.BLACK), blackPiecePos, whitePiecePos);
     }
 
     /**
