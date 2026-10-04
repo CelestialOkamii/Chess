@@ -60,7 +60,28 @@ public class ChessGame {
      * startPosition
      */
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
-        throw new RuntimeException("Not implemented");
+        ChessPiece piece = currentBoard.getPiece(startPosition);
+        Collection<ChessMove> pieceMoves = piece.pieceMoves(currentBoard, startPosition);
+        if (piece.getTeamColor() == TeamColor.WHITE) {
+            ChessPosition whiteKingPos = null;
+            for (Map.Entry<ChessPosition, ChessPiece> pair : whitePiecePos.entrySet()) {
+                if (pair.getValue().getPieceType() == ChessPiece.PieceType.KING) {
+                    whiteKingPos = pair.getKey();
+                    break;
+                }
+            }
+            return rules.checkValidity(currentBoard, pieceMoves, whiteKingPos, blackPiecePos, piece);
+        }
+        else {
+            ChessPosition blackKingPos = null;
+            for (Map.Entry<ChessPosition, ChessPiece> pair : blackPiecePos.entrySet()) {
+                if (pair.getValue().getPieceType() == ChessPiece.PieceType.KING) {
+                    blackKingPos = pair.getKey();
+                    break;
+                }
+            }
+            return rules.checkValidity(currentBoard, pieceMoves, blackKingPos, whitePiecePos, piece);
+        }
     }
 
     /**
