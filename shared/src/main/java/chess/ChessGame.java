@@ -263,8 +263,6 @@ public class ChessGame {
         this.currentBoard = board;
         whitePiecePos = new HashMap<>();
         blackPiecePos = new HashMap<>();
-        ChessPosition whiteKingPos = getKingPos(TeamColor.WHITE);
-        ChessPosition blackKingPos = getKingPos(TeamColor.BLACK);
         int row = 1;
         int column = 1;
         while (row < 9) {
