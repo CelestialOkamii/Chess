@@ -57,7 +57,7 @@ public class ChessPiece {
         ChessPiece piece = board.getPiece(myPosition);
         PieceType pieceType = piece.getPieceType();
         ChessGame.TeamColor color = piece.getTeamColor();
-        return new PossibleMoves(board, myPosition, pieceType, color).getMoves();
+        return new PossibleMoves(board, color, pieceType, myPosition, myPosition.getRow(), myPosition.getColumn()).getPieceMoves();
     }
 
 
