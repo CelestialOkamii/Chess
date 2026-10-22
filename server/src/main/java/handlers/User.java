@@ -1,4 +1,40 @@
 package handlers;
 
+import dataaccess.*;
+import io.javalin.http.Context;
+import services.UserService;
+
+import java.util.*;
+
 public class User {
+
+    UserAccess userData;
+    AuthAccess authData;
+    InAndOut inAndOut;
+    UserService userService = new UserService();
+
+
+    public User(UserAccess userData, AuthAccess authData, InAndOut inAndOut) {
+        this.userData = userData;
+        this.authData = authData;
+        this.inAndOut = inAndOut;
+    }
+
+
+    public Context register(Context ctx) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        Map<String, String> request = inAndOut.requestToJava(ctx);
+        if (request.size() != 3) {
+            result = inAndOut.makeErrorMessage("400", "Error: Bad request");
+        }
+        else {
+            List<String> userInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password"), request.get("email")));
+            try {
+                result = userService.registerUser(userData, authData, userInfo);
+            } catch (InputException error) {
+                result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
+            }
+        }
+        return inAndOut.responseToHTTP(result, ctx);
+    }
 }

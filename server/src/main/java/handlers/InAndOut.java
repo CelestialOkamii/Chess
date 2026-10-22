@@ -40,4 +40,31 @@ public class InAndOut {
         }
         return ctx;
     }
+
+
+    public Context getToHTTP(List<Map<String, Object>> result, Context ctx) {
+        Map<String, List<Map<String, Object>>> games = new HashMap<>(Map.of("games", result));
+        ctx.status(200);
+        String json = gson.toJson(games);
+        ctx.result(json);
+        return ctx;
+    }
+
+
+    public Context authenticate(String authToken, Context ctx) {
+        try {
+            if(authToken == null) {
+                responseToHTTP(makeErrorMessage("401", "Error: Unauthorized"), ctx);
+            }
+            authData.getUsername(authToken);
+        } catch (InputException e) {
+            return responseToHTTP(makeErrorMessage(e.getErrorCode(), e.getMessage()), ctx);
+        }
+        return ctx;
+    }
+
+
+    public Map<String, String> makeErrorMessage(String errorCode, String message) {
+        return new HashMap<>(Map.of("error", errorCode, "message", message));
+    }
 }
