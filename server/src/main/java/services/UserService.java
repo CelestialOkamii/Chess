@@ -22,4 +22,30 @@ public class UserService {
         }
         return result;
     }
+
+
+    public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        List<String> userInfo = userData.getUserData(loginInfo.getFirst());
+        if(!userInfo.get(0).equals(loginInfo.get(1))) {
+            result.put("error", "401");
+            result.put("message", "Error: Unauthorized");
+            return result;
+        }
+        String authToken = UUID.randomUUID().toString();
+        authData.addAuthToken(loginInfo.getFirst(), authToken);
+        result.put("status", "200");
+        result.put("username", loginInfo.getFirst());
+        result.put("authToken", authToken);
+        return result;
+    }
+
+    public Map<String, String> logoutUser(AuthAccess authData, String authToken) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        boolean removed = authData.removeAuthToken(authToken);
+        if (removed) {
+            result.put("status", "200");
+        }
+        return result;
+    }
 }

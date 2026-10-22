@@ -37,4 +37,22 @@ public class User {
         }
         return inAndOut.responseToHTTP(result, ctx);
     }
+
+
+    public Context login(Context ctx) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        Map<String, String> request = inAndOut.requestToJava(ctx);
+        if (!request.containsKey("username") || !request.containsKey("password")) {
+            result = inAndOut.makeErrorMessage("400", "Error: Bad request");
+        }
+        else {
+            List<String> loginInfo = new ArrayList<>(Arrays.asList(request.get("username"), request.get("password")));
+            try {
+                result = userService.loginUser(userData, authData, loginInfo);
+            } catch (InputException error) {
+                result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
+            }
+        }
+        return inAndOut.responseToHTTP(result, ctx);
+    }
 }
