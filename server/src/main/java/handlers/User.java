@@ -55,4 +55,15 @@ public class User {
         }
         return inAndOut.responseToHTTP(result, ctx);
     }
+
+
+    public Context logout(Context ctx) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        try {
+            result = userService.logoutUser(authData, ctx.header("authorization"));
+        } catch (InputException error) {
+            result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
+        }
+        return inAndOut.responseToHTTP(result, ctx);
+    }
 }

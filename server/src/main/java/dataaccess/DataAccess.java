@@ -28,6 +28,18 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
 
 
     @Override
+    public Map<String, List<String>> getUserMap() {
+        return userData;
+    }
+
+
+    @Override
+    public Map<String, String> getAuthMap() {
+        return authData;
+    }
+
+
+    @Override
     public boolean addUser(String username, String password, String email) throws InputException {
         if (!userData.containsKey(username)) {
             List<String> userInfo = new ArrayList<>(Arrays.asList(password, email));
