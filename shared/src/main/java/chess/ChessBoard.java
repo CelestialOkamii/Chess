@@ -92,10 +92,14 @@ public class ChessBoard {
     private List<ChessPiece> rowPieces(int row) {
         List<ChessPiece> endRow = new ArrayList<>();
         List<ChessPiece.PieceType> pawns = new ArrayList<>(Arrays.asList(
-                ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN
+                ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN,
+                ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN,
+                ChessPiece.PieceType.PAWN, ChessPiece.PieceType.PAWN
         ));
         List<ChessPiece.PieceType> specialized = new ArrayList<>(Arrays.asList(
-                ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK
+                ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.BISHOP,
+                ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.KING, ChessPiece.PieceType.BISHOP,
+                ChessPiece.PieceType.KNIGHT, ChessPiece.PieceType.ROOK
         ));
         if (row == 1) {
             for (ChessPiece.PieceType type : specialized) {

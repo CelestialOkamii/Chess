@@ -17,7 +17,8 @@ public class PossibleMoves {
     int[][] bishopPath = {{1,-1}, {1,1}, {-1,-1}, {-1,1}};
     int[][] rookPath = {{0,-1}, {1,0}, {0,1}, {-1,0}};
     int[][] knightPath = {{2,-1}, {2,1}, {1,-2}, {1,2}, {-1,-2}, {-1,2}, {-2,-1}, {-2,1}};
-    ArrayList<ChessPiece.PieceType> promoPieces = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.QUEEN, ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT));
+    ArrayList<ChessPiece.PieceType> promoPieces = new ArrayList<>(Arrays.asList(ChessPiece.PieceType.QUEEN,
+            ChessPiece.PieceType.BISHOP, ChessPiece.PieceType.ROOK, ChessPiece.PieceType.KNIGHT));
 
 
     public PossibleMoves(ChessBoard board, ChessGame.TeamColor color, ChessPiece.PieceType piece, ChessPosition position, int row, int col) {
@@ -163,7 +164,11 @@ public class PossibleMoves {
             return false;
         }
         PossibleMoves that = (PossibleMoves) o;
-        return row == that.row && col == that.col && Objects.equals(board, that.board) && color == that.color && piece == that.piece && Objects.equals(position, that.position) && Objects.equals(promoPositions, that.promoPositions) && Objects.deepEquals(rulerPath, that.rulerPath) && Objects.deepEquals(bishopPath, that.bishopPath) && Objects.deepEquals(rookPath, that.rookPath) && Objects.deepEquals(knightPath, that.knightPath) && Objects.equals(promoPieces, that.promoPieces);
+        return row == that.row && col == that.col && Objects.equals(board, that.board)
+                && color == that.color && piece == that.piece && Objects.equals(position, that.position)
+                && Objects.equals(promoPositions, that.promoPositions) && Objects.deepEquals(rulerPath, that.rulerPath)
+                && Objects.deepEquals(bishopPath, that.bishopPath) && Objects.deepEquals(rookPath, that.rookPath)
+                && Objects.deepEquals(knightPath, that.knightPath) && Objects.equals(promoPieces, that.promoPieces);
     }
 
     @Override
