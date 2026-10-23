@@ -21,9 +21,9 @@ public class Server {
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
         this.dataAccess = new DataAccess();
-        this.userData = dataAccess.getUserData();
-        this.authData = dataAccess.getAuthData();
-        this.gameData = dataAccess.getGameData();
+        this.userData = dataAccess;
+        this.authData = dataAccess;
+        this.gameData = dataAccess;
         this.inAndOut = new InAndOut(authData);
         this.clear = new Clear(inAndOut, authData, userData, gameData);
         this.user = new User(userData, authData, inAndOut);

@@ -122,4 +122,15 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
         }
         return false;
     }
+
+
+    @Override
+    public Map<String, Object> getGame(int gameId) throws InputException {
+        for (Map<String, Object> game : gameData) {
+            if ((int) game.get("gameID") == gameId) {
+                return game;
+            }
+        }
+        throw new InputException("400", "Error: Bad request");
+    }
 }
