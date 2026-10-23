@@ -36,4 +36,31 @@ public class GameService {
         }
         return result;
     }
+
+
+    public Map<String, String> joinGame(GameAccess gameData, AuthAccess authData, String authToken, String color, int gameId) throws InputException {
+        Map<String, String> result = new HashMap<>();
+        String username = authData.getUsername(authToken);
+        Map<String, Object> game = gameData.getGame(gameId);
+        if (!color.equals("WHITE") && !color.equals("BLACK")) {
+            result.put("error", "400");
+            result.put("message", "Error: Bad request");
+            return result;
+        }
+        else if (color.equals("WHITE")) {
+            color = "whiteUsername";
+        }
+        else {
+            color = "blackUsername";
+        }
+        if (game.get(color) != null) {
+            result.put("error", "403");
+            result.put("message", "Error: Already taken");
+        }
+        else {
+            gameData.joinGame(username, color, gameId);
+            result.put("status", "200");
+        }
+        return result;
+    }
 }

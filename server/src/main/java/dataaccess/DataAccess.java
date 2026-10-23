@@ -99,4 +99,27 @@ public class DataAccess implements UserAccess, GameAccess, AuthAccess{
             throw new InputException("401", "Error: Unauthorized");
         }
     }
+
+
+    @Override
+    public List<Map<String, Object>> getGameList() {
+        return gameData;
+    }
+
+    @Override
+    public boolean addGame(Map<String, Object> game) {
+        gameData.add(game);
+        return true;
+    }
+
+    @Override
+    public boolean joinGame(String username, String color, int gameId) {
+        for (Map<String, Object> game : gameData) {
+            if ((int) game.get("gameID") == gameId) {
+                game.put(color, username);
+                return true;
+            }
+        }
+        return false;
+    }
 }
