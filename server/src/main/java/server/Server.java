@@ -8,7 +8,7 @@ public class Server {
 
 
     private final Javalin javalin;
-    final DataAccess dataAccess;
+    final DatabaseManager dataAccess;
     final UserAccess userData;
     final AuthAccess  authData;
     final GameAccess gameData;
@@ -20,10 +20,14 @@ public class Server {
 
     public Server() {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
-        this.dataAccess = new DataAccess();
-        this.userData = dataAccess;
-        this.authData = dataAccess;
-        this.gameData = dataAccess;
+        try {
+            this.dataAccess = new DatabaseManager();
+        } catch (DataAccessException ex) {
+            throw new RuntimeException("Failed to initialize database: " + ex.getMessage());
+        }
+        this.userData = dataAccess.getUserData();
+        this.authData = dataAccess.getAuthData();
+        this.gameData = dataAccess.getGameData();
         this.inAndOut = new InAndOut(authData);
         this.clear = new Clear(inAndOut, authData, userData, gameData);
         this.user = new User(userData, authData, inAndOut);
