@@ -2,6 +2,7 @@ package dataaccess;
 
 import java.util.*;
 import java.sql.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDataAccess implements UserAccess{
 
@@ -14,7 +15,7 @@ public class UserDataAccess implements UserAccess{
             Connection conn = DatabaseManager.getConnection();
             PreparedStatement statement = conn.prepareStatement("TRUNCATE TABLE `user_data`");
             statement.executeUpdate();
-        } catch (DataAccessException | SQLException ex) {
+        } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
         }
     }
@@ -32,14 +33,15 @@ public class UserDataAccess implements UserAccess{
                 String email = rs.getString("email");
                 result.put(username, Arrays.asList(password, email));
             }
-        } catch (DataAccessException | SQLException ex) {
+        } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
         }
         return result;
     }
 
+    //add password encryption
     @Override
-    public boolean addUser(String username, String password, String email) throws InputException {
+    public boolean addUser(String username, String password, String email) throws InputException, InputException {
         try {
             Connection conn = DatabaseManager.getConnection();
             PreparedStatement statement = conn.prepareStatement("SELECT * FROM users WHERE username = " + username);
@@ -55,12 +57,12 @@ public class UserDataAccess implements UserAccess{
                 stmt.setString(3, email);
                 stmt.executeUpdate();
             }
-        } catch (DataAccessException | SQLException ex) {
+        } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
         }
         return true;
     }
-
+//add password decryption and check
     @Override
     public List<String> getUserData(String username) throws InputException {
         List<String> userData = new ArrayList<>();
@@ -76,9 +78,19 @@ public class UserDataAccess implements UserAccess{
                 userData.add(rs.getString("password"));
                 userData.add(rs.getString("email"));
             }
-        } catch (DataAccessException | SQLException ex) {
+        } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
         }
         return userData;
+    }
+
+
+    private String encryptPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+
+    private boolean isPasswordCorrect(String enteredPwd, String correctPwd) {
+        return BCrypt.checkpw(enteredPwd, correctPwd);
     }
 }

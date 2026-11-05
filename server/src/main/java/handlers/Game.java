@@ -20,7 +20,7 @@ public class Game {
     }
 
 
-    public Context gameList(Context ctx) {
+    public Context gameList(Context ctx) throws InputException{
         inAndOut.requestToJava(ctx);
         Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);
         if (newCtx.statusCode() != 200) {

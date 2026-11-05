@@ -10,11 +10,11 @@ public class DatabaseManager {
     private static String connectionUrl;
 
 
-    public DatabaseManager() throws DataAccessException {
+    public DatabaseManager() throws InputException {
         try {
             createDatabase();
-        } catch (DataAccessException ex) {
-            throw new DataAccessException("failed to create database", ex);
+        } catch (InputException ex) {
+            throw new InputException(String.valueOf(ex.getErrorCode()), "failed to create database");
         }
     }
 
@@ -45,7 +45,7 @@ public class DatabaseManager {
             """
         CREATE TABLE IF NOT EXISTS `auth_data` (
           `auth_token` varchar(36) NOT NULL,
-          `username` varchar(255) DEFAULT NULL,
+          `username` varchar(255) NOT NULL,
           PRIMARY KEY (`auth_token`),
           UNIQUE KEY `auth_token_UNIQUE` (`auth_token`),
           KEY `username_idx` (`username`),
@@ -58,7 +58,7 @@ public class DatabaseManager {
           `white_username` varchar(255) DEFAULT NULL,
           `black_username` varchar(255) DEFAULT NULL,
           `game_name` varchar(255) DEFAULT NULL,
-          `game` json NOT NULL,
+          `game` text NOT NULL,
           PRIMARY KEY (`game_id`),
           UNIQUE KEY `game_id_UNIQUE` (`game_id`),
           KEY `white_username_idx` (`white_username`),
@@ -80,13 +80,13 @@ public class DatabaseManager {
     /**
      * Creates the database if it does not already exist.
      */
-    static public void createDatabase() throws DataAccessException {
+    static public void createDatabase() throws InputException {
         var statement = "CREATE DATABASE IF NOT EXISTS " + databaseName;
         try (var conn = DriverManager.getConnection(connectionUrl, dbUsername, dbPassword);
              var preparedStatement = conn.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to create database", ex);
+            throw new InputException(String.valueOf(ex.getErrorCode()), "failed to create database");
         }
     }
 
@@ -102,14 +102,14 @@ public class DatabaseManager {
      * }
      * </code>
      */
-    static Connection getConnection() throws DataAccessException {
+    static Connection getConnection() throws InputException {
         try {
             //do not wrap the following line with a try-with-resources
             var conn = DriverManager.getConnection(connectionUrl, dbUsername, dbPassword);
             conn.setCatalog(databaseName);
             return conn;
         } catch (SQLException ex) {
-            throw new DataAccessException("failed to get connection", ex);
+            throw new InputException(String.valueOf(ex.getErrorCode()), "failed to get connection");
         }
     }
 

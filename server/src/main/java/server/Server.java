@@ -22,7 +22,7 @@ public class Server {
         javalin = Javalin.create(config -> config.staticFiles.add("web"));
         try {
             this.dataAccess = new DatabaseManager();
-        } catch (DataAccessException ex) {
+        } catch (InputException ex) {
             throw new RuntimeException("Failed to initialize database: " + ex.getMessage());
         }
         this.userData = dataAccess.getUserData();

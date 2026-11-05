@@ -13,7 +13,7 @@ public class GameService {
     }
 
     //Collection will have 2 maps. The first will hold the status and message and the second will hold the game list.
-    public List<Map<String, Object>> getGameList(GameAccess gameData) {
+    public List<Map<String, Object>> getGameList(GameAccess gameData) throws InputException{
         return gameData.getGameList();
     }
 
