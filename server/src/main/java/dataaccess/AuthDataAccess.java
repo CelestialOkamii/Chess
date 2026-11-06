@@ -59,11 +59,37 @@ public class AuthDataAccess implements AuthAccess{
 
     @Override
     public String getUsername(String authToken) throws InputException {
-        return "";
+        String authData = "";
+        try {
+            Connection conn = DatabaseManager.getConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = " + authToken);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                throw new InputException("401", "Error: Unauthorized");
+            }
+            else {
+                authData = rs.getString("username");
+            }
+        } catch (SQLException ex) {
+            throw new InputException("500", "Error: Internal error");
+        }
+        return authData;
     }
 
     @Override
     public boolean removeAuthToken(String authToken) throws InputException {
-        return false;
+        try {
+            Connection conn = DatabaseManager.getConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = " + authToken);
+            ResultSet rs = statement.executeQuery();
+            if (!rs.next()) {
+                throw new InputException("401", "Error: Unauthorized");
+            }
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM auth_data WHERE auth_token = " + authToken);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            throw new InputException("500", "Error: Internal error");
+        }
+        return true;
     }
 }
