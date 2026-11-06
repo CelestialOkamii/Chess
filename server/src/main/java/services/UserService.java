@@ -1,6 +1,8 @@
 package services;
 
 import dataaccess.*;
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.util.*;
 import java.lang.*;
 
@@ -27,7 +29,7 @@ public class UserService {
     public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws InputException {
         Map<String, String> result = new HashMap<>();
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
-        if(!userInfo.get(0).equals(loginInfo.get(1))) {
+        if (!isPasswordCorrect(loginInfo.get(1), userInfo.get(0))) {
             result.put("error", "401");
             result.put("message", "Error: Unauthorized");
             return result;
@@ -39,6 +41,12 @@ public class UserService {
         result.put("authToken", authToken);
         return result;
     }
+
+
+    private boolean isPasswordCorrect(String enteredPwd, String correctPwd) {
+        return BCrypt.checkpw(enteredPwd, correctPwd);
+    }
+
 
     public Map<String, String> logoutUser(AuthAccess authData, String authToken) throws InputException {
         Map<String, String> result = new HashMap<>();

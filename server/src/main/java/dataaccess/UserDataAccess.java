@@ -42,9 +42,10 @@ public class UserDataAccess implements UserAccess{
     //add password encryption
     @Override
     public boolean addUser(String username, String password, String email) throws InputException, InputException {
+        String hashedPwd = encryptPassword(password);
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM users WHERE username = " + username);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = " + username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 throw new InputException("403", "Error: Already taken");
@@ -53,7 +54,7 @@ public class UserDataAccess implements UserAccess{
                 String addStatement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(addStatement);
                 stmt.setString(1, username);
-                stmt.setString(2, password);
+                stmt.setString(2, hashedPwd);
                 stmt.setString(3, email);
                 stmt.executeUpdate();
             }
@@ -62,13 +63,13 @@ public class UserDataAccess implements UserAccess{
         }
         return true;
     }
-//add password decryption and check
+
     @Override
     public List<String> getUserData(String username) throws InputException {
         List<String> userData = new ArrayList<>();
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM users WHERE username = " + username);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = " + username);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 throw new InputException("401", "Error: Unauthorized");
@@ -87,10 +88,5 @@ public class UserDataAccess implements UserAccess{
 
     private String encryptPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
-    }
-
-
-    private boolean isPasswordCorrect(String enteredPwd, String correctPwd) {
-        return BCrypt.checkpw(enteredPwd, correctPwd);
     }
 }
