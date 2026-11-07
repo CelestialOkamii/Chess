@@ -13,6 +13,7 @@ public class DatabaseManager {
     public DatabaseManager() throws InputException {
         try {
             createDatabase();
+            addTables();
         } catch (InputException ex) {
             throw new InputException(String.valueOf(ex.getErrorCode()), "failed to create database");
         }
@@ -54,7 +55,7 @@ public class DatabaseManager {
         """,
             """
         CREATE TABLE IF NOT EXISTS `game_data` (
-          `game_id` varchar(255) NOT NULL,
+          `game_id` INT AUTO_INCREMENT NOT NULL,
           `white_username` varchar(255) DEFAULT NULL,
           `black_username` varchar(255) DEFAULT NULL,
           `game_name` varchar(255) DEFAULT NULL,
@@ -68,6 +69,18 @@ public class DatabaseManager {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
         """
     };
+
+
+    static private void addTables() throws InputException {
+        for (String table : databaseTables) {
+            try (Connection conn = DatabaseManager.getConnection()) {
+                PreparedStatement stmt = conn.prepareStatement(table);
+                stmt.executeUpdate();
+            } catch (SQLException ex) {
+                throw new InputException("500", "Error: Internal error");
+            }
+        }
+    }
 
 
     /*

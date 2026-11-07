@@ -52,7 +52,7 @@ public class AuthDataAccess implements AuthAccess{
                 stmt.executeUpdate();
             }
         } catch (SQLException ex) {
-            throw new InputException("500", "Error: Internal error");
+            throw new InputException("500", "Error: Internal error in addAuthToken");
         }
         return true;
     }

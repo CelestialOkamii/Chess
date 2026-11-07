@@ -80,7 +80,7 @@ public class UserDataAccess implements UserAccess{
                 userData.add(rs.getString("email"));
             }
         } catch (SQLException ex) {
-            throw new InputException("500", "Error: Internal error");
+            throw new InputException("500", "Error: Internal error in getUserData");
         }
         return userData;
     }
