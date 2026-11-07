@@ -32,7 +32,7 @@ public class Game {
         return inAndOut.getToHTTP(result, ctx);
     }
 
-    public Context addGame(Context ctx) {
+    public Context addGame(Context ctx) throws InputException {
         Map<String, String> result = new HashMap<>();
         Map<String, String> request = inAndOut.requestToJava(ctx);
         Context newCtx = inAndOut.authenticate(ctx.header("authorization"), ctx);

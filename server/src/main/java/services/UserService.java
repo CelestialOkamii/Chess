@@ -29,7 +29,7 @@ public class UserService {
     public Map<String, String> loginUser(UserAccess userData, AuthAccess authData, List<String> loginInfo) throws InputException {
         Map<String, String> result = new HashMap<>();
         List<String> userInfo = userData.getUserData(loginInfo.getFirst());
-        if (!isPasswordCorrect(loginInfo.get(1), userInfo.get(0))) {
+        if (!isPasswordCorrect(loginInfo.get(1), userInfo.get(1))) {
             result.put("error", "401");
             result.put("message", "Error: Unauthorized");
             return result;

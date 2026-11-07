@@ -13,7 +13,7 @@ public class UserDataAccess implements UserAccess{
     public void clearUsers() throws InputException {
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("TRUNCATE TABLE `user_data`");
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM user_data");
             statement.executeUpdate();
         } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
@@ -45,7 +45,8 @@ public class UserDataAccess implements UserAccess{
         String hashedPwd = encryptPassword(password);
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = " + username);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?");
+            statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 throw new InputException("403", "Error: Already taken");
@@ -69,7 +70,8 @@ public class UserDataAccess implements UserAccess{
         List<String> userData = new ArrayList<>();
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = " + username);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?");
+            statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 throw new InputException("401", "Error: Unauthorized");

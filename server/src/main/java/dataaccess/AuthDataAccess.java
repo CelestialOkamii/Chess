@@ -10,7 +10,6 @@ public class AuthDataAccess implements AuthAccess{
         String sql = "TRUNCATE TABLE auth_data";
         try (Connection conn = DatabaseManager.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
-            conn.setAutoCommit(false);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
@@ -39,7 +38,8 @@ public class AuthDataAccess implements AuthAccess{
     public boolean addAuthToken(String username, String authToken) throws InputException {
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = " + authToken);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?");
+            statement.setString(1, authToken);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 throw new InputException("403", "Error: Already taken");
@@ -62,7 +62,8 @@ public class AuthDataAccess implements AuthAccess{
         String authData = "";
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = " + authToken);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?");
+            statement.setString(1, authToken);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 throw new InputException("401", "Error: Unauthorized");
@@ -80,12 +81,14 @@ public class AuthDataAccess implements AuthAccess{
     public boolean removeAuthToken(String authToken) throws InputException {
         try {
             Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = " + authToken);
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?");
+            statement.setString(1, authToken);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
                 throw new InputException("401", "Error: Unauthorized");
             }
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM auth_data WHERE auth_token = " + authToken);
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM auth_data WHERE auth_token = ?");
+            stmt.setString(1, authToken);
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");

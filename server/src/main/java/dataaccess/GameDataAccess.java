@@ -4,11 +4,7 @@ import chess.*;
 
 import com.google.gson.Gson;
 
-import java.lang.reflect.Type;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class GameDataAccess implements GameAccess{
@@ -16,8 +12,8 @@ public class GameDataAccess implements GameAccess{
     @Override
     public void clearGames() throws InputException {
         String sql = "TRUNCATE TABLE auth_data";
-        Connection conn = DatabaseManager.getConnection();
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
             conn.setAutoCommit(false);
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -38,7 +34,7 @@ public class GameDataAccess implements GameAccess{
                 details.put("whiteUsername", rs.getString("white_username"));
                 details.put("blackUsername", rs.getString("black_username"));
                 details.put("gameName", rs.getString("game_name"));
-                details.put("game", rs.getString("game"));
+                details.put("game", fromJson(rs.getString("game")));
                 result.add(details);
             }
         } catch (SQLException ex) {
@@ -54,8 +50,18 @@ public class GameDataAccess implements GameAccess{
             Connection conn = DatabaseManager.getConnection();
             String addStatement = "INSERT INTO game_data (white_username, black_username, game_name, game) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(addStatement, PreparedStatement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, String.valueOf(game.get("whiteUsername")));
-            stmt.setString(2, String.valueOf(game.get("blackUsername")));
+            if (game.get("whiteUsername") == null) {
+                stmt.setNull(1, Types.VARCHAR);
+            }
+            else {
+                stmt.setString(1, String.valueOf(game.get("whiteUsername")));
+            }
+            if (game.get("blackUsername") == null) {
+                stmt.setNull(2, Types.VARCHAR);
+            }
+            else {
+                stmt.setString(2, String.valueOf(game.get("blackUsername")));
+            }
             stmt.setString(3, String.valueOf(game.get("gameName")));
             stmt.setString(4, toJson(new ChessGame()));
             id = stmt.executeUpdate();
@@ -67,7 +73,20 @@ public class GameDataAccess implements GameAccess{
 
     @Override
     public boolean joinGame(String username, String color, int gameID) throws InputException {
-        return false;
+        String team = "white_username";
+        if (!color.equals("WHITE")) {
+            team = "black_username";
+        }
+        try {
+            Connection conn = DatabaseManager.getConnection();
+            PreparedStatement statement = conn.prepareStatement("UPDATE game_data SET " + team + " = ? WHERE game_id = ?");
+            statement.setString(1, username);
+            statement.setString(2, String.valueOf(gameID));
+            statement.executeUpdate();
+        } catch (SQLException ex) {
+            throw new InputException("500", "Error: Internal error in getUserData");
+        }
+        return true;
     }
 
     @Override
@@ -81,14 +100,16 @@ public class GameDataAccess implements GameAccess{
                 throw new InputException("401", "Error: Unauthorized");
             }
             else {
-                gameData.put(, rs.getString("username"));
-                gameData.put(, rs.getString("password"));
-                gameData.put(, rs.getString("email"));
+                gameData.put(String.valueOf(gameId), String.valueOf(gameId));
+                gameData.put("whiteUsername", rs.getString("white_username"));
+                gameData.put("blackUsername", rs.getString("black_username"));
+                gameData.put("gameName", rs.getString("game_name"));
+                gameData.put("game", fromJson(rs.getString("game")));
             }
         } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error in getUserData");
         }
-        return userData;
+        return gameData;
     }
 
 

@@ -39,8 +39,7 @@ public class DatabaseManager {
           `username` varchar(255) NOT NULL,
           `password` varchar(255) DEFAULT NULL,
           `email` varchar(255) DEFAULT NULL,
-          PRIMARY KEY (`username`),
-          UNIQUE KEY `username_UNIQUE` (`username`)
+          PRIMARY KEY (`username`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
         """,
             """
@@ -48,9 +47,8 @@ public class DatabaseManager {
           `auth_token` varchar(36) NOT NULL,
           `username` varchar(255) NOT NULL,
           PRIMARY KEY (`auth_token`),
-          UNIQUE KEY `auth_token_UNIQUE` (`auth_token`),
           KEY `username_idx` (`username`),
-          CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `user_data` (`username`)
+          CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `user_data` (`username`) ON DELETE CASCADE
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
         """,
             """
@@ -58,14 +56,13 @@ public class DatabaseManager {
           `game_id` INT AUTO_INCREMENT NOT NULL,
           `white_username` varchar(255) DEFAULT NULL,
           `black_username` varchar(255) DEFAULT NULL,
-          `game_name` varchar(255) DEFAULT NULL,
+          `game_name` varchar(255) NOT NULL,
           `game` text NOT NULL,
           PRIMARY KEY (`game_id`),
-          UNIQUE KEY `game_id_UNIQUE` (`game_id`),
           KEY `white_username_idx` (`white_username`),
           KEY `black_username_idx` (`black_username`),
-          CONSTRAINT `black_username` FOREIGN KEY (`black_username`) REFERENCES `user_data` (`username`),
-          CONSTRAINT `white_username` FOREIGN KEY (`white_username`) REFERENCES `user_data` (`username`)
+          CONSTRAINT `black_username` FOREIGN KEY (`black_username`) REFERENCES `user_data` (`username`) ON DELETE SET NULL,
+          CONSTRAINT `white_username` FOREIGN KEY (`white_username`) REFERENCES `user_data` (`username`) ON DELETE SET NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
         """
     };

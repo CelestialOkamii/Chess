@@ -7,8 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameService {
 
-    private final AtomicInteger nextId = new AtomicInteger(1);
-
     public GameService() {
     }
 
@@ -18,7 +16,7 @@ public class GameService {
     }
 
 
-    public Map<String, String> addGame(GameAccess gameData, String gameName) {
+    public Map<String, String> addGame(GameAccess gameData, String gameName) throws InputException{
         Map<String, String> result = new HashMap<>();
         if (gameName == null) {
             result.put("error", "400");

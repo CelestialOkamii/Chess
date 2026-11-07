@@ -8,10 +8,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTests {
 
-    static DataAccess dataAccess = new DataAccess();
-    static UserAccess userData = dataAccess;
-    static AuthAccess authData = dataAccess;
-    static GameAccess gameData = dataAccess;
+    static DatabaseManager dataAccess;
+
+    static {
+        try {
+            dataAccess = new DatabaseManager();
+        } catch (InputException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static UserAccess userData = dataAccess.getUserData();
+    static AuthAccess authData = dataAccess.getAuthData();
+    static GameAccess gameData = dataAccess.getGameData();
     static ClearService clear = new ClearService();
     static UserService user = new UserService();
     static GameService game = new GameService();
@@ -107,7 +116,7 @@ public class ServiceTests {
 
     // List Games: Checks that the correct number of games are listed after adding a new game
     @Test
-    void lenList() {
+    void lenList() throws InputException{
         assertEquals(1, game.getGameList(gameData).size());
         game.addGame(gameData, "MelonLord");
         assertEquals(2, game.getGameList(gameData).size());
@@ -123,14 +132,14 @@ public class ServiceTests {
 
     // Create Game: Checks that gameID is returned
     @Test
-    void hasGameId() {
+    void hasGameId() throws InputException{
         assertNotNull(game.addGame(gameData, "JGWentworth877CASHNOW").get("gameID"));
     }
 
 
     // Create Game: Checks that a null game name will not be accepted
     @Test
-    void nullName() {
+    void nullName() throws InputException {
         Map<String, String> expected = new HashMap<>(Map.of("error", "400", "message", "Error: Bad Request"));
         Map<String, String> result = game.addGame(gameData, null);
         assertEquals(expected, result, "Result did not match expected output");
