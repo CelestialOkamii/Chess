@@ -4,6 +4,8 @@ import dataaccess.*;
 import io.javalin.http.Context;
 import services.GameService;
 import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class Game {
 

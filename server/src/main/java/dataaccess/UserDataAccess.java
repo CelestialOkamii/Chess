@@ -51,7 +51,7 @@ public class UserDataAccess implements UserAccess{
                 throw new InputException("403", "Error: Already taken");
             }
             else {
-                String addStatement = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+                String addStatement = "INSERT INTO user_data (username, password, email) VALUES (?, ?, ?)";
                 PreparedStatement stmt = conn.prepareStatement(addStatement);
                 stmt.setString(1, username);
                 stmt.setString(2, hashedPwd);

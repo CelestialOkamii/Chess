@@ -25,14 +25,13 @@ public class GameService {
             result.put("message", "Error: Bad Request");
         }
         else {
-            int id = nextId.getAndIncrement();
-            Map<String, Object> game = new HashMap<>(Map.of("gameID", id));
+            Map<String, Object> game = new HashMap<>();
             game.put("whiteUsername", null);
             game.put("blackUsername", null);
             game.put("gameName", gameName);
-            gameData.addGame(game);
+            String gameId = gameData.addGame(game);
             result.put("status", "200");
-            result.put("gameID", String.valueOf(id));
+            result.put("gameID", gameId);
         }
         return result;
     }

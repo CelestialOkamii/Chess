@@ -9,7 +9,7 @@ public interface GameAccess {
 
     List<Map<String, Object>> getGameList() throws InputException;
     void clearGames() throws InputException;
-    boolean addGame(Map<String, Object> game);
-    boolean joinGame(String username, String color, int gameID);
+    String addGame(Map<String, Object> game) throws InputException;
+    boolean joinGame(String username, String color, int gameID) throws InputException;
     Map<String, Object> getGame(int gameId) throws InputException;
 }

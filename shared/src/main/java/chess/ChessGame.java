@@ -18,7 +18,7 @@ public class ChessGame {
     private TeamColor currentColor = TeamColor.WHITE;
     private Map<ChessPosition, ChessPiece> whitePiecePos = currentBoard.getStartPositions(TeamColor.WHITE);
     private Map<ChessPosition, ChessPiece> blackPiecePos = currentBoard.getStartPositions(TeamColor.BLACK);
-    private final ChessRules rules = new ChessRules();
+    private transient ChessRules rules = new ChessRules();
     private boolean whiteStale = false;
     private boolean whiteCheck = false;
     private boolean whiteCheckmate = false;
