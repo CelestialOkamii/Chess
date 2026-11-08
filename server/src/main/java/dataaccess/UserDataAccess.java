@@ -11,9 +11,8 @@ public class UserDataAccess implements UserAccess{
 
     @Override
     public void clearUsers() throws InputException {
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("DELETE FROM user_data");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("DELETE FROM user_data")) {
             statement.executeUpdate();
         } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
@@ -23,9 +22,8 @@ public class UserDataAccess implements UserAccess{
     @Override
     public Map<String, List<String>> getUserMap() throws InputException {
         Map<String, List<String>> result = new HashMap<>();
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data")) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String username = rs.getString("username");
@@ -43,9 +41,8 @@ public class UserDataAccess implements UserAccess{
     @Override
     public boolean addUser(String username, String password, String email) throws InputException, InputException {
         String hashedPwd = encryptPassword(password);
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?")) {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -68,9 +65,8 @@ public class UserDataAccess implements UserAccess{
     @Override
     public List<String> getUserData(String username) throws InputException {
         List<String> userData = new ArrayList<>();
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?")) {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {

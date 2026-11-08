@@ -8,8 +8,8 @@ public class AuthDataAccess implements AuthAccess{
     @Override
     public void clearAuths() throws InputException {
         String sql = "TRUNCATE TABLE auth_data";
-        try (Connection conn = DatabaseManager.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.executeUpdate();
         } catch (SQLException ex) {
             throw new InputException("500", "Error: Internal error");
@@ -19,9 +19,8 @@ public class AuthDataAccess implements AuthAccess{
     @Override
     public Map<String, String> getAuthMap() throws InputException{
         Map<String, String> result = new HashMap<>();
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data");
+        try  (Connection conn = DatabaseManager.getConnection();
+              PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data")) {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 String auth_token = rs.getString("auth_token");
@@ -36,9 +35,8 @@ public class AuthDataAccess implements AuthAccess{
 
     @Override
     public boolean addAuthToken(String username, String authToken) throws InputException {
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?")) {
             statement.setString(1, authToken);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -60,9 +58,8 @@ public class AuthDataAccess implements AuthAccess{
     @Override
     public String getUsername(String authToken) throws InputException {
         String authData = "";
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?")) {
             statement.setString(1, authToken);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {
@@ -79,9 +76,8 @@ public class AuthDataAccess implements AuthAccess{
 
     @Override
     public boolean removeAuthToken(String authToken) throws InputException {
-        try {
-            Connection conn = DatabaseManager.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?");
+        try (Connection conn = DatabaseManager.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM auth_data WHERE auth_token = ?")) {
             statement.setString(1, authToken);
             ResultSet rs = statement.executeQuery();
             if (!rs.next()) {

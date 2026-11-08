@@ -28,6 +28,7 @@ public class GameService {
             game.put("blackUsername", null);
             game.put("gameName", gameName);
             String gameId = gameData.addGame(game);
+            //System.out.println("GameService ID: " + gameId);
             result.put("status", "200");
             result.put("gameID", gameId);
         }

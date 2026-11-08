@@ -2,7 +2,7 @@ package server;
 
 import dataaccess.*;
 import handlers.*;
-import io.javalin.*;
+import io.javalin.Javalin;
 
 public class Server {
 
@@ -19,7 +19,6 @@ public class Server {
 
 
     public Server() {
-        javalin = Javalin.create(config -> config.staticFiles.add("web"));
         try {
             this.dataAccess = new DatabaseManager();
         } catch (InputException ex) {
@@ -32,42 +31,52 @@ public class Server {
         this.clear = new Clear(inAndOut, authData, userData, gameData);
         this.user = new User(userData, authData, inAndOut);
         this.game = new Game(authData, gameData, inAndOut);
-
-
-        // Register your endpoints and exception handlers here.
-        javalin.delete("/db", ctx -> {
-            clear.clearDB(ctx);
+        javalin = Javalin.create(config -> {
+            config.staticFiles.add("web");
+            config.routes.delete("/db", ctx -> clear.clearDB(ctx));
+            config.routes.post("/user", ctx -> user.register(ctx));
+            config.routes.post("/session", ctx -> user.login(ctx));
+            config.routes.delete("/session", ctx -> user.logout(ctx));
+            config.routes.get("/game", ctx -> game.gameList(ctx));
+            config.routes.post("/game", ctx -> game.addGame(ctx));
+            config.routes.put("/game", ctx -> game.joinGame(ctx));
         });
 
 
-        javalin.post("/user", ctx -> {
-            user.register(ctx);
-        });
-
-
-        javalin.post("/session", ctx -> {
-            user.login(ctx);
-        });
-
-
-        javalin.delete("/session", ctx -> {
-            user.logout(ctx);
-        });
-
-
-        javalin.get("/game", ctx -> {
-            game.gameList(ctx);
-        });
-
-
-        javalin.post("/game", ctx -> {
-            game.addGame(ctx);
-        });
-
-
-        javalin.put("/game", ctx -> {
-            game.joinGame(ctx);
-        });
+//        // Register your endpoints and exception handlers here.
+//        config.routes.delete("/db", ctx -> {
+//            clear.clearDB(ctx);
+//        });
+//
+//
+//        config.routes.post("/user", ctx -> {
+//            user.register(ctx);
+//        });
+//
+//
+//        jconfig.routes.post("/session", ctx -> {
+//            user.login(ctx);
+//        });
+//
+//
+//        javalin.delete("/session", ctx -> {
+//            user.logout(ctx);
+//        });
+//
+//
+//        javalin.get("/game", ctx -> {
+//            game.gameList(ctx);
+//        });
+//
+//
+//        javalin.post("/game", ctx -> {
+//            game.addGame(ctx);
+//        });
+//
+//
+//        javalin.put("/game", ctx -> {
+//            game.joinGame(ctx);
+//        });
     }
 
     public int run(int desiredPort) {
