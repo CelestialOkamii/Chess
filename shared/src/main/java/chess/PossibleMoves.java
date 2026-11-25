@@ -119,18 +119,14 @@ public class PossibleMoves {
                 boolean isPromoPiece = currRow == 1 || currRow == 8;
                 ChessPiece pieceAhead = board.getPiece(pos);
                 if (hDirection == 0 && pieceAhead == null) {
-                    if (isPromoPiece) {
-                        promoPositions.add(pos);
-                    }
-                    else {
+                    ArrayList<Object> addPos = needAddPos(isPromoPiece, pos, currRow, currCol, vDirection);
+                    boolean addPosition = (boolean) addPos.get(0);
+                    ChessPosition aheadPiece = (ChessPosition) addPos.get(1);
+                    if (addPosition) {
                         positions.add(pos);
-                        if (row == 2 && color == ChessGame.TeamColor.WHITE || row == 7 && color == ChessGame.TeamColor.BLACK) {
-                            ChessPosition aheadPos = new ChessPosition(currRow + vDirection, currCol);
-                            ChessPiece aheadPiece = board.getPiece(aheadPos);
-                            if (aheadPiece == null) {
-                                positions.add(aheadPos);
-                            }
-                        }
+                    }
+                    if (aheadPiece != null) {
+                        positions.add(aheadPiece);
                     }
                 }
                 else if (hDirection != 0 && pieceAhead != null) {
@@ -144,6 +140,34 @@ public class PossibleMoves {
             }
         }
         return positions;
+    }
+
+
+    private ArrayList<Object> needAddPos(boolean isPromoPiece, ChessPosition pos,
+                                         int currRow, int currCol, int vDirection) {
+        ArrayList<Object> addPos = new ArrayList<>();
+        if (isPromoPiece) {
+            promoPositions.add(pos);
+            addPos.add(false);
+            addPos.add(null);
+        }
+        else {
+            addPos.add(true);
+            if (row == 2 && color == ChessGame.TeamColor.WHITE || row == 7 && color == ChessGame.TeamColor.BLACK) {
+                ChessPosition aheadPos = new ChessPosition(currRow + vDirection, currCol);
+                ChessPiece aheadPiece = board.getPiece(aheadPos);
+                if (aheadPiece == null) {
+                    addPos.add(aheadPos);
+                }
+                else {
+                    addPos.add(null);
+                }
+            }
+            else {
+                addPos.add(null);
+            }
+        }
+        return addPos;
     }
 
 
@@ -173,6 +197,8 @@ public class PossibleMoves {
 
     @Override
     public int hashCode() {
-        return Objects.hash(board, color, piece, position, row, col, promoPositions, Arrays.deepHashCode(rulerPath), Arrays.deepHashCode(bishopPath), Arrays.deepHashCode(rookPath), Arrays.deepHashCode(knightPath), promoPieces);
+        return Objects.hash(board, color, piece, position, row, col, promoPositions,
+                Arrays.deepHashCode(rulerPath), Arrays.deepHashCode(bishopPath),
+                Arrays.deepHashCode(rookPath), Arrays.deepHashCode(knightPath), promoPieces);
     }
 }
