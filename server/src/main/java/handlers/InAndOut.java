@@ -20,6 +20,7 @@ public class InAndOut {
     public Map<String, String> requestToJava(Context ctx) {
         Type type = new TypeToken<Map<String, String>>(){}.getType();
         String path = ctx.path();
+        Map<String, String> auth = gson.fromJson(ctx.body(), type);
         return gson.fromJson(ctx.body(), type);
     }
 

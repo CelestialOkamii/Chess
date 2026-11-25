@@ -41,42 +41,6 @@ public class Server {
             config.routes.post("/game", ctx -> game.addGame(ctx));
             config.routes.put("/game", ctx -> game.joinGame(ctx));
         });
-
-
-//        // Register your endpoints and exception handlers here.
-//        config.routes.delete("/db", ctx -> {
-//            clear.clearDB(ctx);
-//        });
-//
-//
-//        config.routes.post("/user", ctx -> {
-//            user.register(ctx);
-//        });
-//
-//
-//        jconfig.routes.post("/session", ctx -> {
-//            user.login(ctx);
-//        });
-//
-//
-//        javalin.delete("/session", ctx -> {
-//            user.logout(ctx);
-//        });
-//
-//
-//        javalin.get("/game", ctx -> {
-//            game.gameList(ctx);
-//        });
-//
-//
-//        javalin.post("/game", ctx -> {
-//            game.addGame(ctx);
-//        });
-//
-//
-//        javalin.put("/game", ctx -> {
-//            game.joinGame(ctx);
-//        });
     }
 
     public int run(int desiredPort) {

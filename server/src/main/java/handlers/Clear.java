@@ -29,7 +29,7 @@ public class Clear {
         try {
             result = clearService.clearDB(authData, userData, gameData);
         } catch (InputException error) {
-            result.put(error.getErrorCode(), error.getMessage());
+            result = inAndOut.makeErrorMessage(error.getErrorCode(), error.getMessage());
         }
         return inAndOut.responseToHTTP(result, ctx);
     }

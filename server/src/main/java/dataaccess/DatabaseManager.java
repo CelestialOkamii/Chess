@@ -15,7 +15,7 @@ public class DatabaseManager {
             createDatabase();
             addTables();
         } catch (InputException ex) {
-            throw new InputException(String.valueOf(ex.getErrorCode()), "failed to create database");
+            throw new InputException("500", "failed to create database");
         }
     }
 
@@ -96,7 +96,7 @@ public class DatabaseManager {
              var preparedStatement = conn.prepareStatement(statement)) {
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new InputException(String.valueOf(ex.getErrorCode()), "failed to create database");
+            throw new InputException("500", "failed to create database");
         }
     }
 
@@ -119,7 +119,7 @@ public class DatabaseManager {
             conn.setCatalog(databaseName);
             return conn;
         } catch (SQLException ex) {
-            throw new InputException(String.valueOf(ex.getErrorCode()), "failed to get connection");
+            throw new InputException("500", "Error: Internal error");
         }
     }
 

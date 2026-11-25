@@ -41,6 +41,7 @@ public class UserDataAccess implements UserAccess{
     @Override
     public boolean addUser(String username, String password, String email) throws InputException, InputException {
         String hashedPwd = encryptPassword(password);
+        //goes wrong here
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT * FROM user_data WHERE username = ?")) {
             statement.setString(1, username);
