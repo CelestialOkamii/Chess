@@ -3,6 +3,7 @@ package server;
 import dataaccess.*;
 import handlers.*;
 import io.javalin.Javalin;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class Server {
 
@@ -33,13 +34,15 @@ public class Server {
         this.game = new Game(authData, gameData, inAndOut);
         javalin = Javalin.create(config -> {
             config.staticFiles.add("web");
-            config.routes.delete("/db", ctx -> clear.clearDB(ctx));
-            config.routes.post("/user", ctx -> user.register(ctx));
-            config.routes.post("/session", ctx -> user.login(ctx));
-            config.routes.delete("/session", ctx -> user.logout(ctx));
-            config.routes.get("/game", ctx -> game.gameList(ctx));
-            config.routes.post("/game", ctx -> game.addGame(ctx));
-            config.routes.put("/game", ctx -> game.joinGame(ctx));
+            config.router.apiBuilder(() -> {
+                delete("/db", ctx -> clear.clearDB(ctx));
+                post("/user", ctx -> user.register(ctx));
+                post("/session", ctx -> user.login(ctx));
+                delete("/session", ctx -> user.logout(ctx));
+                get("/game", ctx -> game.gameList(ctx));
+                post("/game", ctx -> game.addGame(ctx));
+                put("/game", ctx -> game.joinGame(ctx));
+            });
         });
     }
 

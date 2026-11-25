@@ -1,45 +1,52 @@
 <component name="libraryTable">
   <library name="io.javalin" type="repository">
-    <properties maven-id="io.javalin:javalin:LATEST" />
+    <properties maven-id="io.javalin:javalin:6.7.0" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/io/javalin/javalin/7.3.0/javalin-7.3.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/2.0.20/slf4j-api-2.0.20.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/12.1.15/jetty-server-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/12.1.15/jetty-http-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/12.1.15/jetty-util-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/12.1.15/jetty-io-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee10/jetty-ee10-servlet/12.1.15/jetty-ee10-servlet-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/servlet/jakarta.servlet-api/6.0.0/jakarta.servlet-api-6.0.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/12.1.15/jetty-security-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-session/12.1.15/jetty-session-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jetty-server/12.1.15/jetty-ee10-websocket-jetty-server-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee10/jetty-ee10-annotations/12.1.15/jetty-ee10-annotations-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-annotations/12.1.15/jetty-annotations-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee10/jetty-ee10-plus/12.1.15/jetty-ee10-plus-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/enterprise/jakarta.enterprise.cdi-api/4.0.1/jakarta.enterprise.cdi-api-4.0.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/enterprise/jakarta.enterprise.lang-model/4.0.1/jakarta.enterprise.lang-model-4.0.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/inject/jakarta.inject-api/2.0.1/jakarta.inject-api-2.0.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/interceptor/jakarta.interceptor-api/2.1.0/jakarta.interceptor-api-2.1.0.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-jndi/12.1.15/jetty-jndi-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-plus/12.1.15/jetty-plus-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee10/jetty-ee10-webapp/12.1.15/jetty-ee10-webapp-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/12.1.15/jetty-xml-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee/jetty-ee-webapp/12.1.15/jetty-ee-webapp-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm/9.11.1/asm-9.11.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-commons/9.11.1/asm-commons-9.11.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/ow2/asm/asm-tree/9.11.1/asm-tree-9.11.1.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-servlet/12.1.15/jetty-ee10-websocket-servlet-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/jetty-websocket-core-server/12.1.15/jetty-websocket-core-server-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/jetty-websocket-jetty-api/12.1.15/jetty-websocket-jetty-api-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/jetty-websocket-jetty-common/12.1.15/jetty-websocket-jetty-common-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/jetty-websocket-core-common/12.1.15/jetty-websocket-core-common-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/jetty-websocket-jetty-server/12.1.15/jetty-websocket-jetty-server-12.1.15.jar!/" />
-      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/2.2.20/kotlin-stdlib-2.2.20.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/javalin/javalin/6.7.0/javalin-6.7.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/11.0.25/jetty-server-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/11.0.25/jetty-http-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/11.0.25/jetty-util-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/11.0.25/jetty-io-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-jetty-server/11.0.25/websocket-jetty-server-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/11.0.25/jetty-servlet-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/11.0.25/jetty-security-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/11.0.25/jetty-webapp-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/11.0.25/jetty-xml-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-jetty-api/11.0.25/websocket-jetty-api-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-jetty-common/11.0.25/websocket-jetty-common-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-core-common/11.0.25/websocket-core-common-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-servlet/11.0.25/websocket-servlet-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-core-server/11.0.25/websocket-core-server-11.0.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.25/kotlin-stdlib-jdk8-1.9.25.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/1.9.25/kotlin-stdlib-1.9.25.jar!/" />
       <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.25/kotlin-stdlib-jdk7-1.9.25.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/io/javalin/javalin/6.7.0/javalin-6.7.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-server/11.0.25/jetty-server-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-http/11.0.25/jetty-http-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-util/11.0.25/jetty-util-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-io/11.0.25/jetty-io-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/toolchain/jetty-jakarta-servlet-api/5.0.2/jetty-jakarta-servlet-api-5.0.2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-jetty-server/11.0.25/websocket-jetty-server-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-servlet/11.0.25/jetty-servlet-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-security/11.0.25/jetty-security-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-webapp/11.0.25/jetty-webapp-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/jetty-xml/11.0.25/jetty-xml-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-jetty-api/11.0.25/websocket-jetty-api-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-jetty-common/11.0.25/websocket-jetty-common-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-core-common/11.0.25/websocket-core-common-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-servlet/11.0.25/websocket-servlet-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/eclipse/jetty/websocket/websocket-core-server/11.0.25/websocket-core-server-11.0.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk8/1.9.25/kotlin-stdlib-jdk8-1.9.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/1.9.25/kotlin-stdlib-1.9.25-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/13.0/annotations-13.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib-jdk7/1.9.25/kotlin-stdlib-jdk7-1.9.25-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
